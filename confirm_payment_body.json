@@ -1,0 +1,8 @@
+{
+  "invoice_id": "",
+  "payment": {
+    "paid_date": "",
+    "amount": 0.00,
+    "slip": ""
+  }
+}

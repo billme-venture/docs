@@ -1,0 +1,34 @@
+{
+  "invoice_id": "",
+  "data": {
+    "customer": {
+      "name": "",
+      "tax_number": "",
+      "branch_number": "",
+      "phone": "",
+      "emails": [""],
+      "address": {
+        "house_number": "",
+        "sub_district": "",
+        "district": "",
+        "province": "",
+        "post_code": ""
+      }
+    },
+    "number": "",
+    "items": [{
+      "description": "",
+      "quantity": 0.00,
+      "price_per_item": 0.00,
+      "vat": 7,
+      "discount": {
+        "type": "percentage",
+        "value": 0.00
+      }
+    }],
+    "issue_date": "",
+    "remark": "",
+    "vat_included": true,
+    "attachments": [""]
+  }
+}

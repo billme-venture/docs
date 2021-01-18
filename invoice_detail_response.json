@@ -1,0 +1,79 @@
+{
+  "id": "",
+  "url": "https://api.billme.co.th/invoices/{invoice_id}",
+  "customer": {
+    "name": "",
+    "tax_number": "",
+    "branch_number": "",
+    "telephone": "",
+    "emails": [""],
+    "address": ""
+  },
+  "merchant": {
+    "name": "",
+    "telephone": "",
+    "email": "",
+    "address": ""
+  },
+  "name": "",
+  "number": "",
+  "items": [{
+    "description": "",
+    "quantity": 0.00,
+    "unit_price": 0.00,
+    "total_item_price": 0.00,
+    "vat": {
+      "rate": 0,
+      "amount": 0.00
+    },
+    "discount_amount": 0.00
+  }],
+  "payment": {
+    "payment_method_id": "",
+    "paid_date": "",
+    "amount": 0.00,
+    "slip": "web"
+  },
+  "payment_methods": [{
+    "id": "",
+    "name": "",
+    "logo_url": "",
+    "number": ""
+  }],
+  "issue_date": "",
+  "due_date": "",
+  "remark": "",
+  "status": "",
+  "discount": {
+    "percentage": 0.00,
+    "amount": 0.00
+  },
+  "vat": {
+    "is_included": true,
+    "rate": 0.00,
+    "amount": 0.00
+  },
+  "withholding_tax": {
+    "rate": 0.00,
+    "amount": 0.00
+  },
+  "net_amount": 0.00,
+  "items_amount": 0.00,
+  "total_amount": 0.00,
+  "gross_amount": 0.00,
+  "pdf_url": "",
+  "attachments": [{
+    "name": "",
+    "url": ""
+  }],
+  "references": {
+    "receipt": {
+      "id": "",
+      "url": "https://api.billme.co.th/receipts/{receipt_id}"
+    },
+    "tax_invoice": {
+      "id": "",
+      "url": "https://api.billme.co.th/tax_invoices/{tax_invoice_id}"
+    }
+  }
+}
