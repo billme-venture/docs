@@ -245,7 +245,7 @@
             "type": "string",
             "default": "dd3aa75ccfc349c4955e87193f83b103",
             "name": "x-api-key",
-            "required": false,
+            "required": true,
             "in": "header"
           },
           {
@@ -319,11 +319,18 @@
             "type": "string",
             "default": "dd3aa75ccfc349c4955e87193f83b103",
             "name": "x-api-key",
-            "required": false,
+            "required": true,
             "in": "header"
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "default": {
             "description": "no response description was provided for this operation"
           }
@@ -351,7 +358,7 @@
             "type": "string",
             "default": "dd3aa75ccfc349c4955e87193f83b103",
             "name": "x-api-key",
-            "required": false,
+            "required": true,
             "in": "header"
           },
           {
@@ -559,7 +566,11 @@
             "description": "OK",
             "schema": {
               "type": "object",
-              "properties": {}
+              "properties": {
+                "receipt_id": {
+                  "type": "string"
+                }
+              }
             }
           },
           "default": {
@@ -579,11 +590,18 @@
             "type": "string",
             "default": "dd3aa75ccfc349c4955e87193f83b103",
             "name": "x-api-key",
-            "required": false,
+            "required": true,
             "in": "header"
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "default": {
             "description": "no response description was provided for this operation"
           }
@@ -611,7 +629,7 @@
             "type": "string",
             "default": "dd3aa75ccfc349c4955e87193f83b103",
             "name": "x-api-key",
-            "required": false,
+            "required": true,
             "in": "header"
           },
           {
@@ -818,7 +836,11 @@
             "description": "OK",
             "schema": {
               "type": "object",
-              "properties": {}
+              "properties": {
+                "tax_invoice_id": {
+                  "type": "string"
+                }
+              }
             }
           },
           "default": {
@@ -837,11 +859,18 @@
             "type": "string",
             "default": "dd3aa75ccfc349c4955e87193f83b103",
             "name": "x-api-key",
-            "required": false,
+            "required": true,
             "in": "header"
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "default": {
             "description": "no response description was provided for this operation"
           }
