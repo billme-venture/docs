@@ -338,7 +338,7 @@
         }
       ]
     },
-    "/receipt": {
+    "/receipts": {
       "post": {
         "summary": "Create Receipt",
         "description": "",
@@ -357,11 +357,201 @@
           {
             "required": false,
             "schema": {
-              "type": "string",
-              "default": "{\"customer\":{\"name\":\"\\u0e28\\u0e38\\u0e20\\u0e0a\\u0e31\\u0e22 \\u0e08\\u0e31\\u0e19\\u0e17\\u0e23\\u0e4c\\u0e40\\u0e01\\u0e15\\u0e38\",\"tax_number\":\"1129900201032\",\"branch_number\":\"00000\",\"phone_number\":\"0956507210\",\"emails\":[\"bank.chankate@gmail.com\"],\"address\":{\"house_number\":\"598/610\",\"sub_district\":\"\\u0e2b\\u0e49\\u0e27\\u0e22\\u0e02\\u0e27\\u0e32\\u0e07\",\"district\":\"\\u0e1a\\u0e32\\u0e07\\u0e01\\u0e30\\u0e1b\\u0e34\",\"province\":\"\\u0e01\\u0e23\\u0e38\\u0e07\\u0e40\\u0e17\\u0e1e\\u0e21\\u0e2b\\u0e32\\u0e19\\u0e04\\u0e23\",\"post_code\":\"10310\"}},\"number\":\"INV-000001\",\"issue_date\":\"19-01-2021\",\"items\":[{\"description\":\"\\u0e08\\u0e2d\\u0e04\\u0e2d\\u0e21\\u0e1e\\u0e34\\u0e27\\u0e40\\u0e15\\u0e2d\\u0e23\\u0e4c\",\"quantity\":1,\"unit_price\":15000,\"vat_rate\":\"7\",\"discount_amount\":0},{\"\":\"\\u0e15\\u0e48\\u0e2d\\u0e2d\\u0e32\\u0e22\\u0e38\\u0e1b\\u0e23\\u0e30\\u0e01\\u0e31\\u0e19\\u0e08\\u0e2d 2 \\u0e1b\\u0e35\",\"quantity\":\"1\",\"unit_price\":\"2500\",\"vat_rate\":\"0\",\"discount_amount\":\"2500\"}],\"vat_included\":true,\"remark\":\"\",\"invoice_id\":\"b8302cfd-e90d-4ad3-9405-d4fd89ff5218\"}"
+              "description": "",
+              "type": "object",
+              "properties": {
+                "invoice_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "customer",
+                    "number",
+                    "issue_date",
+                    "items",
+                    "vat_included",
+                    "remark"
+                  ],
+                  "properties": {
+                    "customer": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "tax_number",
+                        "phone_number",
+                        "emails",
+                        "address"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "ศุภชัย จันทร์เกตุ"
+                        },
+                        "tax_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "1129900201032"
+                        },
+                        "phone_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "0956507210"
+                        },
+                        "emails": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "bank.chankate@gmail.com"
+                          }
+                        },
+                        "address": {
+                          "type": "object",
+                          "required": [
+                            "house_number",
+                            "sub_district",
+                            "district",
+                            "province",
+                            "post_code"
+                          ],
+                          "properties": {
+                            "house_number": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "598/610"
+                            },
+                            "sub_district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "บางกะปิ"
+                            },
+                            "district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "ห้วยขวาง"
+                            },
+                            "province": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "กรุงเทพมหานคร"
+                            },
+                            "post_code": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "10310"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "number": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "RCP-000001"
+                    },
+                    "issue_date": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "2021-01-19"
+                    },
+                    "items": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "minLength": 1,
+                            "example": "ค่าบริการ"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "unit_price": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "vat_rate": {
+                            "type": "number",
+                            "example": 1000
+                          },
+                          "discount_amount": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        },
+                        "required": [
+                          "description",
+                          "quantity",
+                          "unit_price",
+                          "vat_rate",
+                          "discount_amount"
+                        ]
+                      }
+                    },
+                    "vat_included": {
+                      "type": "boolean"
+                    },
+                    "remark": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "invoice_id",
+                "data"
+              ]
             },
             "in": "body",
-            "name": "body"
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "invoice_id": null,
+                "data": {
+                  "customer": {
+                    "name": "ศุภชัย จันทร์เกตุ",
+                    "tax_number": "1129900201032",
+                    "phone_number": "0956507210",
+                    "emails": [
+                      "bank.chankate@gmail.com"
+                    ],
+                    "address": {
+                      "house_number": "598/610",
+                      "sub_district": "บางกะปิ",
+                      "district": "ห้วยขวาง",
+                      "province": "กรุงเทพมหานคร",
+                      "post_code": "10310"
+                    }
+                  },
+                  "number": "RCP-000001",
+                  "issue_date": "2021-01-19",
+                  "items": [
+                    {
+                      "description": "ค่าบริการ",
+                      "quantity": 1,
+                      "unit_price": 1,
+                      "vat_rate": 1000,
+                      "discount_amount": 0
+                    }
+                  ],
+                  "vat_included": true,
+                  "remark": null
+                }
+              }
+            },
+            "description": ""
           }
         ],
         "responses": {
@@ -369,7 +559,8 @@
             "description": "no response description was provided for this operation"
           }
         }
-      }
+      },
+      "parameters": []
     },
     "/receipts/{receiptId}": {
       "get": {
@@ -419,11 +610,200 @@
           {
             "required": false,
             "schema": {
-              "type": "string",
-              "default": "{\"customer\":{\"name\":\"\\u0e28\\u0e38\\u0e20\\u0e0a\\u0e31\\u0e22 \\u0e08\\u0e31\\u0e19\\u0e17\\u0e23\\u0e4c\\u0e40\\u0e01\\u0e15\\u0e38\",\"tax_number\":\"1129900201032\",\"branch_number\":\"00000\",\"phone_number\":\"0956507210\",\"emails\":[\"bank.chankate@gmail.com\"],\"address\":{\"house_number\":\"598/610\",\"sub_district\":\"\\u0e2b\\u0e49\\u0e27\\u0e22\\u0e02\\u0e27\\u0e32\\u0e07\",\"district\":\"\\u0e1a\\u0e32\\u0e07\\u0e01\\u0e30\\u0e1b\\u0e34\",\"province\":\"\\u0e01\\u0e23\\u0e38\\u0e07\\u0e40\\u0e17\\u0e1e\\u0e21\\u0e2b\\u0e32\\u0e19\\u0e04\\u0e23\",\"post_code\":\"10310\"}},\"number\":\"INV-000001\",\"issue_date\":\"19-01-2021\",\"items\":[{\"description\":\"\\u0e08\\u0e2d\\u0e04\\u0e2d\\u0e21\\u0e1e\\u0e34\\u0e27\\u0e40\\u0e15\\u0e2d\\u0e23\\u0e4c\",\"quantity\":1,\"unit_price\":15000,\"vat_rate\":\"7\",\"discount_amount\":0},{\"\":\"\\u0e15\\u0e48\\u0e2d\\u0e2d\\u0e32\\u0e22\\u0e38\\u0e1b\\u0e23\\u0e30\\u0e01\\u0e31\\u0e19\\u0e08\\u0e2d 2 \\u0e1b\\u0e35\",\"quantity\":\"1\",\"unit_price\":\"2500\",\"vat_rate\":\"0\",\"discount_amount\":\"2500\"}],\"vat_included\":true,\"remark\":\"\",\"invoice_id\":\"b8302cfd-e90d-4ad3-9405-d4fd89ff5218\"}"
+              "description": "",
+              "type": "object",
+              "properties": {
+                "invoice_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "customer",
+                    "number",
+                    "issue_date",
+                    "items",
+                    "vat_included",
+                    "remark"
+                  ],
+                  "properties": {
+                    "customer": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "tax_number",
+                        "phone_number",
+                        "emails",
+                        "address"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "ศุภชัย จันทร์เกตุ"
+                        },
+                        "tax_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "1129900201032"
+                        },
+                        "phone_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "0956507210"
+                        },
+                        "emails": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "bank.chankate@gmail.com"
+                          }
+                        },
+                        "address": {
+                          "type": "object",
+                          "required": [
+                            "house_number",
+                            "sub_district",
+                            "district",
+                            "province",
+                            "post_code"
+                          ],
+                          "properties": {
+                            "house_number": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "598/610"
+                            },
+                            "sub_district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "บางกะปิ"
+                            },
+                            "district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "ห้วยขวาง"
+                            },
+                            "province": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "กรุงเทพมหานคร"
+                            },
+                            "post_code": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "10310"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "number": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "TAX-000001"
+                    },
+                    "issue_date": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "2021-01-19"
+                    },
+                    "items": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "minLength": 1,
+                            "example": "ค่าบริการ"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "unit_price": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "vat_rate": {
+                            "type": "number",
+                            "example": 7
+                          },
+                          "discount_amount": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        },
+                        "required": [
+                          "description",
+                          "quantity",
+                          "unit_price",
+                          "vat_rate",
+                          "discount_amount"
+                        ]
+                      }
+                    },
+                    "vat_included": {
+                      "type": "boolean"
+                    },
+                    "remark": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "invoice_id",
+                "data"
+              ]
             },
             "in": "body",
-            "name": "body"
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "invoice_id": null,
+                "data": {
+                  "customer": {
+                    "name": "ศุภชัย จันทร์เกตุ",
+                    "tax_number": "1129900201032",
+                    "phone_number": "0956507210",
+                    "emails": [
+                      "bank.chankate@gmail.com"
+                    ],
+                    "address": {
+                      "house_number": "598/610",
+                      "sub_district": "บางกะปิ",
+                      "district": "ห้วยขวาง",
+                      "province": "กรุงเทพมหานคร",
+                      "post_code": "10310"
+                    }
+                  },
+                  "number": "TAX-000001",
+                  "issue_date": "2021-01-19",
+                  "items": [
+                    {
+                      "description": "ค่าบริการ",
+                      "quantity": 1,
+                      "unit_price": 1,
+                      "vat_rate": 7,
+                      "discount_amount": 0
+                    }
+                  ],
+                  "vat_included": true,
+                  "remark": null
+                }
+              }
+            }
           }
         ],
         "responses": {
