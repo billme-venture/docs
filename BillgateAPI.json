@@ -1,0 +1,210 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "BillgateAPI",
+    "version": "v0.0.0"
+  },
+  "host": "api.billme.co.th",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/",
+  "paths": {
+    "/invoices": {
+      "post": {
+        "summary": "Create Invoice",
+        "description": "",
+        "operationId": "79929f9b-8c22-401f-8f90-fd48d9389961",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"customer\":{\"name\":\"\\u0e28\\u0e38\\u0e20\\u0e0a\\u0e31\\u0e22 \\u0e08\\u0e31\\u0e19\\u0e17\\u0e23\\u0e4c\\u0e40\\u0e01\\u0e15\\u0e38\",\"tax_number\":\"1129900201032\",\"branch_number\":\"00000\",\"phone_number\":\"0956507210\",\"emails\":[\"bank.chankate@gmail.com\"],\"address\":{\"house_number\":\"598/610\",\"sub_district\":\"\\u0e2b\\u0e49\\u0e27\\u0e22\\u0e02\\u0e27\\u0e32\\u0e07\",\"district\":\"\\u0e1a\\u0e32\\u0e07\\u0e01\\u0e30\\u0e1b\\u0e34\",\"province\":\"\\u0e01\\u0e23\\u0e38\\u0e07\\u0e40\\u0e17\\u0e1e\\u0e21\\u0e2b\\u0e32\\u0e19\\u0e04\\u0e23\",\"post_code\":\"10310\"}},\"number\":\"INV-000001\",\"issue_date\":\"19-01-2021\",\"due_date\":\"31-01-2021\",\"items\":[{\"description\":\"\\u0e08\\u0e2d\\u0e04\\u0e2d\\u0e21\\u0e1e\\u0e34\\u0e27\\u0e40\\u0e15\\u0e2d\\u0e23\\u0e4c\",\"quantity\":1,\"unit_price\":15000,\"vat_rate\":\"7\",\"discount_amount\":0},{\"\":\"\\u0e15\\u0e48\\u0e2d\\u0e2d\\u0e32\\u0e22\\u0e38\\u0e1b\\u0e23\\u0e30\\u0e01\\u0e31\\u0e19\\u0e08\\u0e2d 2 \\u0e1b\\u0e35\",\"quantity\":\"1\",\"unit_price\":\"2500\",\"vat_rate\":\"0\",\"discount_amount\":\"2500\"}],\"vat_included\":true,\"remark\":\"\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/invoices/{invoiceId}/payment": {
+      "post": {
+        "summary": "Confirm Payment Invoice",
+        "description": "",
+        "operationId": "8d5019a8-6549-49e8-a40d-a32b403a159e",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"paid_date\":\"19-01-2021\",\"amount\":10000,\"slip\":\"\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/invoices/{invoiceId}": {
+      "get": {
+        "summary": "Get Invoice",
+        "description": "",
+        "operationId": "2c235208-21d0-4e79-8e54-c43a58a09d31",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/receipt": {
+      "post": {
+        "summary": "Create Receipt",
+        "description": "",
+        "operationId": "601970a0-d162-4766-b4d6-8d9303fe5fdc",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"customer\":{\"name\":\"\\u0e28\\u0e38\\u0e20\\u0e0a\\u0e31\\u0e22 \\u0e08\\u0e31\\u0e19\\u0e17\\u0e23\\u0e4c\\u0e40\\u0e01\\u0e15\\u0e38\",\"tax_number\":\"1129900201032\",\"branch_number\":\"00000\",\"phone_number\":\"0956507210\",\"emails\":[\"bank.chankate@gmail.com\"],\"address\":{\"house_number\":\"598/610\",\"sub_district\":\"\\u0e2b\\u0e49\\u0e27\\u0e22\\u0e02\\u0e27\\u0e32\\u0e07\",\"district\":\"\\u0e1a\\u0e32\\u0e07\\u0e01\\u0e30\\u0e1b\\u0e34\",\"province\":\"\\u0e01\\u0e23\\u0e38\\u0e07\\u0e40\\u0e17\\u0e1e\\u0e21\\u0e2b\\u0e32\\u0e19\\u0e04\\u0e23\",\"post_code\":\"10310\"}},\"number\":\"INV-000001\",\"issue_date\":\"19-01-2021\",\"items\":[{\"description\":\"\\u0e08\\u0e2d\\u0e04\\u0e2d\\u0e21\\u0e1e\\u0e34\\u0e27\\u0e40\\u0e15\\u0e2d\\u0e23\\u0e4c\",\"quantity\":1,\"unit_price\":15000,\"vat_rate\":\"7\",\"discount_amount\":0},{\"\":\"\\u0e15\\u0e48\\u0e2d\\u0e2d\\u0e32\\u0e22\\u0e38\\u0e1b\\u0e23\\u0e30\\u0e01\\u0e31\\u0e19\\u0e08\\u0e2d 2 \\u0e1b\\u0e35\",\"quantity\":\"1\",\"unit_price\":\"2500\",\"vat_rate\":\"0\",\"discount_amount\":\"2500\"}],\"vat_included\":true,\"remark\":\"\",\"invoice_id\":\"b8302cfd-e90d-4ad3-9405-d4fd89ff5218\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/receipts/{receiptId}": {
+      "get": {
+        "summary": "Get Receipt",
+        "description": "",
+        "operationId": "f06b1620-fdb5-45a2-8c67-b0835b47d330",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/tax_invoices": {
+      "post": {
+        "summary": "Create Tax Invoice",
+        "description": "",
+        "operationId": "a3511543-e5da-4283-8ef5-c427f5ded197",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"customer\":{\"name\":\"\\u0e28\\u0e38\\u0e20\\u0e0a\\u0e31\\u0e22 \\u0e08\\u0e31\\u0e19\\u0e17\\u0e23\\u0e4c\\u0e40\\u0e01\\u0e15\\u0e38\",\"tax_number\":\"1129900201032\",\"branch_number\":\"00000\",\"phone_number\":\"0956507210\",\"emails\":[\"bank.chankate@gmail.com\"],\"address\":{\"house_number\":\"598/610\",\"sub_district\":\"\\u0e2b\\u0e49\\u0e27\\u0e22\\u0e02\\u0e27\\u0e32\\u0e07\",\"district\":\"\\u0e1a\\u0e32\\u0e07\\u0e01\\u0e30\\u0e1b\\u0e34\",\"province\":\"\\u0e01\\u0e23\\u0e38\\u0e07\\u0e40\\u0e17\\u0e1e\\u0e21\\u0e2b\\u0e32\\u0e19\\u0e04\\u0e23\",\"post_code\":\"10310\"}},\"number\":\"INV-000001\",\"issue_date\":\"19-01-2021\",\"items\":[{\"description\":\"\\u0e08\\u0e2d\\u0e04\\u0e2d\\u0e21\\u0e1e\\u0e34\\u0e27\\u0e40\\u0e15\\u0e2d\\u0e23\\u0e4c\",\"quantity\":1,\"unit_price\":15000,\"vat_rate\":\"7\",\"discount_amount\":0},{\"\":\"\\u0e15\\u0e48\\u0e2d\\u0e2d\\u0e32\\u0e22\\u0e38\\u0e1b\\u0e23\\u0e30\\u0e01\\u0e31\\u0e19\\u0e08\\u0e2d 2 \\u0e1b\\u0e35\",\"quantity\":\"1\",\"unit_price\":\"2500\",\"vat_rate\":\"0\",\"discount_amount\":\"2500\"}],\"vat_included\":true,\"remark\":\"\",\"invoice_id\":\"b8302cfd-e90d-4ad3-9405-d4fd89ff5218\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/tax_invoices/{taxInvoiceId}": {
+      "get": {
+        "summary": "Get Tax Invoice",
+        "description": "",
+        "operationId": "6070b228-03ad-48bd-98fe-1d052a74e3e5",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
