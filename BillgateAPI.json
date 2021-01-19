@@ -288,8 +288,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "204": {
+            "description": "No Content",
             "schema": {
               "type": "object",
               "properties": {}
@@ -555,6 +555,13 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "default": {
             "description": "no response description was provided for this operation"
           }
@@ -807,6 +814,13 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "default": {
             "description": "no response description was provided for this operation"
           }
