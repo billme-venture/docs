@@ -8,6 +8,18 @@
   "schemes": [
     "https"
   ],
+  "tags": [
+    {
+      "name": "invoices",
+      "description": "operation about invoices"
+    },{
+      "name": "receipts",
+      "description": "operation about receipts"
+    },{
+      "name": "tax invoices",
+      "description": "operation about tax invoices"
+    }
+  ],
   "basePath": "/",
   "paths": {
     "/invoices": {
@@ -15,6 +27,7 @@
         "summary": "Create Invoice",
         "description": "",
         "operationId": "createInvoice",
+        "tags": ["invoices"],
         "produces": [
           "application/json"
         ],
@@ -240,6 +253,7 @@
         "summary": "Confirm Payment Invoice",
         "description": "",
         "operationId": "confirmPaymentInvoice",
+        "tags": ["invoices"],
         "consumes": [
           "application/json"
         ],
@@ -317,6 +331,7 @@
         "summary": "Get Invoice",
         "description": "",
         "operationId": "getInvoiceById",
+        "tags": ["invoices"],
         "produces": [
           "application/json"
         ],
@@ -707,6 +722,7 @@
         "summary": "Create Receipt",
         "description": "",
         "operationId": "createReceipt",
+        "tags": ["receipts"],
         "produces": [
           "application/json"
         ],
@@ -950,6 +966,7 @@
         "summary": "Get Receipt",
         "description": "",
         "operationId": "getReceiptById",
+        "tags": ["receipts"],
         "produces": [
           "application/json"
         ],
@@ -1302,6 +1319,7 @@
         "summary": "Create Tax Invoice",
         "description": "",
         "operationId": "createTaxInvoice",
+        "tags": ["tax invoices"],
         "produces": [
           "application/json"
         ],
@@ -1557,6 +1575,7 @@
         "summary": "Get Tax Invoice",
         "description": "",
         "operationId": "getTaxInvoiceById",
+        "tags": ["tax invoices"],
         "produces": [
           "application/json"
         ],
@@ -1904,6 +1923,5 @@
         }
       ]
     }
-  },
-  "tags": []
+  }
 }
