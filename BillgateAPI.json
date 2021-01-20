@@ -1322,12 +1322,23 @@
               "description": "",
               "type": "object",
               "properties": {
+                "number": {
+                  "type": "string",
+                  "example": "TAX-000001",
+                  "minLength": 1
+                },
                 "invoice_id": {
                   "type": [
                     "string",
                     "null"
                   ],
                   "minLength": 1
+                },
+                "receipt_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
                 },
                 "data": {
                   "type": "object",
@@ -1463,11 +1474,6 @@
                       ]
                     }
                   }
-                },
-                "number": {
-                  "type": "string",
-                  "example": "TAX-000001",
-                  "minLength": 1
                 }
               },
               "required": [
@@ -1480,8 +1486,9 @@
             "name": "body",
             "x-examples": {
               "example": {
-                "invoice_id": null,
                 "number": "TAX-000001",
+                "invoice_id": null,
+                "receipt_id": null,
                 "data": {
                   "customer": {
                     "name": "ศุภชัย จันทร์เกตุ",
@@ -1511,6 +1518,18 @@
                   "vat_included": true,
                   "remark": null
                 }
+              },
+              "example-2": {
+                "number": "TAX-000001",
+                "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "receipt_id": null,
+                "data": null
+              },
+              "example-3": {
+                "number": "TAX-000001",
+                "invoice_id": null,
+                "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+                "data": null
               }
             }
           }
