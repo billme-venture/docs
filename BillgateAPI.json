@@ -916,6 +916,11 @@
                   "vat_included": true,
                   "remark": null
                 }
+              },
+              "example-2": {
+                "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "number": "RCP-000001",
+                "data": null
               }
             },
             "description": ""
