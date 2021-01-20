@@ -327,8 +327,353 @@
           "200": {
             "description": "OK",
             "schema": {
+              "description": "",
               "type": "object",
-              "properties": {}
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "issue_date": {
+                  "type": "string"
+                },
+                "due_date": {
+                  "type": "string"
+                },
+                "merchant": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "phone",
+                    "email",
+                    "address"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "customer": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "tax_number",
+                    "phone",
+                    "emails",
+                    "address"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "tax_number": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "emails": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "address": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "items": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "unit_price": {
+                        "type": "number"
+                      },
+                      "total_item_price": {
+                        "type": "number"
+                      },
+                      "vat_rate": {
+                        "type": "number"
+                      },
+                      "discount_amount": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "quantity",
+                      "unit_price",
+                      "total_item_price",
+                      "discount_amount"
+                    ]
+                  }
+                },
+                "subtotal": {
+                  "type": "number"
+                },
+                "total_discount_amount": {
+                  "type": "number"
+                },
+                "vat": {
+                  "type": "object",
+                  "required": [
+                    "is_included",
+                    "rate",
+                    "amount"
+                  ],
+                  "properties": {
+                    "is_included": {
+                      "type": "boolean"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "vat_exempted_amount": {
+                  "type": "number"
+                },
+                "taxable_sales_amount": {
+                  "type": "number"
+                },
+                "total": {
+                  "type": "number"
+                },
+                "withholding_tax": {
+                  "type": "object",
+                  "required": [
+                    "rate",
+                    "amount"
+                  ],
+                  "properties": {
+                    "rate": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "paid_amount": {
+                  "type": "number"
+                },
+                "remark": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "payment_methods": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "logo_url": {
+                        "type": "string"
+                      },
+                      "number": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "logo_url",
+                      "number"
+                    ]
+                  }
+                },
+                "payment": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "properties": {
+                    "payment_method_id": {
+                      "type": "string"
+                    },
+                    "paid_date": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "slip": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "invoice_pdf_url": {
+                  "type": "string"
+                },
+                "attachments": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "url"
+                    ]
+                  }
+                },
+                "references": {
+                  "type": "object",
+                  "required": [
+                    "receipt_id",
+                    "tax_invoice_id"
+                  ],
+                  "properties": {
+                    "receipt_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "tax_invoice_id": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "number",
+                "status",
+                "issue_date",
+                "due_date",
+                "merchant",
+                "customer",
+                "items",
+                "subtotal",
+                "total_discount_amount",
+                "vat",
+                "vat_exempted_amount",
+                "taxable_sales_amount",
+                "total",
+                "withholding_tax",
+                "paid_amount",
+                "remark",
+                "payment_methods",
+                "payment",
+                "invoice_pdf_url",
+                "attachments",
+                "references"
+              ]
+            },
+            "examples": {
+              "example": {
+                "id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "INV-000001",
+                "status": "pending_payment",
+                "issue_date": "2021-01-25",
+                "due_date": "2021-02-15",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "ศุภชัย จันทร์เกตุ",
+                  "tax_number": "1129900201032",
+                  "phone": "0956507210",
+                  "emails": [
+                    "bank.chankate@gmail.com"
+                  ],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 0,
+                "total": 0,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 0,
+                "remark": null,
+                "payment_methods": [
+                  {
+                    "id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+                    "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                    "logo_url": "https://storage.googleapis.com/assets.billme.co.th/static/banks/logos/kasikorn.png",
+                    "number": "1002012896"
+                  }
+                ],
+                "payment": null,
+                "invoice_pdf_url": "https://storage.googleapis.com/billhub/production/invoices/98FE9D3919179914713340F7A705A4F2/INV63000027.pdf",
+                "attachments": [],
+                "references": {
+                  "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+                  "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
+                }
+              }
             }
           },
           "default": {
@@ -378,7 +723,6 @@
                   "type": "object",
                   "required": [
                     "customer",
-                    "number",
                     "issue_date",
                     "items",
                     "vat_included",
@@ -456,11 +800,6 @@
                         }
                       }
                     },
-                    "number": {
-                      "type": "string",
-                      "minLength": 1,
-                      "example": "RCP-000001"
-                    },
                     "issue_date": {
                       "type": "string",
                       "minLength": 1,
@@ -514,11 +853,17 @@
                       ]
                     }
                   }
+                },
+                "number": {
+                  "type": "string",
+                  "example": "RCP-000001",
+                  "minLength": 1
                 }
               },
               "required": [
                 "invoice_id",
-                "data"
+                "data",
+                "number"
               ]
             },
             "in": "body",
@@ -526,6 +871,7 @@
             "x-examples": {
               "example": {
                 "invoice_id": null,
+                "number": "RCP-000001",
                 "data": {
                   "customer": {
                     "name": "ศุภชัย จันทร์เกตุ",
@@ -542,7 +888,6 @@
                       "post_code": "10310"
                     }
                   },
-                  "number": "RCP-000001",
                   "issue_date": "2021-01-19",
                   "items": [
                     {
@@ -598,8 +943,321 @@
           "200": {
             "description": "OK",
             "schema": {
+              "description": "",
               "type": "object",
-              "properties": {}
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "number": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "issue_date": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "merchant": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "phone",
+                    "email",
+                    "address"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "phone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "email": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "address": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "customer": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "tax_number",
+                    "phone",
+                    "emails",
+                    "address"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "tax_number": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "phone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "emails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "address": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "items": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "unit_price": {
+                        "type": "number"
+                      },
+                      "total_item_price": {
+                        "type": "number"
+                      },
+                      "vat_rate": {
+                        "type": "number"
+                      },
+                      "discount_amount": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "quantity",
+                      "unit_price",
+                      "total_item_price",
+                      "vat_rate",
+                      "discount_amount"
+                    ]
+                  }
+                },
+                "subtotal": {
+                  "type": "number"
+                },
+                "total_discount_amount": {
+                  "type": "number"
+                },
+                "vat": {
+                  "type": "object",
+                  "required": [
+                    "is_included",
+                    "rate",
+                    "amount"
+                  ],
+                  "properties": {
+                    "is_included": {
+                      "type": "boolean"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "vat_exempted_amount": {
+                  "type": "number"
+                },
+                "taxable_sales_amount": {
+                  "type": "number"
+                },
+                "total": {
+                  "type": "number"
+                },
+                "withholding_tax": {
+                  "type": "object",
+                  "required": [
+                    "rate",
+                    "amount"
+                  ],
+                  "properties": {
+                    "rate": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "paid_amount": {
+                  "type": "number"
+                },
+                "remark": {},
+                "payment": {
+                  "type": "object",
+                  "required": [
+                    "payment_method_id",
+                    "paid_date",
+                    "amount"
+                  ],
+                  "properties": {
+                    "payment_method_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "paid_date": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "slip": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "receipt_pdf_url": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "attachments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "references": {
+                  "type": "object",
+                  "required": [
+                    "invoice_id",
+                    "tax_invoice_id"
+                  ],
+                  "properties": {
+                    "invoice_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "tax_invoice_id": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "number",
+                "issue_date",
+                "merchant",
+                "customer",
+                "items",
+                "subtotal",
+                "total_discount_amount",
+                "vat",
+                "vat_exempted_amount",
+                "taxable_sales_amount",
+                "total",
+                "withholding_tax",
+                "paid_amount",
+                "payment",
+                "receipt_pdf_url",
+                "attachments",
+                "references"
+              ]
+            },
+            "examples": {
+              "example": {
+                "id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "REC-000001",
+                "issue_date": "2021-01-25",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "ศุภชัย จันทร์เกตุ",
+                  "tax_number": "1129900201032",
+                  "phone": "0956507210",
+                  "emails": [
+                    "bank.chankate@gmail.com"
+                  ],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 0,
+                "total": 0,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 0,
+                "remark": null,
+                "payment": {
+                  "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+                  "paid_date": "2021-01-25",
+                  "amount": 1490,
+                  "slip": null
+                },
+                "receipt_pdf_url": "https://storage.googleapis.com/billhub/production/1129900201032/5b8408_Receipt_RCP63000005.pdf",
+                "attachments": [],
+                "references": {
+                  "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                  "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
+                }
+              }
             }
           },
           "default": {
@@ -649,7 +1307,6 @@
                   "type": "object",
                   "required": [
                     "customer",
-                    "number",
                     "issue_date",
                     "items",
                     "vat_included",
@@ -727,11 +1384,6 @@
                         }
                       }
                     },
-                    "number": {
-                      "type": "string",
-                      "minLength": 1,
-                      "example": "TAX-000001"
-                    },
                     "issue_date": {
                       "type": "string",
                       "minLength": 1,
@@ -785,11 +1437,17 @@
                       ]
                     }
                   }
+                },
+                "number": {
+                  "type": "string",
+                  "example": "TAX-000001",
+                  "minLength": 1
                 }
               },
               "required": [
                 "invoice_id",
-                "data"
+                "data",
+                "number"
               ]
             },
             "in": "body",
@@ -797,6 +1455,7 @@
             "x-examples": {
               "example": {
                 "invoice_id": null,
+                "number": "TAX-000001",
                 "data": {
                   "customer": {
                     "name": "ศุภชัย จันทร์เกตุ",
@@ -813,7 +1472,6 @@
                       "post_code": "10310"
                     }
                   },
-                  "number": "TAX-000001",
                   "issue_date": "2021-01-19",
                   "items": [
                     {
@@ -867,8 +1525,321 @@
           "200": {
             "description": "OK",
             "schema": {
+              "description": "",
               "type": "object",
-              "properties": {}
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "number": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "issue_date": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "merchant": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "phone",
+                    "email",
+                    "address"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "phone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "email": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "address": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "customer": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "tax_number",
+                    "phone",
+                    "emails",
+                    "address"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "tax_number": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "phone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "emails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "address": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                },
+                "items": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "unit_price": {
+                        "type": "number"
+                      },
+                      "total_item_price": {
+                        "type": "number"
+                      },
+                      "vat_rate": {
+                        "type": "number"
+                      },
+                      "discount_amount": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "quantity",
+                      "unit_price",
+                      "total_item_price",
+                      "vat_rate",
+                      "discount_amount"
+                    ]
+                  }
+                },
+                "subtotal": {
+                  "type": "number"
+                },
+                "total_discount_amount": {
+                  "type": "number"
+                },
+                "vat": {
+                  "type": "object",
+                  "required": [
+                    "is_included",
+                    "rate",
+                    "amount"
+                  ],
+                  "properties": {
+                    "is_included": {
+                      "type": "boolean"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "vat_exempted_amount": {
+                  "type": "number"
+                },
+                "taxable_sales_amount": {
+                  "type": "number"
+                },
+                "total": {
+                  "type": "number"
+                },
+                "withholding_tax": {
+                  "type": "object",
+                  "required": [
+                    "rate",
+                    "amount"
+                  ],
+                  "properties": {
+                    "rate": {
+                      "type": "number"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "paid_amount": {
+                  "type": "number"
+                },
+                "remark": {},
+                "payment": {
+                  "type": "object",
+                  "required": [
+                    "payment_method_id",
+                    "paid_date",
+                    "amount"
+                  ],
+                  "properties": {
+                    "payment_method_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "paid_date": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "slip": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "tax_invoice_pdf_url": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "attachments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "references": {
+                  "type": "object",
+                  "required": [
+                    "invoice_id",
+                    "receipt_id"
+                  ],
+                  "properties": {
+                    "invoice_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "receipt_id": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "number",
+                "issue_date",
+                "merchant",
+                "customer",
+                "items",
+                "subtotal",
+                "total_discount_amount",
+                "vat",
+                "vat_exempted_amount",
+                "taxable_sales_amount",
+                "total",
+                "withholding_tax",
+                "paid_amount",
+                "payment",
+                "tax_invoice_pdf_url",
+                "attachments",
+                "references"
+              ]
+            },
+            "examples": {
+              "example": {
+                "id": "a5873c97-7c21-407d-b561-c2ece8de6389",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "TAX-000001",
+                "issue_date": "2021-01-25",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "ศุภชัย จันทร์เกตุ",
+                  "tax_number": "1129900201032",
+                  "phone": "0956507210",
+                  "emails": [
+                    "bank.chankate@gmail.com"
+                  ],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 0,
+                "total": 0,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 0,
+                "remark": null,
+                "payment": {
+                  "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+                  "paid_date": "2021-01-25",
+                  "amount": 1490,
+                  "slip": null
+                },
+                "tax_invoice_pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+                "attachments": [],
+                "references": {
+                  "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                  "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46"
+                }
+              }
             }
           },
           "default": {
