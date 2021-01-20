@@ -14,7 +14,7 @@
       "post": {
         "summary": "Create Invoice",
         "description": "",
-        "operationId": "79929f9b-8c22-401f-8f90-fd48d9389961",
+        "operationId": "createInvoice",
         "produces": [
           "application/json"
         ],
@@ -239,7 +239,7 @@
       "post": {
         "summary": "Confirm Payment Invoice",
         "description": "",
-        "operationId": "8d5019a8-6549-49e8-a40d-a32b403a159e",
+        "operationId": "confirmPaymentInvoice",
         "consumes": [
           "application/json"
         ],
@@ -316,7 +316,7 @@
       "get": {
         "summary": "Get Invoice",
         "description": "",
-        "operationId": "2c235208-21d0-4e79-8e54-c43a58a09d31",
+        "operationId": "getInvoiceById",
         "produces": [
           "application/json"
         ],
@@ -706,7 +706,7 @@
       "post": {
         "summary": "Create Receipt",
         "description": "",
-        "operationId": "601970a0-d162-4766-b4d6-8d9303fe5fdc",
+        "operationId": "createReceipt",
         "produces": [
           "application/json"
         ],
@@ -949,7 +949,7 @@
       "get": {
         "summary": "Get Receipt",
         "description": "",
-        "operationId": "f06b1620-fdb5-45a2-8c67-b0835b47d330",
+        "operationId": "getReceiptById",
         "produces": [
           "application/json"
         ],
@@ -1301,7 +1301,7 @@
       "post": {
         "summary": "Create Tax Invoice",
         "description": "",
-        "operationId": "a3511543-e5da-4283-8ef5-c427f5ded197",
+        "operationId": "createTaxInvoice",
         "produces": [
           "application/json"
         ],
@@ -1556,7 +1556,7 @@
       "get": {
         "summary": "Get Tax Invoice",
         "description": "",
-        "operationId": "6070b228-03ad-48bd-98fe-1d052a74e3e5",
+        "operationId": "getTaxInvoiceById",
         "produces": [
           "application/json"
         ],
