@@ -15,6 +15,9 @@
         "summary": "Create Invoice",
         "description": "",
         "operationId": "79929f9b-8c22-401f-8f90-fd48d9389961",
+        "produces": [
+          "application/json"
+        ],
         "consumes": [
           "application/json"
         ],
@@ -314,6 +317,9 @@
         "summary": "Get Invoice",
         "description": "",
         "operationId": "2c235208-21d0-4e79-8e54-c43a58a09d31",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "type": "string",
@@ -701,6 +707,9 @@
         "summary": "Create Receipt",
         "description": "",
         "operationId": "601970a0-d162-4766-b4d6-8d9303fe5fdc",
+        "produces": [
+          "application/json"
+        ],
         "consumes": [
           "application/json"
         ],
@@ -936,6 +945,9 @@
         "summary": "Get Receipt",
         "description": "",
         "operationId": "f06b1620-fdb5-45a2-8c67-b0835b47d330",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "type": "string",
@@ -1285,6 +1297,9 @@
         "summary": "Create Tax Invoice",
         "description": "",
         "operationId": "a3511543-e5da-4283-8ef5-c427f5ded197",
+        "produces": [
+          "application/json"
+        ],
         "consumes": [
           "application/json"
         ],
@@ -1518,6 +1533,9 @@
         "summary": "Get Tax Invoice",
         "description": "",
         "operationId": "6070b228-03ad-48bd-98fe-1d052a74e3e5",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "type": "string",
