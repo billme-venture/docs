@@ -340,7 +340,14 @@
                   "type": "string"
                 },
                 "status": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "created",
+                    "pending_payment",
+                    "pending_approval",
+                    "paid"
+                  ],
+                  "example": "pending_payment"
                 },
                 "issue_date": {
                   "type": "string"
