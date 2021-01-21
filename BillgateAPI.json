@@ -719,6 +719,7 @@
       "delete": {
         "summary": "",
         "operationId": "delete-invoices-invoiceId",
+        "tags": ["invoices"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -1334,6 +1335,7 @@
       "delete": {
         "summary": "",
         "operationId": "delete-receipts-receiptId",
+        "tags": ["receipts"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -1961,6 +1963,7 @@
       "delete": {
         "summary": "",
         "operationId": "delete-tax_invoices-taxInvoiceId",
+        "tags": ["tax invoices"],
         "responses": {
           "204": {
             "description": "No Content"
