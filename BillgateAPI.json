@@ -695,7 +695,25 @@
           "in": "path",
           "required": true
         }
-      ]
+      ],
+      "delete": {
+        "summary": "",
+        "operationId": "delete-invoices-invoiceId",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "in": "header",
+            "name": "x-api-key",
+            "required": true,
+            "default": "dd3aa75ccfc349c4955e87193f83b103"
+          }
+        ]
+      }
     },
     "/receipts": {
       "post": {
@@ -1279,7 +1297,25 @@
           "in": "path",
           "required": true
         }
-      ]
+      ],
+      "delete": {
+        "summary": "",
+        "operationId": "delete-receipts-receiptId",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "in": "header",
+            "required": true,
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "name": "x-api-key"
+          }
+        ]
+      }
     },
     "/tax_invoices": {
       "post": {
@@ -1861,7 +1897,25 @@
           "in": "path",
           "required": true
         }
-      ]
+      ],
+      "delete": {
+        "summary": "",
+        "operationId": "delete-tax_invoices-taxInvoiceId",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "in": "header",
+            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "required": true,
+            "name": "x-api-key"
+          }
+        ]
+      }
     }
   },
   "tags": []
