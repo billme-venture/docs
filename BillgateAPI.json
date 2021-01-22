@@ -12,10 +12,12 @@
     {
       "name": "invoices",
       "description": "operation about invoices"
-    },{
+    },
+    {
       "name": "receipts",
       "description": "operation about receipts"
-    },{
+    },
+    {
       "name": "tax invoices",
       "description": "operation about tax invoices"
     }
@@ -27,7 +29,9 @@
         "summary": "Create Invoice",
         "description": "",
         "operationId": "createInvoice",
-        "tags": ["invoices"],
+        "tags": [
+          "invoices"
+        ],
         "produces": [
           "application/json"
         ],
@@ -180,6 +184,20 @@
                     "string",
                     "null"
                   ]
+                },
+                "withholding_tax": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "properties": {
+                    "on": {
+                      "type": "boolean"
+                    },
+                    "rate": {
+                      "type": "number"
+                    }
+                  }
                 }
               },
               "required": [
@@ -253,7 +271,9 @@
         "summary": "Confirm Payment Invoice",
         "description": "",
         "operationId": "confirmPaymentInvoice",
-        "tags": ["invoices"],
+        "tags": [
+          "invoices"
+        ],
         "consumes": [
           "application/json"
         ],
@@ -331,7 +351,9 @@
         "summary": "Get Invoice",
         "description": "",
         "operationId": "getInvoiceById",
-        "tags": ["invoices"],
+        "tags": [
+          "invoices"
+        ],
         "produces": [
           "application/json"
         ],
@@ -719,7 +741,9 @@
       "delete": {
         "summary": "",
         "operationId": "delete-invoices-invoiceId",
-        "tags": ["invoices"],
+        "tags": [
+          "invoices"
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -741,7 +765,9 @@
         "summary": "Create Receipt",
         "description": "",
         "operationId": "createReceipt",
-        "tags": ["receipts"],
+        "tags": [
+          "receipts"
+        ],
         "produces": [
           "application/json"
         ],
@@ -901,6 +927,20 @@
                         "string",
                         "null"
                       ]
+                    },
+                    "withholding_tax": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "on": {
+                          "type": "boolean"
+                        },
+                        "rate": {
+                          "type": "number"
+                        }
+                      }
                     }
                   }
                 },
@@ -985,7 +1025,9 @@
         "summary": "Get Receipt",
         "description": "",
         "operationId": "getReceiptById",
-        "tags": ["receipts"],
+        "tags": [
+          "receipts"
+        ],
         "produces": [
           "application/json"
         ],
@@ -1335,7 +1377,9 @@
       "delete": {
         "summary": "",
         "operationId": "delete-receipts-receiptId",
-        "tags": ["receipts"],
+        "tags": [
+          "receipts"
+        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -1357,7 +1401,9 @@
         "summary": "Create Tax Invoice",
         "description": "",
         "operationId": "createTaxInvoice",
-        "tags": ["tax invoices"],
+        "tags": [
+          "tax invoices"
+        ],
         "produces": [
           "application/json"
         ],
@@ -1528,14 +1574,28 @@
                         "string",
                         "null"
                       ]
+                    },
+                    "withholding_tax": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "on": {
+                          "type": "boolean"
+                        },
+                        "rate": {
+                          "type": "number"
+                        }
+                      }
                     }
                   }
                 }
               },
               "required": [
+                "number",
                 "invoice_id",
-                "data",
-                "number"
+                "data"
               ]
             },
             "in": "body",
@@ -1613,7 +1673,9 @@
         "summary": "Get Tax Invoice",
         "description": "",
         "operationId": "getTaxInvoiceById",
-        "tags": ["tax invoices"],
+        "tags": [
+          "tax invoices"
+        ],
         "produces": [
           "application/json"
         ],
@@ -1963,7 +2025,9 @@
       "delete": {
         "summary": "",
         "operationId": "delete-tax_invoices-taxInvoiceId",
-        "tags": ["tax invoices"],
+        "tags": [
+          "tax invoices"
+        ],
         "responses": {
           "204": {
             "description": "No Content"
