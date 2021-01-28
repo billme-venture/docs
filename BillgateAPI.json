@@ -185,16 +185,11 @@
                     "null"
                   ]
                 },
-                "withholding_tax": {
+                "withholding_tax_rate": {
                   "type": [
-                    "object",
-                    "null"
-                  ],
-                  "properties": {
-                    "rate": {
-                      "type": "number"
-                    }
-                  }
+                    "null",
+                    "number"
+                  ]
                 },
                 "name": {
                   "type": "string"
@@ -244,7 +239,7 @@
                 ],
                 "vat_included": true,
                 "remark": null,
-                "withholding_tax": null
+                "withholding_tax_rate": null
               }
             },
             "description": ""
@@ -944,16 +939,11 @@
                         "null"
                       ]
                     },
-                    "withholding_tax": {
+                    "withholding_tax_rate": {
                       "type": [
-                        "object",
-                        "null"
-                      ],
-                      "properties": {
-                        "rate": {
-                          "type": "number"
-                        }
-                      }
+                        "null",
+                        "number"
+                      ]
                     },
                     "name": {
                       "type": "string"
@@ -1007,7 +997,7 @@
                   ],
                   "vat_included": true,
                   "remark": null,
-                  "withholding_tax": null
+                  "withholding_tax_rate": null
                 }
               },
               "example-2": {
@@ -1017,6 +1007,13 @@
               }
             },
             "description": ""
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
           }
         ],
         "responses": {
@@ -1593,16 +1590,11 @@
                         "null"
                       ]
                     },
-                    "withholding_tax": {
+                    "withholding_tax_rate": {
                       "type": [
-                        "object",
-                        "null"
-                      ],
-                      "properties": {
-                        "rate": {
-                          "type": "number"
-                        }
-                      }
+                        "null",
+                        "number"
+                      ]
                     }
                   }
                 }
@@ -1648,7 +1640,7 @@
                   ],
                   "vat_included": true,
                   "remark": null,
-                  "withholding_tax": null
+                  "withholding_tax_rate": null
                 }
               },
               "example-2": {
@@ -1664,6 +1656,13 @@
                 "data": null
               }
             }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
           }
         ],
         "responses": {
