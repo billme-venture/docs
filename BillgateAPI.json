@@ -42,7 +42,7 @@
           {
             "type": "string",
             "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "x-api-key",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           },
@@ -252,7 +252,7 @@
           {
             "type": "string",
             "in": "header",
-            "name": "content-type",
+            "name": "Content-Type",
             "required": true,
             "default": "application/json"
           }
