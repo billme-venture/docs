@@ -159,20 +159,24 @@
                         "example": 1000
                       },
                       "vat_rate": {
-                        "type": "number",
+                        "type": [
+                          "number",
+                          "null"
+                        ],
                         "example": 7
                       },
                       "discount_amount": {
-                        "type": "number",
+                        "type": [
+                          "number",
+                          "null"
+                        ],
                         "example": 0
                       }
                     },
                     "required": [
                       "description",
                       "quantity",
-                      "unit_price",
-                      "vat_rate",
-                      "discount_amount"
+                      "unit_price"
                     ]
                   }
                 },
@@ -913,20 +917,24 @@
                             "example": 1
                           },
                           "vat_rate": {
-                            "type": "number",
+                            "type": [
+                              "number",
+                              "null"
+                            ],
                             "example": 1000
                           },
                           "discount_amount": {
-                            "type": "number",
+                            "type": [
+                              "number",
+                              "null"
+                            ],
                             "example": 0
                           }
                         },
                         "required": [
                           "description",
                           "quantity",
-                          "unit_price",
-                          "vat_rate",
-                          "discount_amount"
+                          "unit_price"
                         ]
                       }
                     },
@@ -1564,20 +1572,24 @@
                             "example": 1
                           },
                           "vat_rate": {
-                            "type": "number",
+                            "type": [
+                              "number",
+                              "null"
+                            ],
                             "example": 7
                           },
                           "discount_amount": {
-                            "type": "number",
+                            "type": [
+                              "number",
+                              "null"
+                            ],
                             "example": 0
                           }
                         },
                         "required": [
                           "description",
                           "quantity",
-                          "unit_price",
-                          "vat_rate",
-                          "discount_amount"
+                          "unit_price"
                         ]
                       }
                     },
