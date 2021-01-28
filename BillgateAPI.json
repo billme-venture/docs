@@ -41,7 +41,7 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
             "name": "x-api-key",
             "required": true,
             "in": "header"
@@ -248,6 +248,13 @@
               }
             },
             "description": ""
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "content-type",
+            "required": true,
+            "default": "application/json"
           }
         ],
         "responses": {
