@@ -191,13 +191,13 @@
                     "null"
                   ],
                   "properties": {
-                    "on": {
-                      "type": "boolean"
-                    },
                     "rate": {
                       "type": "number"
                     }
                   }
+                },
+                "name": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -230,6 +230,7 @@
                   }
                 },
                 "number": "INV-000001",
+                "name": "ใบเรียกเก็บค่าบริการเดือน มกราคม 2564",
                 "issue_date": "2021-01-19",
                 "due_date": "2021-01-19",
                 "items": [
@@ -242,7 +243,8 @@
                   }
                 ],
                 "vat_included": true,
-                "remark": null
+                "remark": null,
+                "withholding_tax": null
               }
             },
             "description": ""
@@ -934,13 +936,13 @@
                         "null"
                       ],
                       "properties": {
-                        "on": {
-                          "type": "boolean"
-                        },
                         "rate": {
                           "type": "number"
                         }
                       }
+                    },
+                    "name": {
+                      "type": "string"
                     }
                   }
                 },
@@ -979,6 +981,7 @@
                     }
                   },
                   "issue_date": "2021-01-19",
+                  "name": "ใบเรียกเก็บค่าบริการเดือน มกราคม 2564",
                   "items": [
                     {
                       "description": "ค่าบริการ",
@@ -989,7 +992,8 @@
                     }
                   ],
                   "vat_included": true,
-                  "remark": null
+                  "remark": null,
+                  "withholding_tax": null
                 }
               },
               "example-2": {
@@ -1581,9 +1585,6 @@
                         "null"
                       ],
                       "properties": {
-                        "on": {
-                          "type": "boolean"
-                        },
                         "rate": {
                           "type": "number"
                         }
@@ -1632,7 +1633,8 @@
                     }
                   ],
                   "vat_included": true,
-                  "remark": null
+                  "remark": null,
+                  "withholding_tax": null
                 }
               },
               "example-2": {
