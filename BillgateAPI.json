@@ -289,8 +289,8 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           },
@@ -331,6 +331,13 @@
                 "slip": null
               }
             }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
           }
         ],
         "responses": {
@@ -369,8 +376,8 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           }
@@ -762,9 +769,9 @@
           {
             "type": "string",
             "in": "header",
-            "name": "x-api-key",
+            "name": "X-API-Key",
             "required": true,
-            "default": "dd3aa75ccfc349c4955e87193f83b103"
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs"
           }
         ]
       }
@@ -786,8 +793,8 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           },
@@ -1045,8 +1052,8 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           }
@@ -1401,8 +1408,8 @@
             "type": "string",
             "in": "header",
             "required": true,
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key"
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key"
           }
         ]
       }
@@ -1424,8 +1431,8 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           },
@@ -1691,8 +1698,8 @@
         "parameters": [
           {
             "type": "string",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
-            "name": "x-api-key",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
+            "name": "X-API-Key",
             "required": true,
             "in": "header"
           }
@@ -2046,9 +2053,9 @@
           {
             "type": "string",
             "in": "header",
-            "default": "dd3aa75ccfc349c4955e87193f83b103",
+            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
             "required": true,
-            "name": "x-api-key"
+            "name": "X-API-Key"
           }
         ]
       }
