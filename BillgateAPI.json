@@ -67,24 +67,29 @@
                     "emails",
                     "address"
                   ],
+                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
                       "type": "string",
                       "minLength": 1,
-                      "example": "ศุภชัย จันทร์เกตุ"
+                      "example": "ศุภชัย จันทร์เกตุ",
+                      "description": "ชื่อลูกค้า\n"
                     },
                     "tax_number": {
                       "type": "string",
                       "minLength": 1,
-                      "example": "1129900201032"
+                      "example": "1129900201032",
+                      "description": "เลขที่ผู้เสียภาษี"
                     },
                     "phone_number": {
                       "type": "string",
                       "minLength": 1,
-                      "example": "0956507210"
+                      "example": "0956507210",
+                      "description": "เบอร์โทรศัพท์\n"
                     },
                     "emails": {
                       "type": "array",
+                      "description": "อีเมลลูกค้าสำหรับรับการแจ้งเตือนการส่งบิล",
                       "items": {
                         "type": "string",
                         "example": "bank.chankate@gmail.com"
@@ -99,31 +104,37 @@
                         "province",
                         "post_code"
                       ],
+                      "description": "ที่อยู่ของลูกค้า",
                       "properties": {
                         "house_number": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "598/610"
+                          "example": "598/610",
+                          "description": "เลขที่"
                         },
                         "sub_district": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "บางกะปิ"
+                          "example": "บางกะปิ",
+                          "description": "แขวง / ตำบล"
                         },
                         "district": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "ห้วยขวาง"
+                          "example": "ห้วยขวาง",
+                          "description": "เขต / อำเภอ"
                         },
                         "province": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "กรุงเทพมหานคร"
+                          "example": "กรุงเทพมหานคร",
+                          "description": "จังหวัด"
                         },
                         "post_code": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "10310"
+                          "example": "10310",
+                          "description": "รหัสไปรษณีย์"
                         }
                       }
                     }
@@ -132,51 +143,61 @@
                 "number": {
                   "type": "string",
                   "minLength": 1,
-                  "example": "INV-000001"
+                  "example": "INV-000001",
+                  "description": "เลขที่ใบแจ้งหนี้"
                 },
                 "issue_date": {
                   "type": "string",
                   "minLength": 1,
-                  "example": "2021-01-19"
+                  "example": "2021-01-19",
+                  "description": "วันที่ออกเอกสาร"
                 },
                 "due_date": {
                   "type": "string",
                   "minLength": 1,
-                  "example": "2021-01-19"
+                  "example": "2021-01-19",
+                  "description": "วันที่ครบกำหนดชำระ"
                 },
                 "items": {
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 1,
+                  "description": "รายการสินค้า",
                   "items": {
                     "type": "object",
+                    "description": "สินค้า",
                     "properties": {
                       "description": {
                         "type": "string",
                         "minLength": 1,
-                        "example": "ค่าบริการ"
+                        "example": "ค่าบริการ",
+                        "description": "ชื่อสินค้า"
                       },
                       "quantity": {
                         "type": "number",
-                        "example": 1
+                        "example": 1,
+                        "description": "จำนวน"
                       },
                       "unit_price": {
                         "type": "number",
-                        "example": 1000
+                        "example": 1000,
+                        "description": "ราคา/หน่วย"
                       },
                       "vat_rate": {
                         "type": [
                           "number",
                           "null"
                         ],
-                        "example": 7
+                        "example": 7,
+                        "description": "อัตราภาษีมูลค่าเพิ่ม"
                       },
                       "discount_amount": {
                         "type": [
                           "number",
                           "null"
                         ],
-                        "example": 0
+                        "example": 0,
+                        "description": "ส่วนลด"
                       }
                     },
                     "required": [
@@ -187,22 +208,26 @@
                   }
                 },
                 "vat_included": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "description": "สินค้ารวมภาษีมูลค่าเพิ่ม / สินค้ายังไม่รวมภาษีมูลค่าเพิ่ม"
                 },
                 "remark": {
                   "type": [
                     "string",
                     "null"
-                  ]
+                  ],
+                  "description": "หมายเหตุ"
                 },
                 "withholding_tax_rate": {
                   "type": [
                     "null",
                     "number"
-                  ]
+                  ],
+                  "description": "อัตราภาษีหัก ณ ที่จ่าย"
                 },
                 "name": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "อ้างอิง/โปรเจค"
                 }
               },
               "required": [
