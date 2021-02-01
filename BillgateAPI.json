@@ -1295,12 +1295,12 @@
                 },
                 "vat": {
                   "type": "object",
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "required": [
                     "is_included",
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
                       "type": "boolean",
@@ -1318,13 +1318,15 @@
                 },
                 "vat_exempted_amount": {
                   "type": "number",
-                  "description": "มูลค่าสินค้าที่ได้รับการยกเว้นภาษี"
+                  "description": "มูลค่าสินค้า/บริการที่ได้รับการยกเว้นภาษี"
                 },
                 "taxable_sales_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าสินค้า/บริการที่เสียภาษี"
                 },
                 "total": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "ราคาหลังรวมภาษี"
                 },
                 "withholding_tax": {
                   "type": "object",
@@ -1332,60 +1334,66 @@
                     "rate",
                     "amount"
                   ],
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "อัตราภาษีหัก ณ ที่จ่าย"
                     },
                     "amount": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
                     }
                   }
                 },
                 "paid_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
                 },
-                "remark": {},
+                "remark": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "หมายเหตุ"
+                },
                 "payment": {
                   "type": "object",
                   "required": [
-                    "payment_method_id",
                     "paid_date",
                     "amount"
                   ],
+                  "description": "การชำระเงิน",
                   "properties": {
-                    "payment_method_id": {
-                      "type": "string",
-                      "minLength": 1
-                    },
                     "paid_date": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
-                      "type": "number"
-                    },
-                    "slip": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
+                      "type": "number",
+                      "description": "จำนวนเงินที่ชำระ"
                     }
                   }
                 },
                 "receipt_pdf_url": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบเสร็จ"
                 },
                 "attachments": {
                   "type": "array",
+                  "description": "ไฟล์แนบ",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ชื่อไฟล์แนบ"
                       },
                       "url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ลิงก์สำหรับดาวน์โหลดไฟล์แนบ"
                       }
                     }
                   }
@@ -1396,14 +1404,17 @@
                     "invoice_id",
                     "tax_invoice_id"
                   ],
+                  "description": "เอกสารที่เกี่ยวข้อง",
                   "properties": {
                     "invoice_id": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "id ของใบแจ้งหนี้ที่เกี่ยวข้องกับใบเสร็จฉบับนี้"
                     },
                     "tax_invoice_id": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "id ใบกำกับภาษีที่เกี่ยวข้องกับใบเสร็จรายการนี้"
                     }
                   }
                 }
