@@ -392,7 +392,7 @@
     "/invoices/{invoiceId}": {
       "get": {
         "summary": "Get Invoice",
-        "description": "",
+        "description": "สำหรับดึงข้อมูลรายละเอียดใบแจ้งหนี้ที่ต้องการ",
         "operationId": "getInvoiceById",
         "tags": [
           "invoices"
@@ -417,13 +417,16 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "invoice id ของใบแจ้งหนี้"
                 },
                 "name": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "อ้างอิง / โปรเจค"
                 },
                 "number": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "เลขที่ใบแจ้งหนี้"
                 },
                 "status": {
                   "type": "string",
@@ -432,13 +435,16 @@
                     "pending_payment",
                     "pending_approval",
                     "paid"
-                  ]
+                  ],
+                  "description": "สถานะการชำระเงิน"
                 },
                 "issue_date": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "วันที่ออกเอกสาร"
                 },
                 "due_date": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "วันที่ครบกำหนดชำระ"
                 },
                 "merchant": {
                   "type": "object",
@@ -448,18 +454,23 @@
                     "email",
                     "address"
                   ],
+                  "description": "ข้อมูลธุรกิจของคุณ",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "ชื่อธุรกิจ"
                     },
                     "phone": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "เบอรโทรศัพท์"
                     },
                     "email": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Email ของธุรกิจ"
                     },
                     "address": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "ที่อยู่ธุรกิจ"
                     }
                   }
                 },
@@ -472,24 +483,30 @@
                     "emails",
                     "address"
                   ],
+                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "ชื่อลูกค้า"
                     },
                     "tax_number": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "เลขที่ผู้เสียภาษี"
                     },
                     "phone": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "เบอร์โทรศัพท์"
                     },
                     "emails": {
                       "type": "array",
+                      "description": "Email ของลูกค้า",
                       "items": {
                         "type": "string"
                       }
                     },
                     "address": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "ที่อยู่ลูกค้า"
                     }
                   }
                 },
@@ -497,26 +514,33 @@
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 1,
+                  "description": "รายการสินค้า",
                   "items": {
                     "type": "object",
                     "properties": {
                       "description": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ชื่อสินค้า"
                       },
                       "quantity": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "จำนวน"
                       },
                       "unit_price": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "ราคา/หน่วย"
                       },
                       "total_item_price": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "สรุปราคาสินค้า"
                       },
                       "vat_rate": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "อัตราภาษีมูลค่าเพิ่ม"
                       },
                       "discount_amount": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "มูลค่าส่วนลด"
                       }
                     },
                     "required": [
@@ -529,10 +553,12 @@
                   }
                 },
                 "subtotal": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "รวมราคาสินค้าทั้งหมด"
                 },
                 "total_discount_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าส่วนลดทั้งหมด"
                 },
                 "vat": {
                   "type": "object",
@@ -541,26 +567,33 @@
                     "rate",
                     "amount"
                   ],
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
                     },
                     "rate": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "อัตราภาษีมูลค่าเพิ่ม"
                     },
                     "amount": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "มูลค่าภาษี"
                     }
                   }
                 },
                 "vat_exempted_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าสินค้าที่ไม่ต้องเสียภาษี"
                 },
                 "taxable_sales_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าสินค้าที่เสียภาษี"
                 },
                 "total": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "ราคาหลังรวมภาษี"
                 },
                 "withholding_tax": {
                   "type": "object",
@@ -568,48 +601,48 @@
                     "rate",
                     "amount"
                   ],
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "อัตราภาษีหัก ณ ที่จ่าย"
                     },
                     "amount": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
                     }
                   }
                 },
                 "paid_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
                 },
                 "remark": {
                   "type": [
                     "string",
                     "null"
-                  ]
+                  ],
+                  "description": "หมายเหตุ"
                 },
                 "payment_methods": {
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 1,
+                  "description": "ช่องทางการชำระเงิน",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "id": {
-                        "type": "string"
-                      },
                       "name": {
-                        "type": "string"
-                      },
-                      "logo_url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ชื่อบัญชีที่รับชำระ"
                       },
                       "number": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "เลขที่บัญชี"
                       }
                     },
                     "required": [
-                      "id",
                       "name",
-                      "logo_url",
                       "number"
                     ]
                   }
@@ -619,36 +652,37 @@
                     "object",
                     "null"
                   ],
+                  "description": "การชำระเงิน",
                   "properties": {
-                    "payment_method_id": {
-                      "type": "string"
-                    },
                     "paid_date": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
-                      "type": "number"
-                    },
-                    "slip": {
-                      "type": "string"
+                      "type": "number",
+                      "description": "จำนวนเงินที่ชำระ"
                     }
                   }
                 },
                 "invoice_pdf_url": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "ลิงก์ PDF ของใบแจ้งหนี้"
                 },
                 "attachments": {
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 1,
+                  "description": "รายการไฟล์แนบ",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ชื่อไฟล์แนบ"
                       },
                       "url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ลิงก์สำหรับดาวน์โหลดไฟล์แนบ"
                       }
                     },
                     "required": [
@@ -663,14 +697,17 @@
                     "receipt_id",
                     "tax_invoice_id"
                   ],
+                  "description": "เอกสารที่เกี่ยวข้อง",
                   "properties": {
                     "receipt_id": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "receipt id ของใบเสร็จที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
                     },
                     "tax_invoice_id": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "tax invoice id ของใบกำกับภาษีที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
                     }
                   }
                 }
@@ -778,7 +815,8 @@
           "type": "string",
           "name": "invoiceId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "invoiceId ของใบแจ้งหนี้ที่ต้องการดึงข้อมูลรายละเอียด"
         }
       ],
       "delete": {
