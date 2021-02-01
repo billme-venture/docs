@@ -33,7 +33,7 @@
     "/invoices": {
       "post": {
         "summary": "Create Invoice",
-        "description": "",
+        "description": "สร้างใบแจ้งหนี้ และส่งไปยังลูกค้าของคุณผ่านช่องทาง Email และ Line ลูกค้าของคุณสามารถเปิดดูรายละเอียด และแจ้งการชำระเงินเข้ามาได้ หากมีการใช้งานฟังก์ชัน Instant Payment ลูกค้าของคุณจะสามารถชำระเงินออนไลน์ได้ทันที",
         "operationId": "createInvoice",
         "tags": [
           "invoices"
