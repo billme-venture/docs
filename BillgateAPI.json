@@ -1539,7 +1539,7 @@
     "/tax_invoices": {
       "post": {
         "summary": "Create Tax Invoice",
-        "description": "",
+        "description": "สำหรับสร้างใบกำกับภาษี และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
         "operationId": "createTaxInvoice",
         "tags": [
           "tax invoices"
@@ -1567,20 +1567,23 @@
                 "number": {
                   "type": "string",
                   "example": "TAX-000001",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "เลขที่ใบกำกับภาษี"
                 },
                 "invoice_id": {
                   "type": [
                     "string",
                     "null"
                   ],
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "id ของใบแจ้งหนี่ที่ต้องการสร้างใบกำกับภาษี"
                 },
                 "receipt_id": {
                   "type": [
                     "string",
                     "null"
-                  ]
+                  ],
+                  "description": "id ของใบเสร็จที่ต้องการสร้างใบกำกับภาษี"
                 },
                 "data": {
                   "type": "object",
@@ -1591,6 +1594,7 @@
                     "vat_included",
                     "remark"
                   ],
+                  "description": "ข้อมูลในใบกำกับภาษี",
                   "properties": {
                     "customer": {
                       "type": "object",
@@ -1601,24 +1605,29 @@
                         "emails",
                         "address"
                       ],
+                      "description": "ข้อมูลลูกค้า",
                       "properties": {
                         "name": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "ศุภชัย จันทร์เกตุ"
+                          "example": "ศุภชัย จันทร์เกตุ",
+                          "description": "ชื่อลูกค้า"
                         },
                         "tax_number": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "1129900201032"
+                          "example": "1129900201032",
+                          "description": "เลขที่ผู้เสียภาษี"
                         },
                         "phone_number": {
                           "type": "string",
                           "minLength": 1,
-                          "example": "0956507210"
+                          "example": "0956507210",
+                          "description": "เบอร์โทรศัพท์"
                         },
                         "emails": {
                           "type": "array",
+                          "description": "Email ลูกค้าสำหรับรับเอกสารผ่านอีเมล",
                           "items": {
                             "type": "string",
                             "example": "bank.chankate@gmail.com"
@@ -1633,31 +1642,37 @@
                             "province",
                             "post_code"
                           ],
+                          "description": "ที่อยู่ลูกค้า",
                           "properties": {
                             "house_number": {
                               "type": "string",
                               "minLength": 1,
-                              "example": "598/610"
+                              "example": "598/610",
+                              "description": "เลขที่"
                             },
                             "sub_district": {
                               "type": "string",
                               "minLength": 1,
-                              "example": "บางกะปิ"
+                              "example": "บางกะปิ",
+                              "description": "แขวง / ตำบล"
                             },
                             "district": {
                               "type": "string",
                               "minLength": 1,
-                              "example": "ห้วยขวาง"
+                              "example": "ห้วยขวาง",
+                              "description": "เขต / อำเภอ"
                             },
                             "province": {
                               "type": "string",
                               "minLength": 1,
-                              "example": "กรุงเทพมหานคร"
+                              "example": "กรุงเทพมหานคร",
+                              "description": "จังหวัด"
                             },
                             "post_code": {
                               "type": "string",
                               "minLength": 1,
-                              "example": "10310"
+                              "example": "10310",
+                              "description": "รหัสไปรษณีย์"
                             }
                           }
                         }
@@ -1666,41 +1681,48 @@
                     "issue_date": {
                       "type": "string",
                       "minLength": 1,
-                      "example": "2021-01-19"
+                      "example": "2021-01-19",
+                      "description": "วันที่ออกเอกสาร"
                     },
                     "items": {
                       "type": "array",
                       "uniqueItems": true,
                       "minItems": 1,
+                      "description": "รายการสินค้า / บริการ",
                       "items": {
                         "type": "object",
                         "properties": {
                           "description": {
                             "type": "string",
                             "minLength": 1,
-                            "example": "ค่าบริการ"
+                            "example": "ค่าบริการ",
+                            "description": "ชื่อสินค้า / บริการ"
                           },
                           "quantity": {
                             "type": "number",
-                            "example": 1
+                            "example": 1,
+                            "description": "จำนวน"
                           },
                           "unit_price": {
                             "type": "number",
-                            "example": 1
+                            "example": 1,
+                            "description": "ราคา/หน่วย"
                           },
                           "vat_rate": {
                             "type": [
                               "number",
                               "null"
                             ],
-                            "example": 7
+                            "example": 7,
+                            "description": "อัตราภาษีมูลค่าเพิ่ม"
                           },
                           "discount_amount": {
                             "type": [
                               "number",
                               "null"
                             ],
-                            "example": 0
+                            "example": 0,
+                            "description": "มูลค่าส่วนลดสินค้า / บริการ"
                           }
                         },
                         "required": [
@@ -1711,19 +1733,22 @@
                       }
                     },
                     "vat_included": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "กำหนดว่ารายการสินค้ารวมภาษีแล้ว หรือยังไม่ได้รวมภาษี"
                     },
                     "remark": {
                       "type": [
                         "string",
                         "null"
-                      ]
+                      ],
+                      "description": "หมายเหตุ"
                     },
                     "withholding_tax_rate": {
                       "type": [
                         "null",
                         "number"
-                      ]
+                      ],
+                      "description": "อัตราภาษีหัก ณ ที่จ่าย"
                     }
                   }
                 }
