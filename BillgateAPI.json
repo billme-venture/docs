@@ -3,7 +3,7 @@
   "info": {
     "title": "Billgate API",
     "version": "v1.0.0 — Developer Preview",
-    "description": "👋 ยินดีต้อนรับเข้าสู่หน้าเว็บ Billgate API Docs\n\nคุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\nขณะนี้ Billgate API อยู่ในช่วงระหว่างการพัฒนา\n\n👉 หากพบปัญหาหรือมีข้อเสนอแนะโปรดติดต่อ contact@billme.co.th",
+    "description": "👉 หากพบปัญหาหรือมีข้อเสนอแนะโปรดติดต่อ contact@billme.co.th",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
       "email": "contact@billme.co.th",
