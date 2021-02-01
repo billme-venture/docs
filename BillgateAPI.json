@@ -298,9 +298,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       }
@@ -373,9 +370,6 @@
               "type": "object",
               "properties": {}
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       },
@@ -804,9 +798,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       },
@@ -1127,9 +1118,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       },
@@ -1230,7 +1218,7 @@
                     "emails": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "string"
                       }
                     },
                     "address": {
@@ -1475,9 +1463,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       },
@@ -1780,9 +1765,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       }
@@ -1882,7 +1864,7 @@
                     "emails": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "type": "string"
                       }
                     },
                     "address": {
@@ -2127,9 +2109,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "no response description was provided for this operation"
           }
         }
       },
