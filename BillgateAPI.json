@@ -305,7 +305,7 @@
     "/invoices/{invoiceId}/payment": {
       "post": {
         "summary": "Confirm Payment Invoice",
-        "description": "สำหรับอัปเดทสถานะของใบแจ้งหนี้เป็น ชำระแล้ว",
+        "description": "สำหรับอัปเดทสถานะของใบแจ้งหนี้เป็น`ชำระแล้ว`",
         "operationId": "confirmPaymentInvoice",
         "tags": [
           "invoices"
@@ -806,7 +806,7 @@
           "name": "invoiceId",
           "in": "path",
           "required": true,
-          "description": "id ของใบแจ้งหนี้"
+          "description": "`id` ของใบแจ้งหนี้"
         }
       ],
       "delete": {
@@ -2225,7 +2225,7 @@
           "name": "taxInvoiceId",
           "in": "path",
           "required": true,
-          "description": "id ของใบกำกับภาษี"
+          "description": "`id` ของใบกำกับภาษี"
         }
       ],
       "delete": {
