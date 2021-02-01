@@ -1126,7 +1126,7 @@
     "/receipts/{receiptId}": {
       "get": {
         "summary": "Get Receipt",
-        "description": "",
+        "description": "สำหรับดึงรายละเอียดข้อมูลของใบเสร็จที่ต้องการ",
         "operationId": "getReceiptById",
         "tags": [
           "receipts"
@@ -1152,22 +1152,27 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "id ของใบเสร็จที่ต้องการดึงข้อมูล"
                 },
                 "name": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "อ้างอิง / โปรเจค"
                 },
                 "number": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "เลขที่ใบเสร็จ"
                 },
                 "issue_date": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "วันที่ออกเอกสาร"
                 },
                 "merchant": {
                   "type": "object",
+                  "description": "รายละเอียดธุรกิจของคุณ",
                   "required": [
                     "name",
                     "phone",
@@ -1177,24 +1182,29 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ชื่อธุรกิจ"
                     },
                     "phone": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "เบอร์โทรศัพท์"
                     },
                     "email": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "Email ของธุรกิจ"
                     },
                     "address": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ที่อยู่ธุรกิจ"
                     }
                   }
                 },
                 "customer": {
                   "type": "object",
+                  "description": "รายละเอียดลูกค้า",
                   "required": [
                     "name",
                     "tax_number",
@@ -1205,25 +1215,30 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ชื่อลูกค้า"
                     },
                     "tax_number": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "เลขที่ผู้เสียภาษี"
                     },
                     "phone": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "เบอร์โทรศัพท์"
                     },
                     "emails": {
                       "type": "array",
+                      "description": "Email ของลูกค้า",
                       "items": {
                         "type": "string"
                       }
                     },
                     "address": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ที่อยู่"
                     }
                   }
                 },
@@ -1231,27 +1246,34 @@
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 1,
+                  "description": "รายการสินค้า / บริการ",
                   "items": {
                     "type": "object",
                     "properties": {
                       "description": {
                         "type": "string",
-                        "minLength": 1
+                        "minLength": 1,
+                        "description": "ชื่อสินค้า / บริการ"
                       },
                       "quantity": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "จำนวน"
                       },
                       "unit_price": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "ราคาสินค้า/หน่วย"
                       },
                       "total_item_price": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "สรุปราคาสินค้า"
                       },
                       "vat_rate": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "อัตราษีมูลค่าเพิ่ม"
                       },
                       "discount_amount": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "มูลค่าส่วนลดของสินค้า"
                       }
                     },
                     "required": [
@@ -1265,10 +1287,12 @@
                   }
                 },
                 "subtotal": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "รวมราคาสินค้าทั้งหมด"
                 },
                 "total_discount_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "รวมมูลค่าส่วนลดทั้งหมด"
                 },
                 "vat": {
                   "type": "object",
@@ -1277,20 +1301,25 @@
                     "rate",
                     "amount"
                   ],
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
                     },
                     "rate": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "อัตราภาษีมูลค่าเพิ่ม"
                     },
                     "amount": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "มูลค่าภาษี"
                     }
                   }
                 },
                 "vat_exempted_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าสินค้าที่ได้รับการยกเว้นภาษี"
                 },
                 "taxable_sales_amount": {
                   "type": "number"
@@ -1471,7 +1500,8 @@
           "type": "string",
           "name": "receiptId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "id ของใบเสร็จที่ต้องการดึงข้อมูล"
         }
       ],
       "delete": {
