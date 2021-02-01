@@ -806,7 +806,7 @@
           "name": "invoiceId",
           "in": "path",
           "required": true,
-          "description": "invoiceId ของใบแจ้งหนี้ที่ต้องการดึงข้อมูลรายละเอียด"
+          "description": "id ของใบแจ้งหนี้"
         }
       ],
       "delete": {
@@ -828,7 +828,8 @@
             "required": true,
             "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs"
           }
-        ]
+        ],
+        "description": "สำหรับลบใบแจ้งหนี้ที่ไม่ต้องการออกจากระบบ การลบใบแจ้งหนี้จะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบแจ้งหนี้ได้"
       }
     },
     "/receipts": {
@@ -1511,7 +1512,7 @@
           "name": "receiptId",
           "in": "path",
           "required": true,
-          "description": "id ของใบเสร็จที่ต้องการดึงข้อมูล"
+          "description": "id ของใบเสร็จ"
         }
       ],
       "delete": {
@@ -1533,7 +1534,8 @@
             "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
             "name": "X-API-Key"
           }
-        ]
+        ],
+        "description": "สำหรับลบใบเสร็จที่ไม่ต้องการออกจากระบบ การลบใบเสร็จจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบเสร็จได้"
       }
     },
     "/tax_invoices": {
@@ -1837,7 +1839,7 @@
     "/tax_invoices/{taxInvoiceId}": {
       "get": {
         "summary": "Get Tax Invoice",
-        "description": "",
+        "description": "สำหรับดึงข้อมูลของใบกำกับภาษีที่ต้องการ",
         "operationId": "getTaxInvoiceById",
         "tags": [
           "tax invoices"
@@ -1863,19 +1865,23 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "id ใบกำกับภาษี"
                 },
                 "name": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "ชื่ออ้างอิง / โปรเจค"
                 },
                 "number": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "เลขที่ใบกำกับภาษี"
                 },
                 "issue_date": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "วันที่ออกเอกสาร"
                 },
                 "merchant": {
                   "type": "object",
@@ -1885,22 +1891,27 @@
                     "email",
                     "address"
                   ],
+                  "description": "ข้อมูลธุรุกิจของคุณ",
                   "properties": {
                     "name": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ชื่อธุรกิจ"
                     },
                     "phone": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "เบอร์โทรศัพท์"
                     },
                     "email": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "Email ของธุรกิจ"
                     },
                     "address": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ที่อยู่"
                     }
                   }
                 },
@@ -1913,28 +1924,34 @@
                     "emails",
                     "address"
                   ],
+                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ชื่อลูกค้า"
                     },
                     "tax_number": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "เลขที่ผู้เสียภาษี"
                     },
                     "phone": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "เบอร์โทรศัพท์"
                     },
                     "emails": {
                       "type": "array",
+                      "description": "Email ของลูกค้า",
                       "items": {
                         "type": "string"
                       }
                     },
                     "address": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "ที่อยู่"
                     }
                   }
                 },
@@ -1942,27 +1959,34 @@
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 1,
+                  "description": "รายการสินค้า",
                   "items": {
                     "type": "object",
                     "properties": {
                       "description": {
                         "type": "string",
-                        "minLength": 1
+                        "minLength": 1,
+                        "description": "ชื่อสินค้า / บริการ"
                       },
                       "quantity": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "จำนวน"
                       },
                       "unit_price": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "ราคา/หน่วย"
                       },
                       "total_item_price": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "สรุปราคาสินค้า"
                       },
                       "vat_rate": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "อัตราภาษีมูลค่าเพิ่ม"
                       },
                       "discount_amount": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "มูลค่าส่วนลดสินค้า / บริการ"
                       }
                     },
                     "required": [
@@ -1976,10 +2000,12 @@
                   }
                 },
                 "subtotal": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "รวมราคาสินค้าทั้งหมด"
                 },
                 "total_discount_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "รวมมูลค่าส่วนลดทั้งหมด"
                 },
                 "vat": {
                   "type": "object",
@@ -1988,26 +2014,33 @@
                     "rate",
                     "amount"
                   ],
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
                     },
                     "rate": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "อัตราภาษีมูลค่าเพิ่ม"
                     },
                     "amount": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "มูลค่าภาษี"
                     }
                   }
                 },
                 "vat_exempted_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าสินค้า/บริการที่ได้รับการยกเว้นภาษี"
                 },
                 "taxable_sales_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "มูลค่าสินค้า/บริการที่เสียภาษี"
                 },
                 "total": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "ราคาหลังรวมภาษี"
                 },
                 "withholding_tax": {
                   "type": "object",
@@ -2015,60 +2048,66 @@
                     "rate",
                     "amount"
                   ],
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "อัตราภาษีหัก ณ ที่จ่าย"
                     },
                     "amount": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
                     }
                   }
                 },
                 "paid_amount": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
                 },
-                "remark": {},
+                "remark": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "หมายเหตุ"
+                },
                 "payment": {
                   "type": "object",
                   "required": [
-                    "payment_method_id",
                     "paid_date",
                     "amount"
                   ],
+                  "description": "การชำระเงิน",
                   "properties": {
-                    "payment_method_id": {
-                      "type": "string",
-                      "minLength": 1
-                    },
                     "paid_date": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
-                      "type": "number"
-                    },
-                    "slip": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
+                      "type": "number",
+                      "description": "จำนวนที่ชำระเงิน"
                     }
                   }
                 },
                 "tax_invoice_pdf_url": {
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบกำกับภาษี"
                 },
                 "attachments": {
                   "type": "array",
+                  "description": "รายการเอกสารแนบ",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ชื่อเอกสารแนบ"
                       },
                       "url": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "ลิงก์สำหรับดาวน์โหลดเอกสารแนบ"
                       }
                     }
                   }
@@ -2079,14 +2118,17 @@
                     "invoice_id",
                     "receipt_id"
                   ],
+                  "description": "รายการเอกสารอ้างอิง",
                   "properties": {
                     "invoice_id": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "id ใบแจ้งหนี่ที่เกี่ยวข้อง"
                     },
                     "receipt_id": {
                       "type": "string",
-                      "minLength": 1
+                      "minLength": 1,
+                      "description": "id ใบเสร็จที่เกี่ยวข้อง"
                     }
                   }
                 }
@@ -2182,7 +2224,8 @@
           "type": "string",
           "name": "taxInvoiceId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "id ของใบกำกับภาษี"
         }
       ],
       "delete": {
@@ -2204,7 +2247,8 @@
             "required": true,
             "name": "X-API-Key"
           }
-        ]
+        ],
+        "description": "สำหรับลบใบกำกับภาษีที่ไม่ต้องการออกจากระบบ การลบใบกำกับภาษีจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบกำกับภาษีได้"
       }
     }
   }
