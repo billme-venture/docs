@@ -442,13 +442,13 @@
                 },
                 "merchant": {
                   "type": "object",
+                  "description": "ข้อมูลธุรกิจของคุณ",
                   "required": [
                     "name",
                     "phone",
                     "email",
                     "address"
                   ],
-                  "description": "ข้อมูลธุรกิจของคุณ",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -470,14 +470,13 @@
                 },
                 "customer": {
                   "type": "object",
+                  "description": "ข้อมูลลูกค้า",
                   "required": [
                     "name",
-                    "tax_number",
                     "phone",
                     "emails",
                     "address"
                   ],
-                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -556,12 +555,12 @@
                 },
                 "vat": {
                   "type": "object",
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "required": [
                     "is_included",
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
                       "type": "boolean",
@@ -591,11 +590,11 @@
                 },
                 "withholding_tax": {
                   "type": "object",
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "required": [
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
                       "type": "number",
@@ -621,7 +620,6 @@
                 "payment_methods": {
                   "type": "array",
                   "uniqueItems": true,
-                  "minItems": 1,
                   "description": "ช่องทางการชำระเงิน",
                   "items": {
                     "type": "object",
@@ -633,6 +631,9 @@
                       "number": {
                         "type": "string",
                         "description": "เลขที่บัญชี"
+                      },
+                      "type": {
+                        "type": "string"
                       }
                     },
                     "required": [
@@ -647,6 +648,10 @@
                     "null"
                   ],
                   "description": "การชำระเงิน",
+                  "required": [
+                    "paid_date",
+                    "amount"
+                  ],
                   "properties": {
                     "paid_date": {
                       "type": "string",
@@ -658,14 +663,13 @@
                     }
                   }
                 },
-                "invoice_pdf_url": {
+                "pdf_url": {
                   "type": "string",
                   "description": "ลิงก์ PDF ของใบแจ้งหนี้"
                 },
                 "attachments": {
                   "type": "array",
                   "uniqueItems": true,
-                  "minItems": 1,
                   "description": "รายการไฟล์แนบ",
                   "items": {
                     "type": "object",
@@ -687,10 +691,6 @@
                 },
                 "references": {
                   "type": "object",
-                  "required": [
-                    "receipt_id",
-                    "tax_invoice_id"
-                  ],
                   "description": "เอกสารที่เกี่ยวข้อง",
                   "properties": {
                     "receipt_id": {
@@ -724,10 +724,8 @@
                 "total",
                 "withholding_tax",
                 "paid_amount",
-                "remark",
                 "payment_methods",
-                "payment",
-                "invoice_pdf_url",
+                "pdf_url",
                 "attachments",
                 "references"
               ]
@@ -773,24 +771,25 @@
                   "amount": 97.48
                 },
                 "vat_exempted_amount": 0,
-                "taxable_sales_amount": 0,
-                "total": 0,
+                "taxable_sales_amount": 1392.52,
+                "total": 1490,
                 "withholding_tax": {
                   "rate": 0,
                   "amount": 0
                 },
-                "paid_amount": 0,
+                "paid_amount": 1490,
                 "remark": null,
                 "payment_methods": [
                   {
-                    "id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
                     "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
-                    "logo_url": "https://storage.googleapis.com/assets.billme.co.th/static/banks/logos/kasikorn.png",
                     "number": "1002012896"
                   }
                 ],
-                "payment": null,
-                "invoice_pdf_url": "https://storage.googleapis.com/billhub/production/invoices/98FE9D3919179914713340F7A705A4F2/INV63000027.pdf",
+                "payment": {
+                  "paid_date": "2021-02-01 16:04:11",
+                  "amount": 1490
+                },
+                "pdf_url": "https://storage.googleapis.com/billhub/production/invoices/98FE9D3919179914713340F7A705A4F2/INV63000027.pdf",
                 "attachments": [],
                 "references": {
                   "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
