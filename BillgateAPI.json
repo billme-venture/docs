@@ -1,8 +1,14 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "BillgateAPI",
-    "version": "v0.0.0"
+    "title": "Billgate API",
+    "version": "v0.0.0",
+    "description": "![Billgate](assets/images/illustration-billgate.png)\n\nยืนดีต้อนรับเข้าสู่หน้าเว็บ Billgate API Docs คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\nสำหรับการเริ่มต้นใช้งานให้ดำเนินการตามขั้นตอนดังนี้\n1. ทำการสมัครสมาชิกที่ https://register.billme.co.th \n2. สร้างโปรไฟล์ธุรกิจของคุณที่ https://billbox.billme.co.th\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ https://forms.gle/emSo2jXAssXkPXKD8\n4. รอการตอบกลับจากทีมงาน และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู การตั้งค่า/Billgate API\n\n![API Token Page](assets/images/api-token-page.png)",
+    "contact": {
+      "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+      "email": "contact@billme.co.th",
+      "url": "m.me/billme.co.th"
+    }
   },
   "host": "api.billme.co.th",
   "schemes": [
