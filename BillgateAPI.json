@@ -1885,13 +1885,13 @@
                 },
                 "merchant": {
                   "type": "object",
+                  "description": "ข้อมูลธุรกิจของคุณ",
                   "required": [
                     "name",
                     "phone",
                     "email",
                     "address"
                   ],
-                  "description": "ข้อมูลธุรุกิจของคุณ",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -1917,6 +1917,7 @@
                 },
                 "customer": {
                   "type": "object",
+                  "description": "ข้อมูลลูกค้า",
                   "required": [
                     "name",
                     "tax_number",
@@ -1924,7 +1925,6 @@
                     "emails",
                     "address"
                   ],
-                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -2009,12 +2009,12 @@
                 },
                 "vat": {
                   "type": "object",
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "required": [
                     "is_included",
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
                       "type": "boolean",
@@ -2044,11 +2044,11 @@
                 },
                 "withholding_tax": {
                   "type": "object",
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "required": [
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
                       "type": "number",
@@ -2073,11 +2073,11 @@
                 },
                 "payment": {
                   "type": "object",
+                  "description": "การชำระเงิน",
                   "required": [
                     "paid_date",
                     "amount"
                   ],
-                  "description": "การชำระเงิน",
                   "properties": {
                     "paid_date": {
                       "type": "string",
@@ -2114,11 +2114,11 @@
                 },
                 "references": {
                   "type": "object",
+                  "description": "รายการเอกสารอ้างอิง",
                   "required": [
                     "invoice_id",
                     "receipt_id"
                   ],
-                  "description": "รายการเอกสารอ้างอิง",
                   "properties": {
                     "invoice_id": {
                       "type": "string",
