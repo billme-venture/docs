@@ -2072,7 +2072,10 @@
                   "description": "หมายเหตุ"
                 },
                 "payment": {
-                  "type": "object",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
                   "description": "การชำระเงิน",
                   "required": [
                     "paid_date",
@@ -2081,12 +2084,11 @@
                   "properties": {
                     "paid_date": {
                       "type": "string",
-                      "minLength": 1,
                       "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
                       "type": "number",
-                      "description": "จำนวนที่ชำระเงิน"
+                      "description": "จำนวนเงินที่ชำระ"
                     }
                   }
                 },
@@ -2149,7 +2151,6 @@
                 "total",
                 "withholding_tax",
                 "paid_amount",
-                "payment",
                 "tax_invoice_pdf_url",
                 "attachments",
                 "references"
