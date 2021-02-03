@@ -1331,11 +1331,11 @@
                 },
                 "withholding_tax": {
                   "type": "object",
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "required": [
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
                       "type": "number",
@@ -1359,16 +1359,18 @@
                   "description": "หมายเหตุ"
                 },
                 "payment": {
-                  "type": "object",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "description": "การชำระเงิน",
                   "required": [
                     "paid_date",
                     "amount"
                   ],
-                  "description": "การชำระเงิน",
                   "properties": {
                     "paid_date": {
                       "type": "string",
-                      "minLength": 1,
                       "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
@@ -1401,11 +1403,11 @@
                 },
                 "references": {
                   "type": "object",
+                  "description": "เอกสารที่เกี่ยวข้อง",
                   "required": [
                     "invoice_id",
                     "tax_invoice_id"
                   ],
-                  "description": "เอกสารที่เกี่ยวข้อง",
                   "properties": {
                     "invoice_id": {
                       "type": "string",
@@ -1436,7 +1438,6 @@
                 "total",
                 "withholding_tax",
                 "paid_amount",
-                "payment",
                 "receipt_pdf_url",
                 "attachments",
                 "references"
