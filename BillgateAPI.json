@@ -821,7 +821,7 @@
     },
     "/v1/receipts": {
       "post": {
-        "summary": "Create Receipt",
+        "summary": "Create a new Receipt",
         "description": "สำหรับ`สร้างใบเสร็จ` และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
         "operationId": "createReceipt",
         "tags": [
@@ -1495,7 +1495,7 @@
         }
       ],
       "delete": {
-        "summary": "",
+        "summary": "Delete an existing Receipt",
         "operationId": "deleteReceiptById",
         "tags": [
           "Receipts"
