@@ -28,7 +28,6 @@
       "description": "operation about tax invoices"
     }
   ],
-  "basePath": "/",
   "paths": {
     "/v1/invoices": {
       "post": {
