@@ -45,13 +45,6 @@
         ],
         "parameters": [
           {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          },
-          {
             "required": false,
             "schema": {
               "description": "",
@@ -313,7 +306,7 @@
       },
       "parameters": []
     },
-    "/v1/invoices/{invoiceId}/payment": {
+    "/v1/invoices/{invoiceId}/paid": {
       "post": {
         "summary": "Confirm Paid Payment on an existing Invoice",
         "description": "สำหรับอัปเดทสถานะของใบแจ้งหนี้เป็น`ชำระแล้ว`",
@@ -325,13 +318,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          },
           {
             "required": false,
             "schema": {
@@ -405,15 +391,7 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -807,6 +785,12 @@
                   "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
                 }
               }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
             }
           }
         }
@@ -831,15 +815,7 @@
             "description": "No Content"
           }
         },
-        "parameters": [
-          {
-            "type": "string",
-            "in": "header",
-            "name": "X-API-Key",
-            "required": true,
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs"
-          }
-        ],
+        "parameters": [],
         "description": "สำหรับ`ลบใบแจ้งหนี้`ที่ไม่ต้องการออกจากระบบ การลบใบแจ้งหนี้จะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบแจ้งหนี้ได้"
       }
     },
@@ -858,13 +834,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          },
           {
             "required": false,
             "schema": {
@@ -1145,15 +1114,7 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -1514,6 +1475,12 @@
                   "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
                 }
               }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
             }
           }
         }
@@ -1538,15 +1505,7 @@
             "description": "No Content"
           }
         },
-        "parameters": [
-          {
-            "type": "string",
-            "in": "header",
-            "required": true,
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key"
-          }
-        ],
+        "parameters": [],
         "description": "สำหรับ`ลบใบเสร็จ`ที่ไม่ต้องการออกจากระบบ การลบใบเสร็จจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบเสร็จได้"
       }
     },
@@ -1565,13 +1524,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          },
           {
             "required": false,
             "schema": {
@@ -1860,15 +1812,7 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "type": "string",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "name": "X-API-Key",
-            "required": true,
-            "in": "header"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -2229,6 +2173,12 @@
                   "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46"
                 }
               }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
             }
           }
         }
@@ -2244,7 +2194,7 @@
       ],
       "delete": {
         "summary": "Delete an existing Tax Invoice",
-        "operationId": "delete-tax_invoices-taxInvoiceId",
+        "operationId": "deleteTaxInvoiceById",
         "tags": [
           "Tax Invoices"
         ],
@@ -2253,25 +2203,16 @@
             "description": "No Content"
           }
         },
-        "parameters": [
-          {
-            "type": "string",
-            "in": "header",
-            "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs",
-            "required": true,
-            "name": "X-API-Key"
-          }
-        ],
+        "parameters": [],
         "description": "สำหรับลบใบกำกับภาษีที่ไม่ต้องการออกจากระบบ การลบใบกำกับภาษีจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบกำกับภาษีได้"
       }
     }
   },
   "securityDefinitions": {
-    "API Key - 1": {
-      "name": "API Key",
+    "ApiKeyAuth": {
+      "name": "X-API-Key",
       "type": "apiKey",
-      "in": "query",
-      "description": ""
+      "in": "header"
     }
   },
   "produces": [
@@ -2279,5 +2220,10 @@
   ],
   "consumes": [
     "application/json"
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
   ]
 }
