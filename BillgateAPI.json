@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.0.1 — Developer Preview",
+    "version": "v1.1.0 — Developer Preview",
     "description": "👉 หากพบปัญหาหรือมีข้อเสนอแนะโปรดติดต่อ contact@billme.co.th",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -1135,9 +1135,9 @@
       },
       "parameters": []
     },
-    "/receipts/{receiptId}": {
+    "/v1/receipts/{receiptId}": {
       "get": {
-        "summary": "Get Receipt",
+        "summary": "Get an existing Receipt",
         "description": "สำหรับดึงรายละเอียดข้อมูลของใบเสร็จที่ต้องการ",
         "operationId": "getReceiptById",
         "tags": [
@@ -1525,12 +1525,12 @@
           "name": "receiptId",
           "in": "path",
           "required": true,
-          "description": "id ของใบเสร็จ"
+          "description": "`id` ของใบเสร็จ"
         }
       ],
       "delete": {
         "summary": "",
-        "operationId": "delete-receipts-receiptId",
+        "operationId": "deleteReceiptById",
         "tags": [
           "Receipts"
         ],
@@ -1548,13 +1548,13 @@
             "name": "X-API-Key"
           }
         ],
-        "description": "สำหรับลบใบเสร็จที่ไม่ต้องการออกจากระบบ การลบใบเสร็จจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบเสร็จได้"
+        "description": "สำหรับ`ลบใบเสร็จ`ที่ไม่ต้องการออกจากระบบ การลบใบเสร็จจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบเสร็จได้"
       }
     },
-    "/tax_invoices": {
+    "/v1/tax_invoices": {
       "post": {
-        "summary": "Create Tax Invoice",
-        "description": "สำหรับสร้างใบกำกับภาษี และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
+        "summary": "Create a new Tax Invoice",
+        "description": "สำหรับ`สร้างใบกำกับภาษี` และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
         "operationId": "createTaxInvoice",
         "tags": [
           "Tax Invoices"
@@ -1847,11 +1847,12 @@
             }
           }
         }
-      }
+      },
+      "parameters": []
     },
-    "/tax_invoices/{taxInvoiceId}": {
+    "/v1/tax_invoices/{taxInvoiceId}": {
       "get": {
-        "summary": "Get Tax Invoice",
+        "summary": "Get an existing Tax Invoice",
         "description": "สำหรับดึงข้อมูลของใบกำกับภาษีที่ต้องการ",
         "operationId": "getTaxInvoiceById",
         "tags": [
@@ -2243,7 +2244,7 @@
         }
       ],
       "delete": {
-        "summary": "",
+        "summary": "Delete an existing Tax Invoice",
         "operationId": "delete-tax_invoices-taxInvoiceId",
         "tags": [
           "Tax Invoices"
