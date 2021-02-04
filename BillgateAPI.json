@@ -16,15 +16,15 @@
   ],
   "tags": [
     {
-      "name": "invoices",
+      "name": "Invoices",
       "description": "operation about invoices"
     },
     {
-      "name": "receipts",
+      "name": "Receipts",
       "description": "operation about receipts"
     },
     {
-      "name": "tax invoices",
+      "name": "Tax Invoices",
       "description": "operation about tax invoices"
     }
   ],
@@ -36,7 +36,7 @@
         "description": "สร้างใบแจ้งหนี้ และส่งไปยังลูกค้าของคุณผ่านช่องทาง Email และ Line ลูกค้าของคุณสามารถเปิดดูรายละเอียด และแจ้งการชำระเงินเข้ามาได้ หากมีการใช้งานฟังก์ชัน Instant Payment ลูกค้าของคุณจะสามารถชำระเงินออนไลน์ได้ทันที",
         "operationId": "createInvoice",
         "tags": [
-          "invoices"
+          "Invoices"
         ],
         "produces": [
           "application/json"
@@ -308,7 +308,7 @@
         "description": "สำหรับอัปเดทสถานะของใบแจ้งหนี้เป็น`ชำระแล้ว`",
         "operationId": "confirmPaymentInvoice",
         "tags": [
-          "invoices"
+          "Invoices"
         ],
         "consumes": [
           "application/json"
@@ -389,7 +389,7 @@
         "description": "สำหรับดึงข้อมูลรายละเอียดใบแจ้งหนี้ที่ต้องการ",
         "operationId": "getInvoiceById",
         "tags": [
-          "invoices"
+          "Invoices"
         ],
         "produces": [
           "application/json"
@@ -813,7 +813,7 @@
         "summary": "",
         "operationId": "delete-invoices-invoiceId",
         "tags": [
-          "invoices"
+          "Invoices"
         ],
         "responses": {
           "204": {
@@ -838,7 +838,7 @@
         "description": "สำหรับสร้างใบเสร็จ และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
         "operationId": "createReceipt",
         "tags": [
-          "receipts"
+          "Receipts"
         ],
         "produces": [
           "application/json"
@@ -1129,7 +1129,7 @@
         "description": "สำหรับดึงรายละเอียดข้อมูลของใบเสร็จที่ต้องการ",
         "operationId": "getReceiptById",
         "tags": [
-          "receipts"
+          "Receipts"
         ],
         "produces": [
           "application/json"
@@ -1519,7 +1519,7 @@
         "summary": "",
         "operationId": "delete-receipts-receiptId",
         "tags": [
-          "receipts"
+          "Receipts"
         ],
         "responses": {
           "204": {
@@ -1544,7 +1544,7 @@
         "description": "สำหรับสร้างใบกำกับภาษี และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
         "operationId": "createTaxInvoice",
         "tags": [
-          "tax invoices"
+          "Tax Invoices"
         ],
         "produces": [
           "application/json"
@@ -1842,7 +1842,7 @@
         "description": "สำหรับดึงข้อมูลของใบกำกับภาษีที่ต้องการ",
         "operationId": "getTaxInvoiceById",
         "tags": [
-          "tax invoices"
+          "Tax Invoices"
         ],
         "produces": [
           "application/json"
@@ -2232,7 +2232,7 @@
         "summary": "",
         "operationId": "delete-tax_invoices-taxInvoiceId",
         "tags": [
-          "tax invoices"
+          "Tax Invoices"
         ],
         "responses": {
           "204": {
