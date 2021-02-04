@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.0.0 — Developer Preview",
+    "version": "v1.0.1 — Developer Preview",
     "description": "👉 หากพบปัญหาหรือมีข้อเสนอแนะโปรดติดต่อ contact@billme.co.th",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -30,10 +30,10 @@
   ],
   "basePath": "/",
   "paths": {
-    "/invoices": {
+    "/v1/invoices": {
       "post": {
-        "summary": "Create Invoice",
-        "description": "สร้างใบแจ้งหนี้ และส่งไปยังลูกค้าของคุณผ่านช่องทาง Email และ Line ลูกค้าของคุณสามารถเปิดดูรายละเอียด และแจ้งการชำระเงินเข้ามาได้ หากมีการใช้งานฟังก์ชัน Instant Payment ลูกค้าของคุณจะสามารถชำระเงินออนไลน์ได้ทันที",
+        "summary": "Create a new Invoice",
+        "description": "สำหรับ`สร้างใบแจ้งหนี้` และส่งไปยังลูกค้าของคุณผ่านช่องทาง Email และ Line ลูกค้าของคุณสามารถเปิดดูรายละเอียด และแจ้งการชำระเงินเข้ามาได้ หากมีการใช้งานฟังก์ชัน Instant Payment ลูกค้าของคุณจะสามารถชำระเงินออนไลน์ได้ทันที",
         "operationId": "createInvoice",
         "tags": [
           "Invoices"
@@ -60,6 +60,7 @@
               "properties": {
                 "customer": {
                   "type": "object",
+                  "description": "ข้อมูลลูกค้า",
                   "required": [
                     "name",
                     "tax_number",
@@ -67,7 +68,6 @@
                     "emails",
                     "address"
                   ],
-                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -97,6 +97,7 @@
                     },
                     "address": {
                       "type": "object",
+                      "description": "ที่อยู่ของลูกค้า",
                       "required": [
                         "house_number",
                         "sub_district",
@@ -104,7 +105,6 @@
                         "province",
                         "post_code"
                       ],
-                      "description": "ที่อยู่ของลูกค้า",
                       "properties": {
                         "house_number": {
                           "type": "string",
@@ -189,7 +189,9 @@
                           "null"
                         ],
                         "example": 7,
-                        "description": "อัตราภาษีมูลค่าเพิ่ม"
+                        "description": "อัตราภาษีมูลค่าเพิ่ม",
+                        "minimum": 0,
+                        "maximum": 7
                       },
                       "discount_amount": {
                         "type": [
@@ -294,19 +296,29 @@
               "type": "object",
               "properties": {
                 "invoice_id": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "id สำหรับใบแจ้งหนี้"
                 }
+              },
+              "required": [
+                "invoice_id"
+              ]
+            },
+            "examples": {
+              "example-1": {
+                "invoice_id": "string"
               }
             }
           }
         }
-      }
+      },
+      "parameters": []
     },
-    "/invoices/{invoiceId}/payment": {
+    "/v1/invoices/{invoiceId}/payment": {
       "post": {
-        "summary": "Confirm Payment Invoice",
+        "summary": "Confirm Paid Payment on an existing Invoice",
         "description": "สำหรับอัปเดทสถานะของใบแจ้งหนี้เป็น`ชำระแล้ว`",
-        "operationId": "confirmPaymentInvoice",
+        "operationId": "confirmPaidPaymentInvoice",
         "tags": [
           "Invoices"
         ],
@@ -379,13 +391,13 @@
           "name": "invoiceId",
           "in": "path",
           "required": true,
-          "description": "invoiceId ของใบแจ้งหนี้ที่ต้องการอัปเดทสถานะ"
+          "description": "`id` ของใบแจ้งหนี้"
         }
       ]
     },
-    "/invoices/{invoiceId}": {
+    "/v1/invoices/{invoiceId}": {
       "get": {
-        "summary": "Get Invoice",
+        "summary": "Get an existing Invoice",
         "description": "สำหรับดึงข้อมูลรายละเอียดใบแจ้งหนี้ที่ต้องการ",
         "operationId": "getInvoiceById",
         "tags": [
@@ -810,8 +822,8 @@
         }
       ],
       "delete": {
-        "summary": "",
-        "operationId": "delete-invoices-invoiceId",
+        "summary": "Delete an existing Invoice",
+        "operationId": "deleteInvoiceById",
         "tags": [
           "Invoices"
         ],
@@ -829,13 +841,13 @@
             "default": "QG3aQC85vX3Ao7_W-9LjnukJxxwadCOs"
           }
         ],
-        "description": "สำหรับลบใบแจ้งหนี้ที่ไม่ต้องการออกจากระบบ การลบใบแจ้งหนี้จะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบแจ้งหนี้ได้"
+        "description": "สำหรับ`ลบใบแจ้งหนี้`ที่ไม่ต้องการออกจากระบบ การลบใบแจ้งหนี้จะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบแจ้งหนี้ได้"
       }
     },
-    "/receipts": {
+    "/v1/receipts": {
       "post": {
         "summary": "Create Receipt",
-        "description": "สำหรับสร้างใบเสร็จ และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
+        "description": "สำหรับ`สร้างใบเสร็จ` และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
         "operationId": "createReceipt",
         "tags": [
           "Receipts"
