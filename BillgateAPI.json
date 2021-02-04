@@ -2273,5 +2273,11 @@
       "in": "query",
       "description": ""
     }
-  }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ]
 }
