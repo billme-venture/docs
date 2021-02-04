@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.1.0 — Developer Preview",
-    "description": "![](https://assets.billme.co.th/static/images/billme-cover.png)\n👉 หากพบปัญหาหรือมีข้อเสนอแนะโปรดติดต่อ contact@billme.co.th",
+    "version": "v1.1.1 — Developer Preview",
+    "description": "![](https://assets.billme.co.th/static/images/billme-cover.png)\n\n---\n\n👉 หากพบปัญหาหรือมีข้อเสนอแนะ ติดต่อหาบิลมีได้โดยตรงที่\n\n**Facebook:** fb.com/billme.co.th\n\n**โทร:** 081-649-5939\n\n**อีเมล:** contact@billme.co.th\n\n**สถานที่:** 129 อาคาร BIG C0-Working Space \nถ.พระราม 9 แขวงห้วยขวาง เขตห้วยขวาง\nกรุงเทพมหานคร 10310\n\n---\n> Billme คือ กลุ่มคนที่ตั้งใจที่จะนำเทคโนโลยีมาประกอบกับธุรกิจเพื่อให้ ธุรกิจสามารถพัฒนาได้ โดยทีมของเราโฟกัสที่‘บิล’ เพราะเอกสาร เป็นสิ่งที่ทำให้ธุรกิจเสียเวลา ทีมของเราต้องการที่จะทำระบบที่ทำให้ลูกค้า สามารถใช้ได้อย่างวางใจ เรามีความตั้งใจในการพัฒนาเพื่อให้ผู้ใช้งานระบบของเรา สามารถโฟกัสที่ธุรกิจหลักของตัวเองได้อย่างเต็มที่ โดยมีพวกเราเป็นกำลังเสริม ที่พร้อมจะวิ่งไปกับผู้ใช้",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
       "email": "contact@billme.co.th",
