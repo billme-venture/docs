@@ -2,12 +2,12 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v0.0.0",
-    "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยืนดีต้อนรับเข้าสู่หน้าเว็บ Billgate API Docs คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\nสำหรับการเริ่มต้นใช้งานให้ดำเนินการตามขั้นตอนดังนี้\n1. ทำการสมัครสมาชิกที่ https://register.billme.co.th \n2. สร้างโปรไฟล์ธุรกิจของคุณที่ https://billbox.billme.co.th\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ https://forms.gle/emSo2jXAssXkPXKD8\n4. รอการตอบกลับจากทีมงาน และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู การตั้งค่า/Billgate API\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
+    "version": "v1.0.0 — Developer Preview",
+    "description": "👉 หากพบปัญหาหรือมีข้อเสนอแนะโปรดติดต่อ contact@billme.co.th",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
       "email": "contact@billme.co.th",
-      "url": "m.me/billme.co.th"
+      "url": "https://m.me/billme.co.th"
     }
   },
   "host": "api.billme.co.th",
@@ -1331,11 +1331,11 @@
                 },
                 "withholding_tax": {
                   "type": "object",
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "required": [
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
                       "type": "number",
@@ -1359,16 +1359,18 @@
                   "description": "หมายเหตุ"
                 },
                 "payment": {
-                  "type": "object",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "description": "การชำระเงิน",
                   "required": [
                     "paid_date",
                     "amount"
                   ],
-                  "description": "การชำระเงิน",
                   "properties": {
                     "paid_date": {
                       "type": "string",
-                      "minLength": 1,
                       "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
@@ -1401,11 +1403,11 @@
                 },
                 "references": {
                   "type": "object",
+                  "description": "เอกสารที่เกี่ยวข้อง",
                   "required": [
                     "invoice_id",
                     "tax_invoice_id"
                   ],
-                  "description": "เอกสารที่เกี่ยวข้อง",
                   "properties": {
                     "invoice_id": {
                       "type": "string",
@@ -1436,7 +1438,6 @@
                 "total",
                 "withholding_tax",
                 "paid_amount",
-                "payment",
                 "receipt_pdf_url",
                 "attachments",
                 "references"
@@ -1885,13 +1886,13 @@
                 },
                 "merchant": {
                   "type": "object",
+                  "description": "ข้อมูลธุรกิจของคุณ",
                   "required": [
                     "name",
                     "phone",
                     "email",
                     "address"
                   ],
-                  "description": "ข้อมูลธุรุกิจของคุณ",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -1917,6 +1918,7 @@
                 },
                 "customer": {
                   "type": "object",
+                  "description": "ข้อมูลลูกค้า",
                   "required": [
                     "name",
                     "tax_number",
@@ -1924,7 +1926,6 @@
                     "emails",
                     "address"
                   ],
-                  "description": "ข้อมูลลูกค้า",
                   "properties": {
                     "name": {
                       "type": "string",
@@ -2009,12 +2010,12 @@
                 },
                 "vat": {
                   "type": "object",
+                  "description": "ภาษีมูลค่าเพิ่ม",
                   "required": [
                     "is_included",
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีมูลค่าเพิ่ม",
                   "properties": {
                     "is_included": {
                       "type": "boolean",
@@ -2044,11 +2045,11 @@
                 },
                 "withholding_tax": {
                   "type": "object",
+                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "required": [
                     "rate",
                     "amount"
                   ],
-                  "description": "ภาษีหัก ณ ที่จ่าย",
                   "properties": {
                     "rate": {
                       "type": "number",
@@ -2072,21 +2073,23 @@
                   "description": "หมายเหตุ"
                 },
                 "payment": {
-                  "type": "object",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "description": "การชำระเงิน",
                   "required": [
                     "paid_date",
                     "amount"
                   ],
-                  "description": "การชำระเงิน",
                   "properties": {
                     "paid_date": {
                       "type": "string",
-                      "minLength": 1,
                       "description": "วันที่ชำระเงิน"
                     },
                     "amount": {
                       "type": "number",
-                      "description": "จำนวนที่ชำระเงิน"
+                      "description": "จำนวนเงินที่ชำระ"
                     }
                   }
                 },
@@ -2114,11 +2117,11 @@
                 },
                 "references": {
                   "type": "object",
+                  "description": "รายการเอกสารอ้างอิง",
                   "required": [
                     "invoice_id",
                     "receipt_id"
                   ],
-                  "description": "รายการเอกสารอ้างอิง",
                   "properties": {
                     "invoice_id": {
                       "type": "string",
@@ -2149,7 +2152,6 @@
                 "total",
                 "withholding_tax",
                 "paid_amount",
-                "payment",
                 "tax_invoice_pdf_url",
                 "attachments",
                 "references"
@@ -2250,6 +2252,14 @@
         ],
         "description": "สำหรับลบใบกำกับภาษีที่ไม่ต้องการออกจากระบบ การลบใบกำกับภาษีจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบกำกับภาษีได้"
       }
+    }
+  },
+  "securityDefinitions": {
+    "API Key - 1": {
+      "name": "API Key",
+      "type": "apiKey",
+      "in": "query",
+      "description": ""
     }
   }
 }
