@@ -279,6 +279,12 @@
             "name": "Content-Type",
             "required": true,
             "default": "application/json"
+          },
+          {
+            "type": "string",
+            "in": "query",
+            "name": "customer_id",
+            "description": "`id` สำหรับออกใบแจ้งหนี้ให้กับลูกค้า"
           }
         ],
         "responses": {
@@ -1096,6 +1102,11 @@
                   "type": "string",
                   "description": "id ของใบเสร็จ"
                 }
+              }
+            },
+            "examples": {
+              "example-1": {
+                "receipt_id": "string"
               }
             }
           }
@@ -2206,6 +2217,66 @@
         "parameters": [],
         "description": "สำหรับลบใบกำกับภาษีที่ไม่ต้องการออกจากระบบ การลบใบกำกับภาษีจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบกำกับภาษีได้"
       }
+    },
+    "/v1/customers": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "operationId": "listCustomers",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "integer"
+                },
+                "previous": {
+                  "type": "integer"
+                },
+                "data": {
+                  "type": [
+                    "string",
+                    "array"
+                  ],
+                  "items": {
+                    "$ref": "#/definitions/Customer"
+                  }
+                }
+              },
+              "required": [
+                "total",
+                "data"
+              ]
+            }
+          }
+        },
+        "description": "สำหรับเรียกดู`รายการลูกค้า`ที่มีในบริษัททั้งหมด"
+      },
+      "post": {
+        "summary": "Create a new Customer",
+        "operationId": "createCustomer",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "สำหรับ`สร้างรายชื่อลูกค้าใหม่`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -2230,17 +2301,105 @@
     "Customer": {
       "title": "Customer",
       "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        }
-      },
       "description": "ข้อมูลลูกค้าสำหรับส่งใบแจ้งหนี้และเอกสารอื่น ๆ",
       "x-examples": {
         "example-1": {
           "id": "string"
         }
-      }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id ของลูกค้า",
+          "maxLength": 32,
+          "example": "2bd61a952455483583b89dd53a937ef6"
+        },
+        "type": {
+          "type": "string",
+          "description": "ประเภทของลูกค้า (บุคคลธรรมดา, นิติบุคคล)",
+          "enum": [
+            "individual",
+            "corporate"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "ชื่อสำหรับออกเอกสาร",
+          "maxLength": 140
+        },
+        "alias": {
+          "type": "string",
+          "description": "ชื่อเรียกแทน/ชื่อย่อ",
+          "maxLength": 140
+        },
+        "tax_number": {
+          "type": "string",
+          "description": "เลขรหัสประชาชน/เลขนิติบุคคล",
+          "minLength": 13,
+          "maxLength": 13,
+          "example": "0000000000000"
+        },
+        "branch_number": {
+          "type": "string",
+          "description": "รหัสสาขา 5 หลัก (หากเป็นบุคคลธรรมดาจะเป็น 00000)",
+          "example": "00000",
+          "minLength": 5,
+          "maxLength": 5
+        },
+        "phone_number": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "หมายเลขโทรศัพท์ (หากมีมากกว่า 1 หมายเลข ให้ใส่ `,` คั่น)",
+          "example": "0800000000,0900000000"
+        },
+        "emails": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+          "description": "อีเมล"
+        },
+        "address": {
+          "type": [
+            "string",
+            "object"
+          ],
+          "description": "ที่อยู่",
+          "properties": {
+            "house_number": {
+              "type": "string",
+              "description": "เลขที่",
+              "maxLength": 140
+            },
+            "sub_district": {
+              "type": "string",
+              "description": "ตำบล/แขวง",
+              "maxLength": 30
+            },
+            "district": {
+              "type": "string",
+              "description": "อำเภอ/เขต",
+              "maxLength": 30
+            },
+            "province": {
+              "type": "string",
+              "description": "จังหวัด",
+              "maxLength": 30
+            },
+            "post_code": {
+              "type": "string",
+              "description": "รหัสไปรษณีย์",
+              "maxLength": 5,
+              "minLength": 5
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "emails",
+        "address"
+      ]
     }
   }
 }
