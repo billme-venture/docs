@@ -2333,7 +2333,9 @@
       ],
       "get": {
         "summary": "Get an existing Customer",
-        "tags": [],
+        "tags": [
+          "Customers"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2351,7 +2353,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Update an existing Customer",
         "operationId": "updateCustomerById",
         "responses": {
           "200": {
@@ -2376,17 +2378,23 @@
             },
             "description": ""
           }
+        ],
+        "tags": [
+          "Customers"
         ]
       },
       "delete": {
-        "summary": "",
+        "summary": "Delete an existing Customer",
         "operationId": "deleteCustomerById",
         "responses": {
           "204": {
             "description": "No Content"
           }
         },
-        "description": "`ลบข้อมูลลูกค้า`ที่ไม่ต้องการ"
+        "description": "`ลบข้อมูลลูกค้า`ที่ไม่ต้องการ",
+        "tags": [
+          "Customers"
+        ]
       }
     }
   },
@@ -2511,7 +2519,10 @@
           "minLength": 5
         }
       },
-      "description": "ข้อมูลประเภทที่อยู่"
+      "description": "ข้อมูลประเภทที่อยู่",
+      "x-tags": [
+        "Customers"
+      ]
     },
     "Customer-Request": {
       "title": "Customer-Request",
