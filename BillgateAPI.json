@@ -2225,7 +2225,9 @@
     "/v1/customers": {
       "get": {
         "summary": "List existing Customers",
-        "tags": ["Customers"],
+        "tags": [
+          "Customers"
+        ],
         "operationId": "listCustomers",
         "security": [
           {
@@ -2267,7 +2269,9 @@
         "description": "สำหรับเรียกดู`รายการลูกค้า`ที่มีในบริษัททั้งหมด"
       },
       "post": {
-        "tags": ["Customers"],
+        "tags": [
+          "Customers"
+        ],
         "summary": "Create a new Customer",
         "operationId": "createCustomer",
         "responses": {
@@ -2317,11 +2321,7 @@
       "title": "Customer",
       "type": "object",
       "description": "ข้อมูลลูกค้าสำหรับส่งใบแจ้งหนี้และเอกสารอื่น ๆ",
-      "x-examples": {
-        "example-1": {
-          "id": "string"
-        }
-      },
+      "x-examples": {},
       "properties": {
         "id": {
           "type": "string",
@@ -2415,6 +2415,9 @@
         "name",
         "emails",
         "address"
+      ],
+      "x-tags": [
+        "Customers"
       ]
     }
   }
