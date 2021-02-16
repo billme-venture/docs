@@ -2241,13 +2241,16 @@
               "type": "object",
               "properties": {
                 "total": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "จำนวนลูกค้าทั้งหมดที่มีบนระบบ"
                 },
                 "next": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "pagination สำหรับข้อมูลที่เหลือใน"
                 },
                 "previous": {
-                  "type": "integer"
+                  "type": "integer",
+                  "description": "pagination สำหรับข้อมูลที่ผ่านมา"
                 },
                 "data": {
                   "type": [
@@ -2263,10 +2266,26 @@
                 "total",
                 "data"
               ]
-            }
+            },
+            "examples": {}
           }
         },
-        "description": "สำหรับเรียกดู`รายการลูกค้า`ที่มีในบริษัททั้งหมด"
+        "description": "สำหรับเรียกดู`รายการลูกค้า`ที่มีในบริษัททั้งหมด",
+        "parameters": [
+          {
+            "type": "number",
+            "in": "query",
+            "name": "offset",
+            "description": "pagination สำหรับข้ามจำนวนข้อมูล"
+          },
+          {
+            "type": "number",
+            "in": "query",
+            "name": "limit",
+            "default": 20,
+            "description": "pagination สำหรับจำกัดปริมาณข้อมูล"
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -2276,7 +2295,10 @@
         "operationId": "createCustomer",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
           }
         },
         "description": "สำหรับ`สร้างรายชื่อลูกค้าใหม่`",
@@ -2290,9 +2312,15 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "type": "object",
-              "properties": {}
+              "$ref": "#/definitions/Customer"
             }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
           }
         ]
       }
