@@ -2225,7 +2225,7 @@
     "/v1/customers": {
       "get": {
         "summary": "List existing Customers",
-        "tags": [],
+        "tags": ["Customers"],
         "operationId": "listCustomers",
         "security": [
           {
