@@ -2350,6 +2350,9 @@
       "type": "object",
       "description": "ข้อมูลลูกค้าสำหรับส่งใบแจ้งหนี้และเอกสารอื่น ๆ",
       "x-examples": {},
+      "x-tags": [
+        "Customers"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -2402,39 +2405,7 @@
           "format": "email"
         },
         "address": {
-          "type": [
-            "string",
-            "object"
-          ],
-          "description": "ที่อยู่",
-          "properties": {
-            "house_number": {
-              "type": "string",
-              "description": "เลขที่",
-              "maxLength": 140
-            },
-            "sub_district": {
-              "type": "string",
-              "description": "ตำบล/แขวง",
-              "maxLength": 30
-            },
-            "district": {
-              "type": "string",
-              "description": "อำเภอ/เขต",
-              "maxLength": 30
-            },
-            "province": {
-              "type": "string",
-              "description": "จังหวัด",
-              "maxLength": 30
-            },
-            "post_code": {
-              "type": "string",
-              "description": "รหัสไปรษณีย์",
-              "maxLength": 5,
-              "minLength": 5
-            }
-          }
+          "$ref": "#/definitions/Address"
         }
       },
       "required": [
@@ -2443,10 +2414,40 @@
         "name",
         "emails",
         "address"
-      ],
-      "x-tags": [
-        "Customers"
       ]
+    },
+    "Address": {
+      "title": "Address",
+      "type": "object",
+      "properties": {
+        "house_number": {
+          "type": "string",
+          "description": "เลขที่",
+          "maxLength": 140
+        },
+        "sub_district": {
+          "type": "string",
+          "description": "ตำบล/แขวง",
+          "maxLength": 30
+        },
+        "district": {
+          "type": "string",
+          "description": "อำเภอ/เขต",
+          "maxLength": 30
+        },
+        "province": {
+          "type": "string",
+          "description": "จังหวัด",
+          "maxLength": 30
+        },
+        "post_code": {
+          "type": "string",
+          "description": "รหัสไปรษณีย์",
+          "maxLength": 5,
+          "minLength": 5
+        }
+      },
+      "description": "ข้อมูลประเภทที่อยู่"
     }
   }
 }
