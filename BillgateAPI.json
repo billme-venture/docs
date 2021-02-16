@@ -2276,14 +2276,17 @@
             "type": "number",
             "in": "query",
             "name": "offset",
-            "description": "pagination สำหรับข้ามจำนวนข้อมูล"
+            "description": "pagination สำหรับข้ามจำนวนข้อมูล",
+            "minimum": 0
           },
           {
             "type": "number",
             "in": "query",
             "name": "limit",
             "default": 20,
-            "description": "pagination สำหรับจำกัดปริมาณข้อมูล"
+            "description": "pagination สำหรับจำกัดปริมาณข้อมูล",
+            "minimum": 1,
+            "maximum": 100
           }
         ]
       },
@@ -2307,22 +2310,78 @@
             "ApiKeyAuth": []
           }
         ],
-        "parameters": [
-          {
+        "parameters": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "id ของลูกค้า",
+              "maxLength": 32,
+              "example": "2bd61a952455483583b89dd53a937ef6"
+            },
+            "type": {
+              "type": "string",
+              "description": "ประเภทของลูกค้า (บุคคลธรรมดา, นิติบุคคล)",
+              "enum": [
+                "individual",
+                "corporate"
+              ]
+            },
+            "name": {
+              "type": "string",
+              "description": "ชื่อสำหรับออกเอกสาร",
+              "maxLength": 140
+            },
+            "alias": {
+              "type": "string",
+              "description": "ชื่อเรียกแทน/ชื่อย่อ",
+              "maxLength": 140
+            },
+            "tax_number": {
+              "type": "string",
+              "description": "เลขรหัสประชาชน/เลขนิติบุคคล",
+              "minLength": 13,
+              "maxLength": 13,
+              "example": "0000000000000"
+            },
+            "branch_number": {
+              "type": "string",
+              "description": "รหัสสาขา 5 หลัก (หากเป็นบุคคลธรรมดาจะเป็น 00000)",
+              "example": "00000",
+              "minLength": 5,
+              "maxLength": 5
+            },
+            "phone_number": {
+              "type": "string",
+              "maxLength": 30,
+              "description": "หมายเลขโทรศัพท์ (หากมีมากกว่า 1 หมายเลข ให้ใส่ `,` คั่น)",
+              "example": "0800000000,0900000000"
+            },
+            "emails": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+              "description": "อีเมล",
+              "format": "email"
+            },
+            "address": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "name",
+            "emails",
+            "address"
+          ],
+          "-": {
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Customer"
+              "type": "object",
+              "properties": {}
             }
-          },
-          {
-            "type": "string",
-            "in": "header",
-            "name": "Content-Type",
-            "required": true,
-            "default": "application/json"
           }
-        ]
+        }
       }
     }
   },
