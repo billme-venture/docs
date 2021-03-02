@@ -2331,6 +2331,9 @@
     "Invoice": {
       "description": "",
       "type": "object",
+      "x-tags": [
+        "Invoices"
+      ],
       "properties": {
         "id": {
           "type": "string",
