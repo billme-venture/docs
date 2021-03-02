@@ -2329,7 +2329,7 @@
       "description": "ข้อมูลประเภท `JSON` เมื่อทำ operation `POST` หรือ `PUT`"
     },
     "Invoice": {
-      "description": "",
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้`",
       "type": "object",
       "x-tags": [
         "Invoices"
@@ -2589,7 +2589,10 @@
           ]
         },
         "pdf_url": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "ลิงก์ PDF ของใบแจ้งหนี้",
           "format": "uri"
         },
@@ -2618,14 +2621,24 @@
         "references": {
           "type": "object",
           "description": "เอกสารที่เกี่ยวข้อง",
+          "required": [
+            "receipt_id",
+            "tax_invoice_id"
+          ],
           "properties": {
             "receipt_id": {
-              "type": "string",
+              "type": [
+                "string",
+                "null"
+              ],
               "minLength": 1,
               "description": "receipt id ของใบเสร็จที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
             },
             "tax_invoice_id": {
-              "type": "string",
+              "type": [
+                "string",
+                "null"
+              ],
               "minLength": 1,
               "description": "tax invoice id ของใบกำกับภาษีที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
             }
@@ -2651,6 +2664,7 @@
         "withholding_tax",
         "paid_amount",
         "payment_methods",
+        "pdf_url",
         "attachments",
         "references"
       ]
