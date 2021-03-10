@@ -355,6 +355,7 @@
                 ],
                 "payment": null,
                 "pdf_url": null,
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
                 "attachments": [],
                 "references": {
                   "receipt_id": null,
@@ -583,6 +584,7 @@
                   "amount": 1490
                 },
                 "pdf_url": "https://storage.googleapis.com/billhub/production/invoices/98FE9D3919179914713340F7A705A4F2/INV63000027.pdf",
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
                 "attachments": [],
                 "references": {
                   "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
@@ -1041,7 +1043,8 @@
                   "amount": 1490,
                   "slip": null
                 },
-                "receipt_pdf_url": "https://storage.googleapis.com/billhub/production/1129900201032/5b8408_Receipt_RCP63000005.pdf",
+                "pdf_url": "https://storage.googleapis.com/billhub/production/1129900201032/5b8408_Receipt_RCP63000005.pdf",
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
                 "attachments": [],
                 "references": {
                   "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
@@ -1503,7 +1506,8 @@
                   "amount": 1490,
                   "slip": null
                 },
-                "tax_invoice_pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+                "pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
                 "attachments": [],
                 "references": {
                   "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
@@ -2182,6 +2186,13 @@
           "description": "ลิงก์ PDF ของใบแจ้งหนี้",
           "format": "uri"
         },
+        "shareable_url": {
+          "type": [
+            "string"
+          ],
+          "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+          "format": "uri"
+        },
         "attachments": {
           "type": "array",
           "uniqueItems": true,
@@ -2252,9 +2263,11 @@
         "payment_methods",
         "payment",
         "pdf_url",
+        "shareable_url",
         "attachments",
         "references"
-      ]
+      ],
+      "title": "Invoice"
     },
     "Receipt": {
       "title": "Receipt",
@@ -2317,6 +2330,7 @@
             "slip": null
           },
           "pdf_url": "https://storage.googleapis.com/billhub/production/1129900201032/5b8408_Receipt_RCP63000005.pdf",
+          "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
           "attachments": [],
           "references": {
             "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
@@ -2562,6 +2576,13 @@
           "minLength": 1,
           "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบเสร็จ"
         },
+        "shareable_url": {
+          "type": [
+            "string"
+          ],
+          "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+          "format": "uri"
+        },
         "attachments": {
           "type": "array",
           "description": "ไฟล์แนบ",
@@ -2617,6 +2638,7 @@
         "withholding_tax",
         "paid_amount",
         "pdf_url",
+        "shareable_url",
         "attachments",
         "references"
       ]
@@ -2681,6 +2703,7 @@
             "slip": null
           },
           "pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+          "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
           "attachments": [],
           "references": {
             "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
@@ -2926,6 +2949,13 @@
           "minLength": 1,
           "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบกำกับภาษี"
         },
+        "shareable_url": {
+          "type": [
+            "string"
+          ],
+          "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+          "format": "uri"
+        },
         "attachments": {
           "type": "array",
           "description": "รายการเอกสารแนบ",
@@ -2981,6 +3011,7 @@
         "withholding_tax",
         "paid_amount",
         "pdf_url",
+        "shareable_url",
         "attachments",
         "references"
       ]
