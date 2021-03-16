@@ -1922,6 +1922,7 @@
       "x-tags": [
         "Invoices"
       ],
+      "title": "Invoice",
       "properties": {
         "id": {
           "type": "string",
@@ -2243,6 +2244,13 @@
               "description": "tax invoice id ของใบกำกับภาษีที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
             }
           }
+        },
+        "qrcode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "พร้อมเพย์ QR Code ในรูปแบบของ Base64 Image"
         }
       },
       "required": [
@@ -2268,9 +2276,9 @@
         "pdf_url",
         "shareable_url",
         "attachments",
-        "references"
-      ],
-      "title": "Invoice"
+        "references",
+        "qrcode"
+      ]
     },
     "Receipt": {
       "title": "Receipt",
