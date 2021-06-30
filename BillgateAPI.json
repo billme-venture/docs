@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.6.1 — Developer Preview",
+    "version": "v1.7.0 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -623,6 +623,193 @@
         },
         "parameters": [],
         "description": "สำหรับ`ลบใบแจ้งหนี้`ที่ไม่ต้องการออกจากระบบ การลบใบแจ้งหนี้จะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบแจ้งหนี้ได้"
+      }
+    },
+    "/v1/recurring_invoices": {
+      "get": {
+        "summary": "List existing Recurring Invoices",
+        "tags": [
+          "Recurring Invoices"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number"
+                },
+                "next": {
+                  "type": "number",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "number",
+                  "x-nullable": true
+                },
+                "recurring_invoices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Recurring-Invoice"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            }
+          }
+        },
+        "operationId": "listRecurringInvoices",
+        "description": "เรียกดูรายการ`ใบแจ้งหนี้อัตโนมัติ`ที่มีในระบบ",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/customer_id"
+          },
+          {
+            "$ref": "#/parameters/template_id"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a new Recurring Invoice",
+        "operationId": "createRecurringInvoice",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "examples": {},
+            "schema": {
+              "$ref": "#/definitions/Recurring-Invoice"
+            }
+          }
+        },
+        "description": "สร้าง`ใบแจ้งหนี้อัตโนมัติ`ใหม่",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "invoice_template_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "`id`ของ`รูปแบบใบแจ้งหนี้`"
+                },
+                "customer_id": {
+                  "type": "string",
+                  "description": "`id`ของลูกค้าจากสมุดรายชื่อลูกค้า"
+                },
+                "number": {
+                  "type": "string",
+                  "description": "เลขที่อ้างอิงของใบแจ้งหนี้อัตโนมัติ"
+                },
+                "frequency": {
+                  "type": "string",
+                  "description": "ความถี่ในการส่งใบแจ้งหนี้",
+                  "enum": [
+                    "monthly"
+                  ]
+                },
+                "start_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก"
+                },
+                "cycle": {
+                  "type": "number",
+                  "description": "จำนวนรอบที่ต้องการส่งใบแจ้งหนี้",
+                  "minimum": 1,
+                  "maximum": 1200,
+                  "x-nullable": true
+                }
+              },
+              "required": [
+                "invoice_template_id",
+                "customer_id",
+                "number",
+                "frequency",
+                "start_date",
+                "cycle"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/v1/recurring_invoices/{recurringInvoiceId}": {
+      "get": {
+        "summary": "Get an existing Recurring Invoice",
+        "tags": [
+          "Recurring Invoices"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Recurring-Invoice"
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            }
+          }
+        },
+        "operationId": "getRecurringInvoiceById",
+        "description": "เรียกดู`ใบแจ้งหนี้อัตโนมัติ`ที่สร้างไว้",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": []
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "recurringInvoiceId",
+          "in": "path",
+          "required": true,
+          "format": "uuid"
+        }
+      ],
+      "delete": {
+        "summary": "Cancel an existing Recurring Invoice",
+        "operationId": "cancelRecurringInvoiceById",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "ยกเลิกการส่ง`ใบแจ้งหนี้อัตโนัมัติ`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
     },
     "/v1/receipts": {
@@ -3027,6 +3214,87 @@
         "references"
       ],
       "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้/ใบกำกับภาษี`"
+    },
+    "Recurring-Invoice": {
+      "title": "Recurring-Invoice",
+      "type": "object",
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้อัตโนัมัติ`",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "`id` ของใบแจ้งหนี้อันโนัมัติ",
+          "format": "uuid"
+        },
+        "invoice_template_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "`id` ของรูปแบบใบแจ้งหนี้"
+        },
+        "customer": {
+          "type": "object",
+          "description": "ข้อมูลลูกค้าแบบย่อ",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "`id` ของลูกค้าตามสมุดรายชื่อลูกค้า"
+            },
+            "name": {
+              "type": "string",
+              "description": "ชื่อลูกค้า"
+            }
+          }
+        },
+        "number": {
+          "type": "string",
+          "description": "เลขที่สัญญาของใบแจ้งหนี้อัตโนมัติ"
+        },
+        "frequency": {
+          "type": "string",
+          "enum": [
+            "monthly"
+          ],
+          "description": "ความถี่ในการส่งใบแจ้งหนี้รอบถัดไป"
+        },
+        "start_date": {
+          "type": "string",
+          "description": "วันที่เริ่มส่งใบแจ้งหนี้รอบแรก",
+          "format": "date"
+        },
+        "end_date": {
+          "type": "string",
+          "description": "วันที่ส่งใบแจ้งหนี้ครั้งสุดท้าย",
+          "format": "date",
+          "x-nullable": true
+        },
+        "next_sending_date": {
+          "type": "string",
+          "description": "วันที่สำหรับส่งใบแจ้งหนี้ครั้งถัดไป",
+          "format": "date",
+          "x-nullable": true
+        },
+        "sent_count": {
+          "type": "number",
+          "description": "จำนวนรอบใบแจ้งหนี้ที่ส่งไปแล้ว",
+          "minimum": 0
+        },
+        "cycle": {
+          "type": "number",
+          "description": "จำนวนรอบส่งทั้งหมด",
+          "minimum": 0,
+          "x-nullable": true
+        },
+        "canceled_at": {
+          "type": "string",
+          "description": "วันเวลาที่ยกเลิกการส่งใบแจ้งหนี้อัตโนมัติ",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "created_at": {
+          "type": "string",
+          "description": "วันเวลาที่เริ่มสร้างใบแจ้งหนี้อัตโนมัติ",
+          "format": "date-time"
+        }
+      }
     }
   },
   "parameters": {
@@ -3037,7 +3305,11 @@
       "type": "integer",
       "description": "จำนวนข้อมูลใบแจ้งหนี้ที่ต้องการข้าม",
       "default": 0,
-      "minimum": 0
+      "minimum": 0,
+      "schema": {
+        "type": "number",
+        "minimum": 0
+      }
     },
     "limit": {
       "name": "limit",
@@ -3046,7 +3318,34 @@
       "default": 20,
       "minimum": 0,
       "maximum": 100,
-      "description": "จำนวนข้อมูลใบแจ้งหนี้ที่ต้องการผลลัพธ์"
+      "description": "จำนวนข้อมูลใบแจ้งหนี้ที่ต้องการผลลัพธ์",
+      "schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100,
+        "default": 50
+      }
+    },
+    "customer_id": {
+      "name": "customer_id",
+      "in": "query",
+      "schema": {
+        "type": "string",
+        "minLength": 0,
+        "maxLength": 32,
+        "pattern": ".?[A-Za-z0-9]"
+      },
+      "description": "`id` ลูกค้าจากสมุดรายชื่อลูกค้า"
+    },
+    "template_id": {
+      "name": "template_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+        "type": "string",
+        "pattern": "[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}"
+      },
+      "description": "`id` ของ template ในรูปแบบของ UUID"
     }
   },
   "responses": {}
