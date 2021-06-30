@@ -3300,7 +3300,10 @@
           "description": "วันเวลาที่เริ่มสร้างใบแจ้งหนี้อัตโนมัติ",
           "format": "date-time"
         }
-      }
+      },
+      "x-tags": [
+        "Recurring Invoices"
+      ]
     }
   },
   "parameters": {
