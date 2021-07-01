@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.9.0 — Developer Preview",
+    "version": "v1.9.1 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -1964,7 +1964,103 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Invoice-Template-Request"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "ชื่อ`ใบแจ้งหนี้`",
+                  "example": "ค่าบริการรายเดือน",
+                  "x-nullable": true
+                },
+                "number": {
+                  "type": "string",
+                  "description": "เลขที่อ้างอิง`รูปแบบใบแจ้งหนี้`",
+                  "example": "TEMPLATE-000001"
+                },
+                "items": {
+                  "type": "array",
+                  "description": "รายการสินค้า/บริการ",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "รายละเอียดสินค้า/บริการ"
+                      },
+                      "quantity": {
+                        "type": "number",
+                        "description": "จำนวน/หน่วย",
+                        "format": "double"
+                      },
+                      "price_per_item": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "ราคาสินค้า/บริการต่อหน่วย"
+                      },
+                      "vat_rate": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 7,
+                        "description": "ภาษีมูลค่าเพิ่ม (หากไม่มีให้ใส่ null)",
+                        "x-nullable": true
+                      },
+                      "discount": {
+                        "type": "object",
+                        "description": "ส่วนลด (หากไม่มีให้ใส่ null)",
+                        "x-nullable": true,
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "percentage",
+                              "money"
+                            ],
+                            "description": "ประเภทส่วนลด"
+                          },
+                          "total": {
+                            "type": "number",
+                            "description": "มูลค่าส่วนลดอ้างอิงจากประเภท",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "หมายเหตุ",
+                  "example": "กรุณาชำระภายในวันที่กำหนดเท่านั้น"
+                },
+                "withholding_tax": {
+                  "description": "มูลค่าภาษีหัก ณ ที่จ่าย",
+                  "type": "object",
+                  "properties": {
+                    "on": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่"
+                    },
+                    "rate": {
+                      "type": "number",
+                      "format": "double",
+                      "default": 0,
+                      "example": 3,
+                      "description": "อัตราภาษีหัก ณ​ ที่จ่าย"
+                    }
+                  }
+                },
+                "is_vat_included": {
+                  "type": "boolean",
+                  "description": "มีการคิดภาษีมูลค่าเพิ่มแบบรวมไปในรายการสินค้าหรือไม่",
+                  "default": false
+                },
+                "due_date_term": {
+                  "type": "integer",
+                  "description": "จำนวนวันที่ต้องชำระหลังออกใบแจ้งหนี้",
+                  "example": 30
+                }
+              }
             }
           }
         ],
@@ -2035,7 +2131,8 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Invoice-Template-Request"
+              "type": "object",
+              "properties": {}
             }
           }
         ]
@@ -3461,8 +3558,8 @@
         }
       }
     },
-    "Invoice-Template": {
-      "title": "Invoice Template",
+    "Invoice-Template-Response": {
+      "title": "Invoice Template Response",
       "type": "object",
       "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`รูปแบบใบแจ้งหนี้`",
       "properties": {
@@ -3689,93 +3786,16 @@
       "description": "โครงสร้างข้อมูล JSON สำหรับ `สร้าง` และ `อัพเดท` `รูปแบบใบแจ้งหนี้`",
       "properties": {
         "name": {
-          "type": "string",
-          "example": "ค่าบริการรายเดือน",
-          "description": "ชื่อ`ใบแจ้งหนี้`",
-          "x-nullable": true
+          "type": "string"
         },
         "number": {
-          "type": "string",
-          "example": "TEMPLATE-000001",
-          "description": "เลขที่อ้างอิง`รูปแบบใบแจ้งหนี้`"
+          "type": "string"
         },
         "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string",
-                "example": "ค่าทำความสะอาด",
-                "description": "รายละเอียดสินค้า/บริการ"
-              },
-              "quantity": {
-                "type": "number",
-                "example": "1",
-                "format": "double",
-                "description": "จำนวน/หน่วย"
-              },
-              "price_per_item": {
-                "type": "number",
-                "format": "double",
-                "description": "ราคาสินค้า/บริการต่อหน่วย"
-              },
-              "vat_rate": {
-                "type": "number",
-                "description": "ภาษีมูลค่าเพิ่ม (หากไม่มีให้ใส่ null)",
-                "format": "double",
-                "example": 7,
-                "x-nullable": true
-              },
-              "discount": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "percentage",
-                      "money"
-                    ]
-                  },
-                  "total": {
-                    "type": "number",
-                    "description": "มูลค่าส่วนลดอ้างอิงจากประเภท",
-                    "format": "double"
-                  }
-                }
-              }
-            }
-          }
+          "type": "string"
         },
-        "remark": {
-          "type": "string",
-          "description": "หมายเหตุ",
-          "example": "กรุณาชำระภายในวันที่กำหนดเท่านั้น"
-        },
-        "withholding_tax": {
-          "type": "object",
-          "description": "มูลค่าภาษีหัก ณ ที่จ่าย",
-          "properties": {
-            "on": {
-              "type": "boolean",
-              "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่",
-              "default": true
-            },
-            "rate": {
-              "type": "number",
-              "description": "อัตราภาษีหัก ณ​ ที่จ่าย",
-              "example": 3,
-              "format": "double"
-            }
-          }
-        },
-        "is_vat_included": {
-          "description": "มีการคิดภาษีมูลค่าเพิ่มแบบรวมไปในรายการสินค้าหรือไม่",
-          "type": "boolean"
-        },
-        "due_date_term": {
-          "type": "integer",
-          "description": "จำนวนวันที่ต้องชำระหลังออกใบแจ้งหนี้"
+        "": {
+          "type": "string"
         }
       }
     }
