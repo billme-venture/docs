@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.9.2 — Developer Preview",
+    "version": "v1.10.0 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -1134,15 +1134,14 @@
                   "default": 0
                 },
                 "next": {
-                  "type": [
-                    "integer",
-                    "null"
-                  ],
-                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป"
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+                  "x-nullable": true
                 },
                 "previous": {
-                  "type": "string",
-                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว"
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+                  "type": "number",
+                  "x-nullable": true
                 },
                 "data": {
                   "type": "array",
@@ -1169,7 +1168,15 @@
         "tags": [
           "Receipts"
         ],
-        "description": "เรียกดูรายการใบเสร็จที่มีอยู่ในระบบ"
+        "description": "เรียกดูรายการใบเสร็จที่มีอยู่ในระบบ",
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ]
       }
     },
     "/v1/receipts/{receiptId}": {
@@ -1635,6 +1642,14 @@
         ],
         "tags": [
           "Tax Invoices"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
         ]
       }
     },
@@ -1775,11 +1790,13 @@
                 },
                 "next": {
                   "type": "integer",
-                  "description": "pagination สำหรับข้อมูลที่เหลือใน"
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+                  "x-nullable": true
                 },
                 "previous": {
                   "type": "integer",
-                  "description": "pagination สำหรับข้อมูลที่ผ่านมา"
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+                  "x-nullable": true
                 },
                 "data": {
                   "type": [
@@ -1802,20 +1819,10 @@
         "description": "สำหรับเรียกดู`รายการลูกค้า`ที่มีในบริษัททั้งหมด",
         "parameters": [
           {
-            "type": "number",
-            "in": "query",
-            "name": "offset",
-            "description": "pagination สำหรับข้ามจำนวนข้อมูล",
-            "minimum": 0
+            "$ref": "#/parameters/offset"
           },
           {
-            "type": "number",
-            "in": "query",
-            "name": "limit",
-            "default": 20,
-            "description": "pagination สำหรับจำกัดปริมาณข้อมูล",
-            "minimum": 1,
-            "maximum": 100
+            "$ref": "#/parameters/limit"
           }
         ]
       },
@@ -1932,7 +1939,39 @@
         "tags": [
           "Invoice Templates"
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0,
+                  "description": "จำนวน`รูปแบบใบแจ้งหนี้`ทั้งหมดที่มีในระบบ"
+                },
+                "next": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+                  "x-nullable": true
+                },
+                "invoice_templates": {
+                  "type": "array",
+                  "description": "รายการ`รูปแบบใบแจ้งหนี้`",
+                  "items": {
+                    "$ref": "#/definitions/Invoice-Template-Response"
+                  }
+                }
+              }
+            }
+          }
+        },
         "operationId": "listInvoiceTemplates",
         "description": "เรียกดูรายการ`รูปแบบใบแจ้งหนี้`ที่สร้างไว้",
         "security": [
@@ -1956,7 +1995,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Invoice-Template"
+              "$ref": "#/definitions/Invoice-Template-Response"
             }
           }
         },
@@ -2096,7 +2135,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Invoice-Template"
+              "$ref": "#/definitions/Invoice-Template-Response"
             }
           }
         },
@@ -2115,7 +2154,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Invoice-Template"
+              "$ref": "#/definitions/Invoice-Template-Response"
             }
           }
         },
