@@ -3603,6 +3603,9 @@
       "title": "Invoice Template Response",
       "type": "object",
       "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`รูปแบบใบแจ้งหนี้`",
+      "x-tags": [
+        "Invoice Templates"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -3749,6 +3752,7 @@
             },
             "withholding_tax": {
               "type": "object",
+              "description": "ภาษีหัก ณ ที่จ่ายทั้งใบแจ้งหนี้",
               "properties": {
                 "on": {
                   "type": "boolean",
@@ -3813,10 +3817,7 @@
           "format": "date-time",
           "example": "2021-12-05 00:00:00"
         }
-      },
-      "x-tags": [
-        "Invoice Templates"
-      ]
+      }
     },
     "Invoice-Template-Request": {
       "title": "Invoice Template Request",
