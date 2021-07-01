@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.8.0 — Developer Preview",
+    "version": "v1.9.0 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -800,7 +800,8 @@
           "name": "recurringInvoiceId",
           "in": "path",
           "required": true,
-          "format": "uuid"
+          "format": "uuid",
+          "description": "`id`ของ`ใบแจ้งหนี้อัตโนมัติ`"
         }
       ],
       "delete": {
@@ -1920,6 +1921,238 @@
         "description": "`ลบข้อมูลลูกค้า`ที่ไม่ต้องการ",
         "tags": [
           "Customers"
+        ]
+      }
+    },
+    "/v1/templates/invoices": {
+      "get": {
+        "summary": "List existing Invoice Templates",
+        "tags": [
+          "Invoice Templates"
+        ],
+        "responses": {},
+        "operationId": "listInvoiceTemplates",
+        "description": "เรียกดูรายการ`รูปแบบใบแจ้งหนี้`ที่สร้างไว้",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a new Invoice Template",
+        "operationId": "createInvoiceTemplate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Template"
+            }
+          }
+        },
+        "description": "สร้าง`รูปแบบใบแจ้งหนี้`ใหม่",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "ชื่อ`ใบแจ้งหนี้`",
+                  "example": "ค่าบริการรายเดือน",
+                  "x-nullable": true
+                },
+                "number": {
+                  "type": "string",
+                  "description": "เลขที่อ้างอิง`รูปแบบใบแจ้งหนี้`",
+                  "example": "TEMPLATE-000001"
+                },
+                "items": {
+                  "type": "array",
+                  "description": "รายการสินค้า/บริการ",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "รายละเอียดสินค้า/บริการ"
+                      },
+                      "quantity": {
+                        "type": "number",
+                        "description": "จำนวน/หน่วย",
+                        "format": "double"
+                      },
+                      "price_per_item": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "ราคาสินค้า/บริการต่อหน่วย"
+                      },
+                      "vat_rate": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 7,
+                        "description": "ภาษีมูลค่าเพิ่ม (หากไม่มีให้ใส่ null)",
+                        "x-nullable": true
+                      },
+                      "discount": {
+                        "type": "object",
+                        "description": "ส่วนลด (หากไม่มีให้ใส่ null)",
+                        "x-nullable": true,
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "percentage",
+                              "money"
+                            ],
+                            "description": "ประเภทส่วนลด"
+                          },
+                          "total": {
+                            "type": "number",
+                            "description": "มูลค่าส่วนลดอ้างอิงจากประเภท",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "หมายเหตุ",
+                  "example": "กรุณาชำระภายในวันที่กำหนดเท่านั้น"
+                },
+                "withholding_tax": {
+                  "description": "มูลค่าภาษีหัก ณ ที่จ่าย",
+                  "type": "object",
+                  "properties": {
+                    "on": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่"
+                    },
+                    "rate": {
+                      "type": "number",
+                      "format": "double",
+                      "default": 0,
+                      "example": 3,
+                      "description": "อัตราภาษีหัก ณ​ ที่จ่าย"
+                    }
+                  }
+                },
+                "is_vat_included": {
+                  "type": "boolean",
+                  "description": "มีการคิดภาษีมูลค่าเพิ่มแบบรวมไปในรายการสินค้าหรือไม่",
+                  "default": false
+                },
+                "due_date_term": {
+                  "type": "integer",
+                  "description": "จำนวนวันที่ต้องชำระหลังออกใบแจ้งหนี้",
+                  "example": 30
+                }
+              }
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Invoice Templates"
+        ]
+      }
+    },
+    "/v1/templates/invoices/{invoiceTemplateId}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceTemplateId",
+          "in": "path",
+          "required": true,
+          "description": "`id`ของ`รูปแบบใบแจ้งหนี้`",
+          "format": "uuid"
+        }
+      ],
+      "get": {
+        "summary": "Get an existing Invoice Template",
+        "tags": [
+          "Invoice Templates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Template"
+            }
+          }
+        },
+        "operationId": "getInvoiceTemplate",
+        "description": "เรียกดู`รูปแบบใบแจ้งหนี้`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update an existing Invoice Template",
+        "operationId": "updateInvoiceTemplate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Template"
+            }
+          }
+        },
+        "tags": [
+          "Invoice Templates"
+        ],
+        "description": "อัพเดทโครงสร้าง`รูปแบบใบแจ้งหนี้`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an existing Invoice Template",
+        "operationId": "deleteInvoiceTemplate",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "ลบ`รูปแบบใบแจ้งหนี้`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Invoice Templates"
         ]
       }
     }
@@ -3226,7 +3459,7 @@
       "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้/ใบกำกับภาษี`"
     },
     "Recurring-Invoice": {
-      "title": "Recurring-Invoice",
+      "title": "Recurring Invoice",
       "type": "object",
       "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้อัตโนัมัติ`",
       "x-tags": [
@@ -3324,6 +3557,222 @@
           "format": "date-time"
         }
       }
+    },
+    "Invoice-Template": {
+      "title": "Invoice Template",
+      "type": "object",
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`รูปแบบใบแจ้งหนี้`",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "`id`ของรูปแบบใบแจ้งหนี้"
+        },
+        "number": {
+          "type": "string",
+          "description": "ชื่อรูปแบบใบแจ้งหนี้",
+          "example": "TEMPLATE-000001"
+        },
+        "template": {
+          "type": "object",
+          "description": "โครงของ`ใบแจ้งหนี้`",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "ชื่อใบแจ้งหนี้",
+              "example": "ค่าบริการรายเดือน",
+              "x-nullable": true
+            },
+            "items": {
+              "type": "array",
+              "description": "รายการเรียกชำระเงิน",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "description": "รายละเอียดสินค้า/บริการ",
+                    "example": "ค่าทำความสะอาด"
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "description": "จำนวน/หน่วย",
+                    "format": "double",
+                    "minimum": 0,
+                    "example": 1
+                  },
+                  "price_per_item": {
+                    "type": "number",
+                    "description": "ราคาต่อหน่วย",
+                    "format": "double",
+                    "minimum": 0,
+                    "example": 100
+                  },
+                  "vat": {
+                    "description": "ภาษีมูลค่าเพิ่ม",
+                    "type": "object",
+                    "x-nullable": true,
+                    "properties": {
+                      "rate": {
+                        "type": "number",
+                        "format": "double",
+                        "default": 0,
+                        "description": "อัตราภาษีมูลค่าเพิ่ม",
+                        "example": 7
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "มูลค่า",
+                        "format": "double",
+                        "example": 0
+                      }
+                    }
+                  },
+                  "discount": {
+                    "type": "object",
+                    "description": "ส่วนลด",
+                    "x-nullable": true,
+                    "properties": {
+                      "rate": {
+                        "type": "number",
+                        "description": "อัตราส่วนลด (%)",
+                        "example": 10,
+                        "x-nullable": true
+                      },
+                      "amount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "มูลค่าส่วนลดเงินสด",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "remark": {
+              "type": "string",
+              "description": "หมายเหตุ"
+            },
+            "due_date_term": {
+              "type": "integer",
+              "description": "ชำระภายในจำนวนวัน"
+            },
+            "discount": {
+              "type": "object",
+              "description": "มูลค่าส่วนลดรวมทั้งใบแจ้งหนี้",
+              "properties": {
+                "on": {
+                  "type": "boolean",
+                  "description": "มีหรือไม่มีส่วนลด"
+                },
+                "percentage": {
+                  "type": "number",
+                  "description": "อัตราร้อยละของส่วนลด",
+                  "format": "double",
+                  "example": 0.07
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "double",
+                  "example": 0,
+                  "description": "มูลค่าส่วนลดรวม"
+                }
+              }
+            },
+            "vat": {
+              "type": "object",
+              "description": "ภาษีมูลค่าเพิ่มทั้งใบแจ้งหนี้",
+              "properties": {
+                "on": {
+                  "type": "boolean",
+                  "description": "มี/ไม่มีการคิดภาษีมูลค่าเพิ่ม"
+                },
+                "is_included": {
+                  "type": "boolean",
+                  "description": "ภาษีมูลค่าเพิ่มคิดรวมหรือแยกจากราคาสินค้า"
+                },
+                "rate": {
+                  "type": "number",
+                  "description": "อัตราภาษี (%)",
+                  "format": "double",
+                  "example": 7
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "มูลค่ารวมภาษีมูลค่าเพิ่ม",
+                  "format": "double",
+                  "example": 0
+                }
+              }
+            },
+            "withholding_tax": {
+              "type": "object",
+              "properties": {
+                "on": {
+                  "type": "boolean",
+                  "description": "มี/ไม่มีการคิดภาษีแบบหัก ณ ที่จ่าย"
+                },
+                "rate": {
+                  "type": "number",
+                  "description": "อัตราภาษี (%)",
+                  "format": "double",
+                  "example": 7
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "มูลค่าภาษีมูลค่าเพิ่มหัก ณ​ ที่จ่าย",
+                  "example": 0,
+                  "format": "double"
+                }
+              }
+            },
+            "vat_exempted_amount": {
+              "type": "number",
+              "format": "double",
+              "example": 0,
+              "description": "มูลค่าสินค้าที่ได้รับการยกเว้นภาษี"
+            },
+            "taxable_sales_amount": {
+              "type": "number",
+              "format": "double",
+              "example": 0,
+              "description": "มูลค่าสินค้าที่นำมาคิดภาษี"
+            },
+            "net_amount": {
+              "type": "number",
+              "description": "ราคาก่อนรวมภาษี"
+            },
+            "items_amount": {
+              "type": "number",
+              "description": "มูลค่ารวมสินค้า",
+              "format": "double"
+            },
+            "total_amount": {
+              "type": "number",
+              "description": "ราคาหลังรวมภาษี",
+              "format": "double"
+            },
+            "gross_amount": {
+              "type": "number",
+              "description": "ราคาสุทธิที่ต้องชำระ",
+              "format": "double"
+            }
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "description": "วันที่สร้างรูปแบบใบแจ้งหนี้",
+          "format": "date-time",
+          "example": "2021-12-05 00:00:00"
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "วันที่ปรับปรุงข้อมูลรูปแบบใบแจ้งหนี้",
+          "format": "date-time",
+          "example": "2021-12-05 00:00:00"
+        }
+      }
     }
   },
   "parameters": {
@@ -3332,7 +3781,7 @@
       "in": "query",
       "required": false,
       "type": "integer",
-      "description": "จำนวนข้อมูลใบแจ้งหนี้ที่ต้องการข้าม",
+      "description": "จำนวนข้อมูลที่ต้องการข้าม",
       "default": 0,
       "minimum": 0,
       "schema": {
@@ -3347,7 +3796,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 100,
-      "description": "จำนวนข้อมูลใบแจ้งหนี้ที่ต้องการผลลัพธ์",
+      "description": "จำนวนข้อมูลที่ต้องการผลลัพธ์",
       "schema": {
         "type": "number",
         "minimum": 0,
