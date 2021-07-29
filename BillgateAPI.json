@@ -2291,6 +2291,10 @@
     "Address": {
       "title": "Address",
       "type": "object",
+      "description": "ข้อมูลประเภทที่อยู่ หากไม่มีข้อมูลในแต่ละ field ให้ใส่มาเป็น empty string",
+      "x-tags": [
+        "Customers"
+      ],
       "properties": {
         "house_number": {
           "type": "string",
@@ -2319,9 +2323,12 @@
           "minLength": 5
         }
       },
-      "description": "ข้อมูลประเภทที่อยู่",
-      "x-tags": [
-        "Customers"
+      "required": [
+        "house_number",
+        "sub_district",
+        "district",
+        "province",
+        "post_code"
       ]
     },
     "Customer-Request": {
