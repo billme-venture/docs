@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.13.0 — Developer Preview",
+    "version": "v1.13.1 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -717,35 +717,42 @@
                 "invoice_template_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "`id`ของ`รูปแบบใบแจ้งหนี้`"
+                  "description": "`id`ของ`รูปแบบใบแจ้งหนี้`",
+                  "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
                 },
                 "customer_id": {
                   "type": "string",
                   "description": "`id`ของลูกค้าจากสมุดรายชื่อลูกค้า",
-                  "maxLength": 32,
-                  "minLength": 32
+                  "example": "1137d03a3ee24f1ca31dfae41a4cf600"
                 },
                 "number": {
                   "type": "string",
                   "description": "เลขที่อ้างอิงของใบแจ้งหนี้อัตโนมัติ",
                   "minLength": 1,
-                  "maxLength": 24
+                  "maxLength": 24,
+                  "example": "MAG2021080001"
                 },
                 "frequency": {
                   "type": "string",
                   "description": "ความถี่ในการส่งใบแจ้งหนี้",
                   "enum": [
                     "monthly"
-                  ]
+                  ],
+                  "example": "monthly"
                 },
                 "start_date": {
                   "type": "string",
                   "format": "date",
-                  "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก"
+                  "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก",
+                  "pattern": "yyyy-MM-dd",
+                  "example": "2021-08-30"
                 },
                 "cycle": {
                   "type": "integer",
                   "description": "จำนวนรอบที่ต้องการส่งใบแจ้งหนี้",
+                  "example": 3,
+                  "minimum": 0,
+                  "maximum": 1200,
                   "x-nullable": true
                 },
                 "payment_policy": {
