@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.13.4 — Developer Preview",
+    "version": "v1.13.5 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -767,17 +767,21 @@
                 },
                 "installments": {
                   "type": "array",
-                  "description": "งวดและยอดที่ลูกค้าต้องชำระ\n\nหากเลือก `payment_policy` แบบ `installment` ต้องดำเนินการใส่ งวดที่ (installment) และ ยอดที่ต้องชำระในแต่ละงวด (amount) โดยผลรวมของยอดชำระต้องเท่ากับมูลค่า `gross_amount` ของ `invoice_template_id` ที่เลือก",
+                  "description": "งวดและยอดที่ลูกค้าต้องชำระ\n\n- กรณีที่ `payment_policy` เป็น `fully_paid`\nไม่ต้องส่งค่า `installments` มา\n\n- กรณีที่ `payment_policy` เป็น `installment`\nต้องดำเนินการใส่ งวดที่ (installment) และ ยอดที่ต้องชำระในแต่ละงวด (amount) โดยผลรวมของยอดชำระต้องเท่ากับมูลค่า `gross_amount` ของ `invoice_template_id` ที่เลือก",
+                  "uniqueItems": true,
+                  "minItems": 0,
+                  "x-nullable": true,
                   "items": {
                     "type": "object",
                     "properties": {
                       "installment": {
-                        "type": "string",
-                        "description": "งวดที่"
+                        "description": "งวดที่",
+                        "type": "integer"
                       },
                       "amount": {
-                        "type": "string",
-                        "description": "มูลค่าที่ต้องชำระ"
+                        "type": "number",
+                        "description": "มูลค่าที่ต้องชำระ",
+                        "format": "double"
                       }
                     }
                   }
@@ -791,7 +795,43 @@
                 "start_date",
                 "cycle"
               ]
-            }
+            },
+            "x-examples": {
+              "fully-paid.json": {
+                "invoice_template_id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                "customer_id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                "number": "MAG2021080001",
+                "frequency": "monthly",
+                "start_date": "2021-08-30",
+                "cycle": 3,
+                "payment_policy": "fully_paid",
+                "installments": []
+              },
+              "installment.json": {
+                "invoice_template_id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                "customer_id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                "number": "MAG2021080001",
+                "frequency": "monthly",
+                "start_date": "2021-08-30",
+                "cycle": null,
+                "payment_policy": "installment",
+                "installments": [
+                  {
+                    "installment": 1,
+                    "amount": 199
+                  },
+                  {
+                    "installment": 2,
+                    "amount": 100
+                  },
+                  {
+                    "installment": 3,
+                    "amount": 100
+                  }
+                ]
+              }
+            },
+            "description": ""
           }
         ],
         "tags": [
