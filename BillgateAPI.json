@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.12.1 — Developer Preview",
+    "version": "v1.13.0 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -744,11 +744,32 @@
                   "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก"
                 },
                 "cycle": {
-                  "type": "number",
+                  "type": "integer",
                   "description": "จำนวนรอบที่ต้องการส่งใบแจ้งหนี้",
-                  "minimum": 1,
-                  "maximum": 1200,
                   "x-nullable": true
+                },
+                "payment_policy": {
+                  "type": "string",
+                  "description": "รูปแบบการชำระเงิน ได้แก่\n- ชำระเต็มจำนวน (`fully_paid`)\n- ผ่อนชำระ (`installments`)",
+                  "default": "fully_paid",
+                  "example": "fully_paid"
+                },
+                "installments": {
+                  "type": "array",
+                  "description": "งวดและยอดที่ลูกค้าต้องชำระ\n\nหากเลือก `payment_policy` แบบ `installment` ต้องดำเนินการใส่ งวดที่ (installment) และ ยอดที่ต้องชำระในแต่ละงวด (amount) โดยผลรวมของยอดชำระต้องเท่ากับมูลค่า `gross_amount` ของ `invoice_template_id` ที่เลือก",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "installment": {
+                        "type": "string",
+                        "description": "งวดที่"
+                      },
+                      "amount": {
+                        "type": "string",
+                        "description": "มูลค่าที่ต้องชำระ"
+                      }
+                    }
+                  }
                 }
               },
               "required": [
@@ -3547,7 +3568,19 @@
           "type": "string",
           "description": "`id` ของใบแจ้งหนี้อันโนัมัติ",
           "format": "uuid",
-          "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
+          "example": "8a4b0613-8a53-4774-b8f0-87bce6ccc547"
+        },
+        "payment_policy": {
+          "type": "string",
+          "description": "รูปแบบการชำระเงิน ชำระเต็มจำนวน (`fully_paid`) หรือ ผ่อนชำระ (`installment`)",
+          "default": "fully_paid",
+          "example": "fully_paid"
+        },
+        "installments": {
+          "type": "string",
+          "description": "`id` ของใบแจ้งหนี้อันโนัมัติ",
+          "example": "[]",
+          "default": "[]"
         },
         "invoice_template": {
           "type": "object",
@@ -3557,20 +3590,25 @@
             "id": {
               "type": "string",
               "format": "uuid",
-              "description": "`id` ของรูปแบบใบแจ้งหนี้"
+              "description": "`id` ของรูปแบบใบแจ้งหนี้",
+              "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
             },
             "name": {
               "type": "string",
-              "description": "ชื่อใบแจ้งหนี้"
+              "description": "ชื่อใบแจ้งหนี้",
+              "example": "สมัครสมาชิกนิตยสารรายเดือน"
             },
             "number": {
               "type": "string",
-              "description": "เลขที่อ้างอิงของรูปแบบใบแจ้งหนี้"
+              "description": "เลขที่อ้างอิงของรูปแบบใบแจ้งหนี้",
+              "example": "REC2021080001",
+              "minLength": 1,
+              "maxLength": 24
             },
             "amount": {
               "type": "number",
               "format": "double",
-              "example": 0,
+              "example": 399,
               "description": "จำนวนที่เรียกเก็บ / รอบ"
             }
           }
@@ -3581,17 +3619,23 @@
           "properties": {
             "id": {
               "type": "string",
-              "description": "`id` ของลูกค้าตามสมุดรายชื่อลูกค้า"
+              "description": "`id` ของลูกค้าตามสมุดรายชื่อลูกค้า",
+              "example": "1137d03a3ee24f1ca31dfae41a4cf600",
+              "format": "uuid"
             },
             "name": {
               "type": "string",
-              "description": "ชื่อลูกค้า"
+              "description": "ชื่อลูกค้า",
+              "example": "บริษัท บิลมีเวนเจอร์ จำกัด"
             }
           }
         },
         "number": {
           "type": "string",
-          "description": "เลขที่สัญญาของใบแจ้งหนี้อัตโนมัติ"
+          "description": "เลขที่สัญญาของใบแจ้งหนี้อัตโนมัติ",
+          "example": "MAG2021080001",
+          "minLength": 1,
+          "maxLength": 24
         },
         "frequency": {
           "type": "string",
@@ -3603,41 +3647,52 @@
         "start_date": {
           "type": "string",
           "description": "วันที่เริ่มส่งใบแจ้งหนี้รอบแรก",
-          "format": "date"
+          "format": "date",
+          "example": "2021-08-30",
+          "pattern": "yyyy-MM-dd"
         },
         "end_date": {
           "type": "string",
           "description": "วันที่ส่งใบแจ้งหนี้ครั้งสุดท้าย",
           "format": "date",
+          "pattern": "yyyy-MM-dd",
+          "example": "2021-10-30",
           "x-nullable": true
         },
         "next_sending_date": {
           "type": "string",
           "description": "วันที่สำหรับส่งใบแจ้งหนี้ครั้งถัดไป",
           "format": "date",
+          "example": "2021-09-30",
+          "pattern": "yyyy-MM-DD",
           "x-nullable": true
         },
         "sent_count": {
-          "type": "number",
+          "type": "integer",
           "description": "จำนวนรอบใบแจ้งหนี้ที่ส่งไปแล้ว",
-          "minimum": 0
+          "example": 1,
+          "default": 0
         },
         "cycle": {
-          "type": "number",
+          "type": "integer",
           "description": "จำนวนรอบส่งทั้งหมด",
-          "minimum": 0,
+          "example": 3,
           "x-nullable": true
         },
         "canceled_at": {
           "type": "string",
           "description": "วันเวลาที่ยกเลิกการส่งใบแจ้งหนี้อัตโนมัติ",
           "format": "date-time",
+          "example": "null",
+          "pattern": "yyyy-MM-dd HH:mm:ss",
           "x-nullable": true
         },
         "created_at": {
           "type": "string",
           "description": "วันเวลาที่เริ่มสร้างใบแจ้งหนี้อัตโนมัติ",
-          "format": "date-time"
+          "format": "date-time",
+          "pattern": "yyyy-MM-dd HH:mm:ss",
+          "example": "2021-08-05 16:55:00"
         }
       }
     },
@@ -3648,21 +3703,71 @@
       "x-tags": [
         "Invoice Templates"
       ],
+      "x-examples": {
+        "invoice-template.json": {
+          "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+          "seller_id": "1d1295bf-f6f8-4473-9b95-33e889f301b1",
+          "number": "REC2021080001",
+          "template": {
+            "name": "สมัครสมาชิกนิตยสารรายเดือน",
+            "items": [
+              {
+                "description": "นิตยสาร The Great Financial Advise ฉบับรายเดือน",
+                "quantity": 1,
+                "price_per_item": 399,
+                "vat": {
+                  "rate": 7,
+                  "amount": 26.1
+                },
+                "discount": null
+              }
+            ],
+            "remark": "รับชำระทั้งบัตรเครดิตและพร้อมเพย์",
+            "due_date_term": 15,
+            "discount": {
+              "on": true,
+              "percentage": 0,
+              "amount": 0
+            },
+            "vat": {
+              "on": true,
+              "is_included": true,
+              "rate": 0.07,
+              "amount": 26.1
+            },
+            "withholding_tax": {
+              "on": false,
+              "rate": 0.03,
+              "amount": 0
+            },
+            "vat_exempted_amount": 0,
+            "taxable_sales_amount": 372.9,
+            "net_amount": 372.9,
+            "items_amount": 399,
+            "total_amount": 399,
+            "gross_amount": 399
+          },
+          "created_at": "2021-08-05 16:30:01",
+          "updated_at": "2021-08-05 16:39:02"
+        }
+      },
       "properties": {
         "id": {
           "type": "string",
           "format": "uuid",
-          "description": "`id`ของรูปแบบใบแจ้งหนี้"
+          "description": "`id`ของรูปแบบใบแจ้งหนี้",
+          "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
         },
         "seller_id": {
           "type": "string",
           "description": "`id` ของบริษัทที่ออกใบแจ้งหนี้",
-          "format": "uuid"
+          "format": "uuid",
+          "example": "1d1295bf-f6f8-4473-9b95-33e889f301b1"
         },
         "number": {
           "type": "string",
           "description": "ชื่อรูปแบบใบแจ้งหนี้",
-          "example": "TEMPLATE-000001"
+          "example": "REC2021080001"
         },
         "template": {
           "type": "object",
@@ -3671,8 +3776,7 @@
             "name": {
               "type": "string",
               "description": "ชื่อใบแจ้งหนี้",
-              "example": "ค่าบริการรายเดือน",
-              "x-nullable": true
+              "example": "สมัครสมาชิกนิตยสารรายเดือน"
             },
             "items": {
               "type": "array",
@@ -3743,11 +3847,13 @@
             },
             "remark": {
               "type": "string",
-              "description": "หมายเหตุ"
+              "description": "หมายเหตุ",
+              "example": "รับชำระทั้งบัตรเครดิตและพร้อมเพย์"
             },
             "due_date_term": {
               "type": "integer",
-              "description": "ชำระภายในจำนวนวัน"
+              "description": "ชำระภายในจำนวนวัน",
+              "example": 15
             },
             "discount": {
               "type": "object",
@@ -3755,7 +3861,8 @@
               "properties": {
                 "on": {
                   "type": "boolean",
-                  "description": "มีหรือไม่มีส่วนลด"
+                  "description": "มีหรือไม่มีส่วนลด",
+                  "default": false
                 },
                 "percentage": {
                   "type": "number",
@@ -3777,23 +3884,25 @@
               "properties": {
                 "on": {
                   "type": "boolean",
-                  "description": "มี/ไม่มีการคิดภาษีมูลค่าเพิ่ม"
+                  "description": "มี/ไม่มีการคิดภาษีมูลค่าเพิ่ม",
+                  "default": true
                 },
                 "is_included": {
                   "type": "boolean",
-                  "description": "ภาษีมูลค่าเพิ่มคิดรวมหรือแยกจากราคาสินค้า"
+                  "description": "ภาษีมูลค่าเพิ่มคิดรวมหรือแยกจากราคาสินค้า",
+                  "default": true
                 },
                 "rate": {
                   "type": "number",
                   "description": "อัตราภาษี (%)",
                   "format": "double",
-                  "example": 7
+                  "example": 0.07
                 },
                 "amount": {
                   "type": "number",
                   "description": "มูลค่ารวมภาษีมูลค่าเพิ่ม",
                   "format": "double",
-                  "example": 0
+                  "example": 26.1
                 }
               }
             },
@@ -3809,7 +3918,7 @@
                   "type": "number",
                   "description": "อัตราภาษี (%)",
                   "format": "double",
-                  "example": 7
+                  "example": 0.03
                 },
                 "amount": {
                   "type": "number",
@@ -3823,32 +3932,43 @@
               "type": "number",
               "format": "double",
               "example": 0,
-              "description": "มูลค่าสินค้าที่ได้รับการยกเว้นภาษี"
+              "description": "มูลค่าสินค้าที่ได้รับการยกเว้นภาษี",
+              "default": 0,
+              "minimum": 0
             },
             "taxable_sales_amount": {
               "type": "number",
               "format": "double",
-              "example": 0,
-              "description": "มูลค่าสินค้าที่นำมาคิดภาษี"
+              "example": 372.9,
+              "description": "มูลค่าสินค้าที่นำมาคิดภาษี",
+              "default": 0,
+              "minimum": 0
             },
             "net_amount": {
               "type": "number",
-              "description": "ราคาก่อนรวมภาษี"
+              "description": "ราคาก่อนรวมภาษี",
+              "minimum": 0,
+              "example": 372.9,
+              "default": 0
             },
             "items_amount": {
               "type": "number",
               "description": "มูลค่ารวมสินค้า",
-              "format": "double"
+              "format": "double",
+              "default": 0,
+              "example": 399
             },
             "total_amount": {
               "type": "number",
               "description": "ราคาหลังรวมภาษี",
-              "format": "double"
+              "format": "double",
+              "example": 399
             },
             "gross_amount": {
               "type": "number",
               "description": "ราคาสุทธิที่ต้องชำระ",
-              "format": "double"
+              "format": "double",
+              "example": 399
             }
           }
         },
@@ -3856,13 +3976,15 @@
           "type": "string",
           "description": "วันที่สร้างรูปแบบใบแจ้งหนี้",
           "format": "date-time",
-          "example": "2021-12-05 00:00:00"
+          "example": "2021-08-05 16:30:01",
+          "pattern": "yyyy-MM-dd HH:mm:ss"
         },
         "updated_at": {
           "type": "string",
           "description": "วันที่ปรับปรุงข้อมูลรูปแบบใบแจ้งหนี้",
           "format": "date-time",
-          "example": "2021-12-05 00:00:00"
+          "example": "2021-08-05 16:39:02",
+          "pattern": "yyyy-MM-dd HH:mm:ss"
         }
       }
     },
