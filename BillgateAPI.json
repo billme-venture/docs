@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.13.8 — Developer Preview",
+    "version": "v1.13.9 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -2136,6 +2136,67 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Invoice-Template-Response"
+            },
+            "examples": {
+              "response.json": {
+                "id": "44cf6f8f-77f9-4a3d-9d4f-ba7d2c3126a5",
+                "seller_id": "1d1295bf-f6f8-4473-9b95-33e889f301b1",
+                "number": "TEM202108001",
+                "template": {
+                  "name": "ค่าบริการสำนักงานรายเดือน",
+                  "items": [
+                    {
+                      "description": "บริการทำความสะอาดรายสัปดาห์",
+                      "quantity": 1,
+                      "price_per_item": 399,
+                      "vat": {
+                        "rate": 7,
+                        "amount": 22.83177570093458
+                      },
+                      "discount": {
+                        "rate": null,
+                        "amount": 50
+                      }
+                    },
+                    {
+                      "description": "ค่าบริการตู้จดหมาย",
+                      "quantity": 1,
+                      "price_per_item": 99,
+                      "vat": {
+                        "rate": 7,
+                        "amount": 6.4766355140186915
+                      },
+                      "discount": null
+                    }
+                  ],
+                  "remark": "กรุณาชำระภายใน 30 วันหลังจากได้รับใบแจ้งหนี้",
+                  "due_date_term": 30,
+                  "discount": {
+                    "on": true,
+                    "percentage": 0,
+                    "amount": 50
+                  },
+                  "vat": {
+                    "on": true,
+                    "is_included": true,
+                    "rate": 0.07,
+                    "amount": 29.31
+                  },
+                  "withholding_tax": {
+                    "on": true,
+                    "rate": 0.03,
+                    "amount": 12.56
+                  },
+                  "vat_exempted_amount": 0,
+                  "taxable_sales_amount": 418.69,
+                  "net_amount": 418.69,
+                  "items_amount": 498,
+                  "total_amount": 448,
+                  "gross_amount": 435.44
+                },
+                "created_at": "2021-08-06 09:24:04",
+                "updated_at": "2021-08-06 09:24:04"
+              }
             }
           }
         },
@@ -2150,13 +2211,13 @@
                 "name": {
                   "type": "string",
                   "description": "ชื่อ`ใบแจ้งหนี้`",
-                  "example": "ค่าบริการรายเดือน",
+                  "example": "สมัครสมาชิกนิตยสารรายเดือน",
                   "x-nullable": true
                 },
                 "number": {
                   "type": "string",
                   "description": "เลขที่อ้างอิง`รูปแบบใบแจ้งหนี้`",
-                  "example": "TEMPLATE-000001"
+                  "example": "REC2021080001"
                 },
                 "items": {
                   "type": "array",
@@ -2166,22 +2227,25 @@
                     "properties": {
                       "description": {
                         "type": "string",
-                        "description": "รายละเอียดสินค้า/บริการ"
+                        "description": "รายละเอียดสินค้า/บริการ",
+                        "example": "ค่าบริการทำความสะอาดรายเดือน"
                       },
                       "quantity": {
                         "type": "number",
                         "description": "จำนวน/หน่วย",
-                        "format": "double"
+                        "format": "double",
+                        "example": 1
                       },
                       "price_per_item": {
                         "type": "number",
                         "format": "double",
-                        "description": "ราคาสินค้า/บริการต่อหน่วย"
+                        "description": "ราคาสินค้า/บริการต่อหน่วย",
+                        "example": 399
                       },
                       "vat_rate": {
                         "type": "number",
                         "format": "double",
-                        "example": 7,
+                        "example": 0.07,
                         "description": "ภาษีมูลค่าเพิ่ม (หากไม่มีให้ใส่ null)",
                         "x-nullable": true
                       },
@@ -2205,7 +2269,12 @@
                           }
                         }
                       }
-                    }
+                    },
+                    "required": [
+                      "description",
+                      "quantity",
+                      "price_per_item"
+                    ]
                   }
                 },
                 "remark": {
@@ -2226,7 +2295,7 @@
                       "type": "number",
                       "format": "double",
                       "default": 0,
-                      "example": 3,
+                      "example": 0.03,
                       "description": "อัตราภาษีหัก ณ​ ที่จ่าย"
                     }
                   }
@@ -2241,6 +2310,44 @@
                   "description": "จำนวนวันที่ต้องชำระหลังออกใบแจ้งหนี้",
                   "example": 30
                 }
+              },
+              "required": [
+                "name",
+                "number",
+                "items",
+                "due_date_term"
+              ]
+            },
+            "x-examples": {
+              "request.json": {
+                "name": "ค่าบริการสำนักงานรายเดือน",
+                "number": "TEM202108001",
+                "items": [
+                  {
+                    "description": "บริการทำความสะอาดรายสัปดาห์",
+                    "quantity": 1,
+                    "price_per_item": 399,
+                    "vat_rate": 0.07,
+                    "discount": {
+                      "type": "amount",
+                      "total": 50
+                    }
+                  },
+                  {
+                    "description": "ค่าบริการตู้จดหมาย",
+                    "quantity": 1,
+                    "price_per_item": 99,
+                    "vat_rate": 0.07,
+                    "discount": null
+                  }
+                ],
+                "remark": "กรุณาชำระภายใน 30 วันหลังจากได้รับใบแจ้งหนี้",
+                "withholding_tax": {
+                  "on": true,
+                  "rate": 0.03
+                },
+                "is_vat_included": false,
+                "due_date_term": 30
               }
             }
           }
