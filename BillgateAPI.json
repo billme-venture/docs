@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Billgate API",
-    "version": "v1.14.0 — Developer Preview",
+    "version": "v1.14.1 — Developer Preview",
     "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
     "contact": {
       "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
@@ -662,6 +662,40 @@
               "Content-Type": {
                 "type": "string",
                 "default": "application/json"
+              }
+            },
+            "examples": {
+              "recurring-invoices.json": {
+                "total": 1,
+                "next": null,
+                "previous": null,
+                "recurring_invoices": [
+                  {
+                    "id": "8a4b0613-8a53-4774-b8f0-87bce6ccc547",
+                    "status": "active",
+                    "payment_policy": "fully_paid",
+                    "installments": [],
+                    "invoice_template": {
+                      "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                      "name": "สมัครสมาชิกนิตยสารรายเดือน",
+                      "number": "REC2021080001",
+                      "amount": 399
+                    },
+                    "customer": {
+                      "id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                      "name": "บริษัท บิลมีเวนเจอร์ จำกัด"
+                    },
+                    "number": "MAG2021080001",
+                    "frequency": "monthly",
+                    "start_date": "2021-08-30",
+                    "end_date": "2021-10-30",
+                    "next_sending_date": "2021-09-30",
+                    "sent_count": 1,
+                    "cycle": 3,
+                    "canceled_at": "null",
+                    "created_at": "2021-08-05 16:55:00"
+                  }
+                ]
               }
             }
           }
