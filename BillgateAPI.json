@@ -357,6 +357,21 @@
           },
           {
             "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/status"
+          },
+          {
+            "$ref": "#/parameters/start"
+          },
+          {
+            "$ref": "#/parameters/end"
+          },
+          {
+            "$ref": "#/parameters/payment_start"
+          },
+          {
+            "$ref": "#/parameters/payment_end"
           }
         ],
         "responses": {
@@ -4033,6 +4048,50 @@
         "maximum": 100,
         "default": 50
       }
+    },
+    "status": {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "enum": ["pending", "overdue", "paid", "unpaid", "sent", "rejected"],
+      "description": "สถานะของใบแจ้งหนี้"
+    },
+    "start": {
+      "name": "start",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่เริ่มต้นช่วงเวลาออกใบแจ้งหนี้ รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-01 00:00:00"
+    },
+    "end": {
+      "name": "end",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่สิ้นสุดช่วงเวลาออกใบแจ้งหนี้ รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-30 23:59:59"
+    },
+    "payment_start": {
+      "name": "payment_start",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่เริ่มต้นช่วงเวลาการชำระเงิน รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-01 00:00:00"
+    },
+    "payment_end": {
+      "name": "payment_end",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่สิ้นสุดช่วงเวลาการชำระเงิน รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-30 23:59:59"
     },
     "customer_id": {
       "name": "customer_id",
