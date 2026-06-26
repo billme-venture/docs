@@ -1,7 +1,9 @@
 {
   "invoice_id": "",
+  "attachments": [""],
   "data": {
     "customer": {
+      "code": "",
       "name": "",
       "tax_number": "",
       "branch_number": "",
@@ -28,7 +30,6 @@
     }],
     "issue_date": "",
     "remark": "",
-    "vat_included": true,
-    "attachments": [""]
+    "vat_included": true
   }
 }
