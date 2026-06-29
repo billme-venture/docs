@@ -1,13 +1,14 @@
 {
+  "number": "",
   "invoice_id": "",
+  "receipt_id": "",
   "attachments": [""],
   "data": {
     "customer": {
       "customer_code": "",
       "name": "",
       "tax_number": "",
-      "branch_number": "",
-      "phone": "",
+      "phone_number": "",
       "emails": [""],
       "address": {
         "house_number": "",
@@ -17,16 +18,12 @@
         "post_code": ""
       }
     },
-    "number": "",
     "items": [{
       "description": "",
       "quantity": 0.00,
-      "price_per_item": 0.00,
-      "vat": 7,
-      "discount": {
-        "type": "percentage",
-        "value": 0.00
-      }
+      "unit_price": 0.00,
+      "vat_rate": 7,
+      "discount_amount": 0.00
     }],
     "issue_date": "",
     "remark": "",

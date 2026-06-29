@@ -30,9 +30,70 @@
     },
     {
       "name": "Tax Invoices"
+    },
+    {
+      "name": "Tokens"
     }
   ],
   "paths": {
+    "/v1/tokens/authorized": {
+      "get": {
+        "summary": "Check Billgate API authorization",
+        "description": "ตรวจสอบว่าบัญชีผู้ใช้งานได้รับสิทธิ์ใช้งาน Billgate API แล้วหรือไม่",
+        "operationId": "checkBillgateAuthorization",
+        "tags": ["Tokens"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/v1/tokens/access_token": {
+      "post": {
+        "summary": "Generate Billgate API access token",
+        "description": "สร้าง access token สำหรับใช้งาน Billgate API",
+        "operationId": "generateBillgateAccessToken",
+        "tags": ["Tokens"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Billgate-Token"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Billgate API access token",
+        "description": "ดึง access token ปัจจุบันสำหรับใช้งาน Billgate API",
+        "operationId": "getBillgateAccessToken",
+        "tags": ["Tokens"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Billgate-Token"
+            }
+          }
+        }
+      }
+    },
+    "/v1/tokens/access_token/revoke": {
+      "post": {
+        "summary": "Revoke Billgate API access token",
+        "description": "ยกเลิก access token ปัจจุบันของ Billgate API",
+        "operationId": "revokeBillgateAccessToken",
+        "tags": ["Tokens"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/v1/invoices": {
       "post": {
         "summary": "Create a new Invoice",
@@ -439,10 +500,10 @@
               "description": "",
               "type": "object",
               "properties": {
-                "paid_date": {
+                "date_time": {
                   "type": "string",
                   "minLength": 1,
-                  "example": "2021-01-19",
+                  "example": "2021-01-19 13:00:00",
                   "description": "วันที่ชำระเงิน"
                 },
                 "amount": {
@@ -451,15 +512,14 @@
                   "description": "จำนวนเงินที่ชำระ"
                 }
               },
-              "required": ["paid_date", "amount"]
+              "required": ["date_time", "amount"]
             },
             "in": "body",
             "name": "body",
             "x-examples": {
               "example": {
-                "paid_date": "2021-01-19",
-                "amount": 1000,
-                "slip": null
+                "date_time": "2021-01-19 13:00:00",
+                "amount": 1000
               }
             },
             "description": ""
@@ -473,11 +533,92 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content",
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบแจ้งหนี้"
+        }
+      ]
+    },
+    "/v1/invoices/{invoiceId}/decline_payment": {
+      "post": {
+        "summary": "Decline Payment on an existing Invoice",
+        "description": "สำหรับปฏิเสธการแจ้งชำระเงินของใบแจ้งหนี้",
+        "operationId": "declinePaymentInvoice",
+        "tags": ["Invoices"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "required": true,
             "schema": {
               "type": "object",
-              "properties": {}
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "ยอดเงินไม่ถูกต้อง",
+                  "description": "เหตุผลที่ปฏิเสธการแจ้งชำระเงิน"
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "ข้อมูลเพิ่มเติมสำหรับการปฏิเสธการชำระเงิน"
+                }
+              },
+              "required": ["reason"]
+            },
+            "in": "body",
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "reason": "ยอดเงินไม่ถูกต้อง",
+                "metadata": {}
+              }
+            }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบแจ้งหนี้"
+        }
+      ]
+    },
+    "/v1/invoices/{invoiceId}/transition_logs": {
+      "get": {
+        "summary": "List Invoice Transition Logs",
+        "description": "สำหรับเรียกดูประวัติการเปลี่ยนสถานะของใบแจ้งหนี้",
+        "operationId": "listInvoiceTransitionLogs",
+        "tags": ["Invoices"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Transition-Logs"
             }
           }
         }
@@ -1590,7 +1731,7 @@
                   }
                 }
               },
-              "required": ["number", "invoice_id", "data"]
+              "required": ["number"]
             },
             "in": "body",
             "name": "body",
@@ -2354,6 +2495,90 @@
     }
   ],
   "definitions": {
+    "Billgate-Token": {
+      "title": "Billgate Token",
+      "type": "object",
+      "x-tags": ["Tokens"],
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "access token สำหรับใช้งาน Billgate API"
+        }
+      },
+      "required": ["access_token"]
+    },
+    "Invoice-Transition-Logs": {
+      "title": "Invoice Transition Logs",
+      "type": "object",
+      "x-tags": ["Invoices"],
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "id ของ transition log"
+              },
+              "invoice_id": {
+                "type": "string",
+                "description": "id ของใบแจ้งหนี้"
+              },
+              "from_status": {
+                "type": ["string", "null"],
+                "description": "สถานะก่อนหน้า"
+              },
+              "to_status": {
+                "type": "string",
+                "description": "สถานะหลังการเปลี่ยนแปลง"
+              },
+              "transitioned_by_type": {
+                "type": "string",
+                "description": "ประเภทผู้เปลี่ยนสถานะ"
+              },
+              "transitioned_by_id": {
+                "type": ["string", "null"],
+                "description": "id ของผู้เปลี่ยนสถานะ"
+              },
+              "transitioned_by": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": ["string", "null"]
+                  },
+                  "name": {
+                    "type": ["string", "null"]
+                  }
+                }
+              },
+              "reason": {
+                "type": ["string", "null"],
+                "description": "เหตุผลของการเปลี่ยนสถานะ"
+              },
+              "metadata": {
+                "type": "object",
+                "description": "ข้อมูลเพิ่มเติมของการเปลี่ยนสถานะ"
+              },
+              "created_at": {
+                "type": "string",
+                "description": "วันที่สร้าง transition log"
+              }
+            },
+            "required": [
+              "id",
+              "invoice_id",
+              "to_status",
+              "transitioned_by_type",
+              "transitioned_by",
+              "metadata",
+              "created_at"
+            ]
+          }
+        }
+      },
+      "required": ["data"]
+    },
     "Customer-Response": {
       "title": "Customer Response",
       "type": "object",
