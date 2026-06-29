@@ -1,0 +1,4393 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Billgate Sandbox API",
+    "version": "v1.14.1 — Developer Preview",
+    "description": "![Billgate](https://assets.billme.co.th/static/images/illustration-billgate.png)\n\nยินดีต้อนรับเข้าสู่หน้าเว็บไซต์ผลิตภัณฑ์ Billgate API คุณสามารถเข้าถึงข้อมูลต่าง ๆ ที่จำเป็นต้องใช้สำหรับการเชื่อมต่อระบบ และส่งบิลเรียกเก็บเงินลูกค้าของคุณผ่าน Billgate API\n\n---\n\n## เริ่มต้นเข้าใช้งาน\n1. ทำการสมัครสมาชิกบิลมีที่ [หน้าสมัครสมาชิก](https://register.billme.co.th)\n2. เริ่มต้นสร้างโปรไฟล์ธุรกิจผ่านระบบ Billbox หลังจากยืนยันอีเมลสำเร็จที่ [Billbox Website](https://billbox.billme.co.th)\n3. กรอกข้อมูลเพื่อขอสิทธิ์การเข้าใช้งาน Billgate API ที่ [Billgate API Application Form](https://forms.gle/emSo2jXAssXkPXKD8)\n4. รอการตอบกลับจากทีมงานภายใน 24 ชั่วโมง และเริ่มต้นใช้งาน \n\nหลังจากได้รับการติดต่อกลับจากทางทีมงานแล้วคุณสามารถ เข้าถึง API Token ได้ที่เมนู `การตั้งค่า/Billgate API`\n\n![API Token Page](https://assets.billme.co.th/static/images/api-token-page.png)",
+    "contact": {
+      "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+      "email": "contact@billme.co.th",
+      "url": "https://m.me/billme.co.th"
+    }
+  },
+  "host": "staging-api.billme.co.th",
+  "schemes": ["https"],
+  "tags": [
+    {
+      "name": "Customers"
+    },
+    {
+      "name": "Invoice Templates"
+    },
+    {
+      "name": "Invoices"
+    },
+    {
+      "name": "Receipts"
+    },
+    {
+      "name": "Recurring Invoices"
+    },
+    {
+      "name": "Tax Invoices"
+    },
+    {
+      "name": "Tokens"
+    }
+  ],
+  "paths": {
+    "/v1/tokens/authorized": {
+      "get": {
+        "summary": "Check Billgate API authorization",
+        "description": "ตรวจสอบว่าบัญชีผู้ใช้งานได้รับสิทธิ์ใช้งาน Billgate API แล้วหรือไม่",
+        "operationId": "checkBillgateAuthorization",
+        "tags": ["Tokens"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/v1/tokens/access_token": {
+      "post": {
+        "summary": "Generate Billgate API access token",
+        "description": "สร้าง access token สำหรับใช้งาน Billgate API",
+        "operationId": "generateBillgateAccessToken",
+        "tags": ["Tokens"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Billgate-Token"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Billgate API access token",
+        "description": "ดึง access token ปัจจุบันสำหรับใช้งาน Billgate API",
+        "operationId": "getBillgateAccessToken",
+        "tags": ["Tokens"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Billgate-Token"
+            }
+          }
+        }
+      }
+    },
+    "/v1/tokens/access_token/revoke": {
+      "post": {
+        "summary": "Revoke Billgate API access token",
+        "description": "ยกเลิก access token ปัจจุบันของ Billgate API",
+        "operationId": "revokeBillgateAccessToken",
+        "tags": ["Tokens"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/v1/invoices": {
+      "post": {
+        "summary": "Create a new Invoice",
+        "description": "สำหรับ`สร้างใบแจ้งหนี้` และส่งไปยังลูกค้าของคุณผ่านช่องทาง Email และ Line ลูกค้าของคุณสามารถเปิดดูรายละเอียด และแจ้งการชำระเงินเข้ามาได้ หากมีการใช้งานฟังก์ชัน Instant Payment ลูกค้าของคุณจะสามารถชำระเงินออนไลน์ได้ทันที",
+        "operationId": "createInvoice",
+        "tags": ["Invoices"],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "customer": {
+                  "type": "object",
+                  "description": "ข้อมูลลูกค้า",
+                  "required": [
+                    "name",
+                    "tax_number",
+                    "phone_number",
+                    "emails",
+                    "address"
+                  ],
+                  "properties": {
+                    "customer_code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "BG-CUS-001",
+                      "description": "รหัสลูกค้าสำหรับค้นหาลูกค้าเดิมบนระบบ หากพบและไม่ได้ส่ง customer_id ระบบจะผูกใบแจ้งหนี้กับลูกค้ารายนั้น"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "สมชาย หมายปอง",
+                      "description": "ชื่อลูกค้า"
+                    },
+                    "tax_number": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "1012670114029",
+                      "description": "เลขที่ผู้เสียภาษี"
+                    },
+                    "phone_number": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "0850601111",
+                      "description": "เบอร์โทรศัพท์\n"
+                    },
+                    "emails": {
+                      "type": "array",
+                      "description": "อีเมลลูกค้าสำหรับรับการแจ้งเตือนการส่งบิล",
+                      "items": {
+                        "type": "string",
+                        "example": "somchai.h@mockcustomer.com"
+                      }
+                    },
+                    "address": {
+                      "type": "object",
+                      "description": "ที่อยู่ของลูกค้า",
+                      "required": [
+                        "house_number",
+                        "sub_district",
+                        "district",
+                        "province",
+                        "post_code"
+                      ],
+                      "properties": {
+                        "house_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "598/610",
+                          "description": "เลขที่"
+                        },
+                        "sub_district": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "บางกะปิ",
+                          "description": "แขวง / ตำบล"
+                        },
+                        "district": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "ห้วยขวาง",
+                          "description": "เขต / อำเภอ"
+                        },
+                        "province": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "กรุงเทพมหานคร",
+                          "description": "จังหวัด"
+                        },
+                        "post_code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "10310",
+                          "description": "รหัสไปรษณีย์"
+                        }
+                      }
+                    }
+                  }
+                },
+                "number": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "INV-000001",
+                  "description": "เลขที่ใบแจ้งหนี้"
+                },
+                "issue_date": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "2021-01-19",
+                  "description": "วันที่ออกเอกสาร"
+                },
+                "due_date": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "2021-01-19",
+                  "description": "วันที่ครบกำหนดชำระ"
+                },
+                "items": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "description": "รายการสินค้า",
+                  "items": {
+                    "type": "object",
+                    "description": "สินค้า",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "minLength": 1,
+                        "example": "ค่าบริการ",
+                        "description": "ชื่อสินค้า"
+                      },
+                      "quantity": {
+                        "type": "number",
+                        "example": 1,
+                        "description": "จำนวน"
+                      },
+                      "unit_price": {
+                        "type": "number",
+                        "example": 1000,
+                        "description": "ราคา/หน่วย"
+                      },
+                      "vat_rate": {
+                        "type": ["number", "null"],
+                        "example": 7,
+                        "description": "อัตราภาษีมูลค่าเพิ่ม",
+                        "minimum": 0,
+                        "maximum": 7
+                      },
+                      "discount_amount": {
+                        "type": ["number", "null"],
+                        "example": 0,
+                        "description": "ส่วนลด"
+                      }
+                    },
+                    "required": ["description", "quantity", "unit_price"]
+                  }
+                },
+                "vat_included": {
+                  "type": "boolean",
+                  "description": "กำหนดว่ารายการสินค้ารวมภาษีแล้ว หรือยังไม่ได้รวมภาษี"
+                },
+                "remark": {
+                  "type": ["string", "null"],
+                  "description": "หมายเหตุ"
+                },
+                "withholding_tax_rate": {
+                  "type": ["null", "number"],
+                  "description": "อัตราภาษีหัก ณ ที่จ่าย"
+                },
+                "attachments": {
+                  "type": "array",
+                  "description": "รายการไฟล์แนบ สามารถส่งเป็น document id ที่มีอยู่แล้ว หรือ URL แบบ http/https",
+                  "items": {
+                    "type": "string",
+                    "example": "https://example.com/files/invoice-attachment.pdf"
+                  }
+                },
+                "name": {
+                  "type": "string",
+                  "description": "อ้างอิง/โปรเจค"
+                }
+              },
+              "required": [
+                "customer",
+                "number",
+                "issue_date",
+                "due_date",
+                "items",
+                "vat_included",
+                "remark"
+              ]
+            },
+            "in": "body",
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "customer": {
+                  "customer_code": "BG-CUS-001",
+                  "name": "สมชาย หมายปอง",
+                  "tax_number": "1012670114029",
+                  "phone_number": "0850601111",
+                  "emails": ["somchai.h@mockcustomer.com"],
+                  "address": {
+                    "house_number": "598/610",
+                    "sub_district": "บางกะปิ",
+                    "district": "ห้วยขวาง",
+                    "province": "กรุงเทพมหานคร",
+                    "post_code": "10310"
+                  }
+                },
+                "number": "INV-000001",
+                "name": "ใบเรียกเก็บค่าบริการเดือน มกราคม 2564",
+                "issue_date": "2021-01-19",
+                "due_date": "2021-01-19",
+                "items": [
+                  {
+                    "description": "ค่าบริการ",
+                    "quantity": 1,
+                    "unit_price": 1000,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "vat_included": true,
+                "remark": null,
+                "withholding_tax_rate": null,
+                "attachments": [
+                  "https://example.com/files/invoice-attachment.pdf"
+                ]
+              }
+            },
+            "description": "ข้อมูล `JSON` ที่ได้รับกลับไปจะยังไม่สมบูรณ์ เนื่องจาก `pdf_url` จะทำการสร้างและอนุญาตให้ดาวน์โหลดได้ในเวลาต่อมา"
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
+          },
+          {
+            "type": "string",
+            "in": "query",
+            "name": "customer_id",
+            "description": "`id` สำหรับออกใบแจ้งหนี้ให้กับลูกค้า"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            },
+            "examples": {
+              "example": {
+                "id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "INV-000001",
+                "status": "pending_payment",
+                "issue_date": "2021-01-25",
+                "due_date": "2021-02-15",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "สมชาย หมายปอง",
+                  "tax_number": "1012670114029",
+                  "phone": "0850601111",
+                  "emails": ["somchai.mock@gmail.com"],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 1392.52,
+                "total": 1490,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 1490,
+                "remark": null,
+                "payment_methods": [
+                  {
+                    "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                    "number": "1002012896",
+                    "type": "BANK"
+                  }
+                ],
+                "payment": null,
+                "pdf_url": null,
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+                "attachments": [],
+                "references": {
+                  "receipt_id": null,
+                  "tax_invoice_id": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [],
+      "get": {
+        "summary": "List existing Invoices",
+        "operationId": "listInvoices",
+        "tags": ["Invoices"],
+        "description": "เรียกดูรายการใบแจ้งหนี้ที่มีอยู่ในระบบ",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/status"
+          },
+          {
+            "$ref": "#/parameters/start"
+          },
+          {
+            "$ref": "#/parameters/end"
+          },
+          {
+            "$ref": "#/parameters/payment_start"
+          },
+          {
+            "$ref": "#/parameters/payment_end"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลใบแจ้งหนี้ที่มีในระบบ",
+                  "default": 0
+                },
+                "next": {
+                  "type": ["integer", "null"],
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป"
+                },
+                "previous": {
+                  "type": ["integer", "null"],
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว"
+                },
+                "data": {
+                  "type": "array",
+                  "description": "รายการใบแจ้งหนี้",
+                  "items": {
+                    "$ref": "#/definitions/Invoice"
+                  }
+                }
+              },
+              "required": ["total", "next", "previous", "data"]
+            }
+          }
+        }
+      }
+    },
+    "/v1/invoices/{invoiceId}/paid": {
+      "post": {
+        "summary": "Confirm Paid Payment on an existing Invoice",
+        "description": "สำหรับอัปเดทสถานะของใบแจ้งหนี้เป็น`ชำระแล้ว`",
+        "operationId": "confirmPaidPaymentInvoice",
+        "tags": ["Invoices"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "date_time": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "2021-01-19 13:00:00",
+                  "description": "วันที่ชำระเงิน"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 1000,
+                  "description": "จำนวนเงินที่ชำระ"
+                }
+              },
+              "required": ["date_time", "amount"]
+            },
+            "in": "body",
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "date_time": "2021-01-19 13:00:00",
+                "amount": 1000
+              }
+            },
+            "description": ""
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบแจ้งหนี้"
+        }
+      ]
+    },
+    "/v1/invoices/{invoiceId}/decline_payment": {
+      "post": {
+        "summary": "Decline Payment on an existing Invoice",
+        "description": "สำหรับปฏิเสธการแจ้งชำระเงินของใบแจ้งหนี้",
+        "operationId": "declinePaymentInvoice",
+        "tags": ["Invoices"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "ยอดเงินไม่ถูกต้อง",
+                  "description": "เหตุผลที่ปฏิเสธการแจ้งชำระเงิน"
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "ข้อมูลเพิ่มเติมสำหรับการปฏิเสธการชำระเงิน"
+                }
+              },
+              "required": ["reason"]
+            },
+            "in": "body",
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "reason": "ยอดเงินไม่ถูกต้อง",
+                "metadata": {}
+              }
+            }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบแจ้งหนี้"
+        }
+      ]
+    },
+    "/v1/invoices/{invoiceId}/transition_logs": {
+      "get": {
+        "summary": "List Invoice Transition Logs",
+        "description": "สำหรับเรียกดูประวัติการเปลี่ยนสถานะของใบแจ้งหนี้",
+        "operationId": "listInvoiceTransitionLogs",
+        "tags": ["Invoices"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Transition-Logs"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบแจ้งหนี้"
+        }
+      ]
+    },
+    "/v1/invoices/{invoiceId}": {
+      "get": {
+        "summary": "Get an existing Invoice",
+        "description": "สำหรับดึงข้อมูลรายละเอียดใบแจ้งหนี้ที่ต้องการ",
+        "operationId": "getInvoiceById",
+        "tags": ["Invoices"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            },
+            "examples": {
+              "example": {
+                "id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "INV-000001",
+                "status": "pending_payment",
+                "issue_date": "2021-01-25",
+                "due_date": "2021-02-15",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "สมชาย หมายปอง",
+                  "tax_number": "1012670114029",
+                  "phone": "0850601111",
+                  "emails": ["somchai.h@mockcustomer.com"],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 1392.52,
+                "total": 1490,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 1490,
+                "remark": null,
+                "payment_methods": [
+                  {
+                    "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                    "number": "1002012896",
+                    "type": "BANK"
+                  }
+                ],
+                "payment": {
+                  "paid_date": "2021-02-01 16:04:11",
+                  "amount": 1490
+                },
+                "pdf_url": "https://storage.googleapis.com/billhub/production/invoices/98FE9D3919179914713340F7A705A4F2/INV63000027.pdf",
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+                "attachments": [],
+                "references": {
+                  "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+                  "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบแจ้งหนี้"
+        }
+      ],
+      "delete": {
+        "summary": "Delete an existing Invoice",
+        "operationId": "deleteInvoiceById",
+        "tags": ["Invoices"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [],
+        "description": "สำหรับ`ลบใบแจ้งหนี้`ที่ไม่ต้องการออกจากระบบ การลบใบแจ้งหนี้จะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบแจ้งหนี้ได้"
+      }
+    },
+    "/v1/recurring_invoices": {
+      "get": {
+        "summary": "List existing Recurring Invoices",
+        "tags": ["Recurring Invoices"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number"
+                },
+                "next": {
+                  "type": "number",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "number",
+                  "x-nullable": true
+                },
+                "recurring_invoices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Recurring-Invoice"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            },
+            "examples": {
+              "recurring-invoices.json": {
+                "total": 1,
+                "next": null,
+                "previous": null,
+                "recurring_invoices": [
+                  {
+                    "id": "8a4b0613-8a53-4774-b8f0-87bce6ccc547",
+                    "status": "active",
+                    "payment_policy": "fully_paid",
+                    "installments": [],
+                    "invoice_template": {
+                      "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                      "name": "สมัครสมาชิกนิตยสารรายเดือน",
+                      "number": "REC2021080001",
+                      "amount": 399
+                    },
+                    "customer": {
+                      "id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                      "name": "บริษัท บิลมีเวนเจอร์ จำกัด"
+                    },
+                    "number": "MAG2021080001",
+                    "frequency": "monthly",
+                    "start_date": "2021-08-30",
+                    "end_date": "2021-10-30",
+                    "next_sending_date": "2021-09-30",
+                    "sent_count": 1,
+                    "cycle": 3,
+                    "canceled_at": "null",
+                    "created_at": "2021-08-05 16:55:00"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "listRecurringInvoices",
+        "description": "เรียกดูรายการ`ใบแจ้งหนี้อัตโนมัติ`ที่มีในระบบ",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/customer_id"
+          },
+          {
+            "$ref": "#/parameters/template_id"
+          },
+          {
+            "type": "string",
+            "in": "query",
+            "name": "status",
+            "description": "สถานะของใบแจ้งหนี้อัตโนมัติ หากยกเลิกแล้วจะมีสถานะเป็น `canceled`",
+            "pattern": "(active|canceled)"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a new Recurring Invoice",
+        "operationId": "createRecurringInvoice",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "examples": {
+              "fully-paid.json": {
+                "id": "8a4b0613-8a53-4774-b8f0-87bce6ccc547",
+                "payment_policy": "fully_paid",
+                "installments": [],
+                "invoice_template": {
+                  "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                  "name": "สมัครสมาชิกนิตยสารรายเดือน",
+                  "number": "REC2021080001",
+                  "amount": 399
+                },
+                "customer": {
+                  "id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด"
+                },
+                "number": "MAG2021080001",
+                "frequency": "monthly",
+                "start_date": "2021-08-30",
+                "end_date": "2021-10-30",
+                "next_sending_date": "2021-09-30",
+                "sent_count": 1,
+                "cycle": 3,
+                "canceled_at": null,
+                "created_at": "2021-08-05 16:55:00"
+              },
+              "installment.json": {
+                "id": "8a4b0613-8a53-4774-b8f0-87bce6ccc547",
+                "payment_policy": "fully_paid",
+                "cycle": 4,
+                "installments": [
+                  {
+                    "installment": 1,
+                    "amount": 1500
+                  },
+                  {
+                    "installment": 2,
+                    "amount": 1500
+                  },
+                  {
+                    "installment": 3,
+                    "amount": 1500
+                  },
+                  {
+                    "installment": 4,
+                    "amount": 400
+                  }
+                ],
+                "invoice_template": {
+                  "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                  "name": "ผ่อนชำระสินค้าชิ้นใหญ่",
+                  "number": "REC2021080001",
+                  "amount": 4900
+                },
+                "customer": {
+                  "id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด"
+                },
+                "number": "MAG2021080001",
+                "frequency": "monthly",
+                "start_date": "2021-08-30",
+                "end_date": "2021-10-30",
+                "next_sending_date": "2021-09-30",
+                "sent_count": 1,
+                "canceled_at": null,
+                "created_at": "2021-08-05 16:55:00"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/Recurring-Invoice"
+            }
+          }
+        },
+        "description": "สร้าง`ใบแจ้งหนี้อัตโนมัติ`ใหม่",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "invoice_template_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "`id`ของ`รูปแบบใบแจ้งหนี้`",
+                  "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
+                },
+                "customer_id": {
+                  "type": "string",
+                  "description": "`id`ของลูกค้าจากสมุดรายชื่อลูกค้า",
+                  "example": "1137d03a3ee24f1ca31dfae41a4cf600"
+                },
+                "number": {
+                  "type": "string",
+                  "description": "เลขที่อ้างอิงของใบแจ้งหนี้อัตโนมัติ",
+                  "minLength": 1,
+                  "maxLength": 24,
+                  "example": "MAG2021080001"
+                },
+                "frequency": {
+                  "type": "string",
+                  "description": "ความถี่ในการส่งใบแจ้งหนี้",
+                  "enum": ["monthly"],
+                  "example": "monthly"
+                },
+                "start_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก",
+                  "pattern": "yyyy-MM-dd",
+                  "example": "2021-08-30"
+                },
+                "cycle": {
+                  "type": "integer",
+                  "description": "จำนวนรอบที่ต้องการส่งใบแจ้งหนี้",
+                  "example": 3,
+                  "minimum": 0,
+                  "maximum": 1200,
+                  "x-nullable": true
+                },
+                "payment_policy": {
+                  "type": "string",
+                  "description": "รูปแบบการชำระเงิน ได้แก่\n- ชำระเต็มจำนวน (`fully_paid`)\n- ผ่อนชำระ (`installment`)",
+                  "default": "fully_paid",
+                  "example": "fully_paid",
+                  "enum": ["fully_paid", "installment"],
+                  "x-nullable": true
+                },
+                "installments": {
+                  "type": "array",
+                  "description": "งวดและยอดที่ลูกค้าต้องชำระ\n\n- กรณีที่ `payment_policy` เป็น `fully_paid`\nไม่ต้องส่งค่า `installments` มา\n\n- กรณีที่ `payment_policy` เป็น `installment`\n  - งวดที่ใส่ต้องมีจำนวนเท่ากับ `cycle` ที่ใส่มา\n  - งวดที่ (installment) และ ยอดที่ต้องชำระในแต่ละงวด (amount) โดยผลรวมของยอดชำระต้องเท่ากับมูลค่า `gross_amount` ของ `invoice_template_id` ที่เลือก",
+                  "uniqueItems": true,
+                  "minItems": 0,
+                  "x-nullable": true,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "installment": {
+                        "description": "งวดที่",
+                        "type": "integer"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "มูลค่าที่ต้องชำระ",
+                        "format": "double"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "invoice_template_id",
+                "customer_id",
+                "number",
+                "frequency",
+                "start_date",
+                "cycle"
+              ]
+            },
+            "x-examples": {
+              "fully-paid.json": {
+                "invoice_template_id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                "customer_id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                "number": "MAG2021080001",
+                "frequency": "monthly",
+                "start_date": "2021-08-30",
+                "cycle": 3,
+                "payment_policy": "fully_paid",
+                "installments": []
+              },
+              "installment.json": {
+                "invoice_template_id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+                "customer_id": "1137d03a3ee24f1ca31dfae41a4cf600",
+                "number": "MAG2021080001",
+                "frequency": "monthly",
+                "start_date": "2021-08-30",
+                "cycle": 4,
+                "payment_policy": "installment",
+                "installments": [
+                  {
+                    "installment": 1,
+                    "amount": 1500
+                  },
+                  {
+                    "installment": 2,
+                    "amount": 1500
+                  },
+                  {
+                    "installment": 3,
+                    "amount": 1500
+                  },
+                  {
+                    "installment": 4,
+                    "amount": 400
+                  }
+                ]
+              }
+            },
+            "description": ""
+          }
+        ],
+        "tags": ["Recurring Invoices"]
+      }
+    },
+    "/v1/recurring_invoices/{recurringInvoiceId}": {
+      "get": {
+        "summary": "Get an existing Recurring Invoice",
+        "tags": ["Recurring Invoices"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Recurring-Invoice"
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            }
+          }
+        },
+        "operationId": "getRecurringInvoiceById",
+        "description": "เรียกดู`ใบแจ้งหนี้อัตโนมัติ`ที่สร้างไว้",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": []
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "recurringInvoiceId",
+          "in": "path",
+          "required": true,
+          "format": "uuid",
+          "description": "`id`ของ`ใบแจ้งหนี้อัตโนมัติ`"
+        }
+      ],
+      "delete": {
+        "summary": "Cancel an existing Recurring Invoice",
+        "operationId": "cancelRecurringInvoiceById",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "ยกเลิกการส่ง`ใบแจ้งหนี้อัตโนัมัติ`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": ["Recurring Invoices"]
+      }
+    },
+    "/v1/receipts": {
+      "post": {
+        "summary": "Create a new Receipt",
+        "description": "สำหรับ`สร้างใบเสร็จ` และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
+        "operationId": "createReceipt",
+        "tags": ["Receipts"],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "invoice_id": {
+                  "type": ["string", "null"],
+                  "minLength": 1,
+                  "description": "id ของใบแจ้งหนี้ที่ต้องการสร้างใบเสร็จ"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "customer",
+                    "issue_date",
+                    "items",
+                    "vat_included",
+                    "remark"
+                  ],
+                  "description": "ข้อมูลในใบเสร็จ",
+                  "properties": {
+                    "customer": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "tax_number",
+                        "phone_number",
+                        "emails",
+                        "address"
+                      ],
+                      "description": "ข้อมูลลูกค้า",
+                      "properties": {
+                        "customer_code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "BG-CUS-001",
+                          "description": "รหัสลูกค้าสำหรับค้นหาลูกค้าเดิมบนระบบ หากพบและไม่ได้ส่ง customer_id ระบบจะผูกใบกำกับภาษีกับลูกค้ารายนั้น"
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "สมชาย หมายปอง",
+                          "description": "ชื่อลูกค้า"
+                        },
+                        "tax_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "1012670114029",
+                          "description": "เลขที่ผู้เสียภาษี"
+                        },
+                        "phone_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "0850601111",
+                          "description": "เบอร์โทรศัพท์"
+                        },
+                        "emails": {
+                          "type": "array",
+                          "description": "Email ลูกค้า",
+                          "items": {
+                            "type": "string",
+                            "example": "somchai.h@mockcustomer.com"
+                          }
+                        },
+                        "address": {
+                          "type": "object",
+                          "required": [
+                            "house_number",
+                            "sub_district",
+                            "district",
+                            "province",
+                            "post_code"
+                          ],
+                          "description": "ที่อยู่ลูกค้า",
+                          "properties": {
+                            "house_number": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "598/610",
+                              "description": "เลขที่"
+                            },
+                            "sub_district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "บางกะปิ",
+                              "description": "แขวง / ตำบล"
+                            },
+                            "district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "ห้วยขวาง",
+                              "description": "เขต / อำเภอ"
+                            },
+                            "province": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "กรุงเทพมหานคร",
+                              "description": "จังหวัด"
+                            },
+                            "post_code": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "10310",
+                              "description": "รหัสไปรษณีย์"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "issue_date": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "2021-01-19",
+                      "description": "วันที่ออกเอกสาร"
+                    },
+                    "items": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "description": "รายการสินค้า / บริการ",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "minLength": 1,
+                            "example": "ค่าบริการ",
+                            "description": "ชื่อสินค้า / บริการ"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "example": 1,
+                            "description": "จำนวน"
+                          },
+                          "unit_price": {
+                            "type": "number",
+                            "example": 1,
+                            "description": "ราคา/หน่วย"
+                          },
+                          "vat_rate": {
+                            "type": ["number", "null"],
+                            "example": 1000,
+                            "description": "อัตราภาษีมูลค่าเพิ่ม"
+                          },
+                          "discount_amount": {
+                            "type": ["number", "null"],
+                            "example": 0,
+                            "description": "มูลค่าส่วนลดของสินค้า"
+                          }
+                        },
+                        "required": ["description", "quantity", "unit_price"]
+                      }
+                    },
+                    "vat_included": {
+                      "type": "boolean",
+                      "description": "การคิดภาษีมูลค่าเพิ่มรวมลงไปในราคาสินค้า"
+                    },
+                    "remark": {
+                      "type": ["string", "null"],
+                      "description": "หมายเหตุ"
+                    },
+                    "withholding_tax_rate": {
+                      "type": ["null", "number"],
+                      "description": "อัตราภาษีหัก ณ ที่จ่าย"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "อ้างอิง / โปรเจค"
+                    }
+                  }
+                },
+                "number": {
+                  "type": "string",
+                  "example": "RCP-000001",
+                  "minLength": 1,
+                  "description": "เลขที่ใบเสร็จ"
+                }
+              },
+              "required": ["invoice_id", "data", "number"]
+            },
+            "in": "body",
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "invoice_id": null,
+                "number": "RCP-000001",
+                "data": {
+                  "customer": {
+                    "name": "สมชาย หมายปอง",
+                    "tax_number": "1012670114029",
+                    "phone_number": "0850601111",
+                    "emails": ["somchai.h@mockcustomer.com"],
+                    "address": {
+                      "house_number": "598/610",
+                      "sub_district": "บางกะปิ",
+                      "district": "ห้วยขวาง",
+                      "province": "กรุงเทพมหานคร",
+                      "post_code": "10310"
+                    }
+                  },
+                  "issue_date": "2021-01-19",
+                  "name": "ใบเรียกเก็บค่าบริการเดือน มกราคม 2564",
+                  "items": [
+                    {
+                      "description": "ค่าบริการ",
+                      "quantity": 1,
+                      "unit_price": 1000,
+                      "vat_rate": 7,
+                      "discount_amount": 0
+                    }
+                  ],
+                  "vat_included": true,
+                  "remark": null,
+                  "withholding_tax_rate": null
+                }
+              },
+              "example-2": {
+                "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "number": "RCP-000001",
+                "data": null
+              }
+            },
+            "description": ""
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
+          },
+          {
+            "type": "string",
+            "in": "query",
+            "name": "customer_id",
+            "description": "`id`ลูกค้าบนระบบบิลมี"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "receipt_id": {
+                  "type": "string",
+                  "description": "id ของใบเสร็จ"
+                }
+              }
+            },
+            "examples": {
+              "example-1": {
+                "receipt_id": "string"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [],
+      "get": {
+        "summary": "List existing Receipts",
+        "operationId": "listReceipts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "จำนวนใบเสร็จทั้งหมดในระบบ",
+                  "default": 0
+                },
+                "next": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+                  "type": "number",
+                  "x-nullable": true
+                },
+                "data": {
+                  "type": "array",
+                  "description": "รายการใบเสร็จ",
+                  "items": {
+                    "$ref": "#/definitions/Receipt"
+                  }
+                }
+              },
+              "required": ["total", "next", "previous", "data"]
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": ["Receipts"],
+        "description": "เรียกดูรายการใบเสร็จที่มีอยู่ในระบบ",
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ]
+      }
+    },
+    "/v1/receipts/{receiptId}": {
+      "get": {
+        "summary": "Get an existing Receipt",
+        "description": "สำหรับดึงรายละเอียดข้อมูลของใบเสร็จที่ต้องการ",
+        "operationId": "getReceiptById",
+        "tags": ["Receipts"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Receipt"
+            },
+            "examples": {
+              "example": {
+                "id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "REC-000001",
+                "issue_date": "2021-01-25",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "สมชาย หมายปอง",
+                  "tax_number": "1012670114029",
+                  "phone": "0850601111",
+                  "emails": ["somchai.h@mockcustomer.com"],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 0,
+                "total": 0,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 0,
+                "remark": null,
+                "payment": {
+                  "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+                  "paid_date": "2021-01-25",
+                  "amount": 1490,
+                  "slip": null
+                },
+                "pdf_url": "https://storage.googleapis.com/billhub/production/1012670114029/5b8408_Receipt_RCP63000005.pdf",
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+                "attachments": [],
+                "references": {
+                  "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                  "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "receiptId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบเสร็จ"
+        }
+      ],
+      "delete": {
+        "summary": "Delete an existing Receipt",
+        "operationId": "deleteReceiptById",
+        "tags": ["Receipts"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [],
+        "description": "สำหรับ`ลบใบเสร็จ`ที่ไม่ต้องการออกจากระบบ การลบใบเสร็จจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบเสร็จได้"
+      }
+    },
+    "/v1/tax_invoices": {
+      "post": {
+        "summary": "Create a new Tax Invoice",
+        "description": "สำหรับ`สร้างใบกำกับภาษี` และส่งหาลูกค้าผ่านช่องทาง Email และ Line",
+        "operationId": "createTaxInvoice",
+        "tags": ["Tax Invoices"],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "number": {
+                  "type": "string",
+                  "example": "TAX-000001",
+                  "minLength": 1,
+                  "description": "เลขที่ใบกำกับภาษี"
+                },
+                "invoice_id": {
+                  "type": ["string", "null"],
+                  "minLength": 1,
+                  "description": "id ของใบแจ้งหนี่ที่ต้องการสร้างใบกำกับภาษี"
+                },
+                "receipt_id": {
+                  "type": ["string", "null"],
+                  "description": "id ของใบเสร็จที่ต้องการสร้างใบกำกับภาษี"
+                },
+                "data": {
+                  "type": "object",
+                  "description": "ข้อมูลในใบกำกับภาษี",
+                  "required": [
+                    "customer",
+                    "issue_date",
+                    "items",
+                    "vat_included",
+                    "remark"
+                  ],
+                  "properties": {
+                    "customer": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "tax_number",
+                        "phone_number",
+                        "emails",
+                        "address"
+                      ],
+                      "description": "ข้อมูลลูกค้า",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "สมชาย หมายปอง",
+                          "description": "ชื่อลูกค้า"
+                        },
+                        "tax_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "1012670114029",
+                          "description": "เลขที่ผู้เสียภาษี"
+                        },
+                        "phone_number": {
+                          "type": "string",
+                          "minLength": 1,
+                          "example": "0850601111",
+                          "description": "เบอร์โทรศัพท์"
+                        },
+                        "emails": {
+                          "type": "array",
+                          "description": "Email ลูกค้าสำหรับรับเอกสารผ่านอีเมล",
+                          "items": {
+                            "type": "string",
+                            "example": "somchai.h@mockcustomer.com"
+                          }
+                        },
+                        "address": {
+                          "type": "object",
+                          "required": [
+                            "house_number",
+                            "sub_district",
+                            "district",
+                            "province",
+                            "post_code"
+                          ],
+                          "description": "ที่อยู่ลูกค้า",
+                          "properties": {
+                            "house_number": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "598/610",
+                              "description": "เลขที่"
+                            },
+                            "sub_district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "บางกะปิ",
+                              "description": "แขวง / ตำบล"
+                            },
+                            "district": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "ห้วยขวาง",
+                              "description": "เขต / อำเภอ"
+                            },
+                            "province": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "กรุงเทพมหานคร",
+                              "description": "จังหวัด"
+                            },
+                            "post_code": {
+                              "type": "string",
+                              "minLength": 1,
+                              "example": "10310",
+                              "description": "รหัสไปรษณีย์"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "issue_date": {
+                      "type": "string",
+                      "minLength": 1,
+                      "example": "2021-01-19",
+                      "description": "วันที่ออกเอกสาร"
+                    },
+                    "items": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "description": "รายการสินค้า / บริการ",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "description": {
+                            "type": "string",
+                            "minLength": 1,
+                            "example": "ค่าบริการ",
+                            "description": "ชื่อสินค้า / บริการ"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "example": 1,
+                            "description": "จำนวน"
+                          },
+                          "unit_price": {
+                            "type": "number",
+                            "example": 1,
+                            "description": "ราคา/หน่วย"
+                          },
+                          "vat_rate": {
+                            "type": ["number", "null"],
+                            "example": 7,
+                            "description": "อัตราภาษีมูลค่าเพิ่ม"
+                          },
+                          "discount_amount": {
+                            "type": ["number", "null"],
+                            "example": 0,
+                            "description": "มูลค่าส่วนลดสินค้า / บริการ"
+                          }
+                        },
+                        "required": ["description", "quantity", "unit_price"]
+                      }
+                    },
+                    "vat_included": {
+                      "type": "boolean",
+                      "description": "กำหนดว่ารายการสินค้ารวมภาษีแล้ว หรือยังไม่ได้รวมภาษี"
+                    },
+                    "remark": {
+                      "type": ["string", "null"],
+                      "description": "หมายเหตุ"
+                    },
+                    "withholding_tax_rate": {
+                      "type": ["null", "number"],
+                      "description": "อัตราภาษีหัก ณ ที่จ่าย"
+                    }
+                  }
+                },
+                "attachments": {
+                  "type": "array",
+                  "description": "รายการไฟล์แนบ สามารถส่งเป็น document id ที่มีอยู่แล้ว หรือ URL แบบ http/https",
+                  "items": {
+                    "type": "string",
+                    "example": "https://example.com/files/tax-invoice-attachment.pdf"
+                  }
+                }
+              },
+              "required": ["number"]
+            },
+            "in": "body",
+            "name": "body",
+            "x-examples": {
+              "example": {
+                "number": "TAX-000001",
+                "invoice_id": null,
+                "receipt_id": null,
+                "data": {
+                  "customer": {
+                    "customer_code": "BG-CUS-001",
+                    "name": "สมชาย หมายปอง",
+                    "tax_number": "1012670114029",
+                    "phone_number": "0850601111",
+                    "emails": ["somchai.h@mockcustomer.com"],
+                    "address": {
+                      "house_number": "598/610",
+                      "sub_district": "บางกะปิ",
+                      "district": "ห้วยขวาง",
+                      "province": "กรุงเทพมหานคร",
+                      "post_code": "10310"
+                    }
+                  },
+                  "issue_date": "2021-01-19",
+                  "items": [
+                    {
+                      "description": "ค่าบริการ",
+                      "quantity": 1,
+                      "unit_price": 1,
+                      "vat_rate": 7,
+                      "discount_amount": 0
+                    }
+                  ],
+                  "vat_included": true,
+                  "remark": null,
+                  "withholding_tax_rate": null
+                },
+                "attachments": [
+                  "https://example.com/files/tax-invoice-attachment.pdf"
+                ]
+              },
+              "example-2": {
+                "number": "TAX-000001",
+                "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                "receipt_id": null,
+                "data": null
+              },
+              "example-3": {
+                "number": "TAX-000001",
+                "invoice_id": null,
+                "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+                "data": null
+              }
+            }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "default": "application/json"
+          },
+          {
+            "type": "string",
+            "in": "query",
+            "name": "customer_id",
+            "description": "`id`ลูกค้าบนระบบบิลมี"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tax_invoice_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [],
+      "get": {
+        "summary": "List existing Tax Invoices",
+        "operationId": "listTaxInvoices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "default": 0,
+                  "description": "จำนวนใบแจ้งหนี้/ใบกำกับภาษีทั้งหมดในระบบ"
+                },
+                "next": {
+                  "type": ["integer", "null"],
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป"
+                },
+                "previous": {
+                  "type": ["integer", "null"],
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว"
+                },
+                "data": {
+                  "type": "array",
+                  "description": "รายการใบแจ้งหนี้/ใบกำกับภาษี",
+                  "items": {
+                    "$ref": "#/definitions/Tax-Invoice"
+                  }
+                }
+              },
+              "required": ["total", "next", "previous", "data"]
+            }
+          }
+        },
+        "description": "เรียกดูรายการใบแจ้งหนี้/ใบกำกับภาษี",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": ["Tax Invoices"],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ]
+      }
+    },
+    "/v1/tax_invoices/{taxInvoiceId}": {
+      "get": {
+        "summary": "Get an existing Tax Invoice",
+        "description": "สำหรับดึงข้อมูลของใบกำกับภาษีที่ต้องการ",
+        "operationId": "getTaxInvoiceById",
+        "tags": ["Tax Invoices"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Tax-Invoice"
+            },
+            "examples": {
+              "example": {
+                "id": "a5873c97-7c21-407d-b561-c2ece8de6389",
+                "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+                "number": "TAX-000001",
+                "issue_date": "2021-01-25",
+                "merchant": {
+                  "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+                  "phone": "0900900099",
+                  "email": "noreply@billme.co.th",
+                  "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "customer": {
+                  "name": "สมชาย หมายปอง",
+                  "tax_number": "1012670114029",
+                  "phone": "0850601111",
+                  "emails": ["somchai.h@mockcustomer.com"],
+                  "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+                },
+                "items": [
+                  {
+                    "description": "ค่าบริการระบบรับวางบิล",
+                    "quantity": 1,
+                    "unit_price": 1490,
+                    "total_item_price": 1490,
+                    "vat_rate": 7,
+                    "discount_amount": 0
+                  }
+                ],
+                "subtotal": 1490,
+                "total_discount_amount": 0,
+                "vat": {
+                  "is_included": true,
+                  "rate": 7,
+                  "amount": 97.48
+                },
+                "vat_exempted_amount": 0,
+                "taxable_sales_amount": 0,
+                "total": 0,
+                "withholding_tax": {
+                  "rate": 0,
+                  "amount": 0
+                },
+                "paid_amount": 0,
+                "remark": null,
+                "payment": {
+                  "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+                  "paid_date": "2021-01-25",
+                  "amount": 1490,
+                  "slip": null
+                },
+                "pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+                "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+                "attachments": [],
+                "references": {
+                  "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+                  "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46"
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "default": "application/json"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "taxInvoiceId",
+          "in": "path",
+          "required": true,
+          "description": "`id` ของใบกำกับภาษี"
+        }
+      ],
+      "delete": {
+        "summary": "Delete an existing Tax Invoice",
+        "operationId": "deleteTaxInvoiceById",
+        "tags": ["Tax Invoices"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "parameters": [],
+        "description": "สำหรับลบใบกำกับภาษีที่ไม่ต้องการออกจากระบบ การลบใบกำกับภาษีจะทำให้ลูกค้าไม่สามารถเข้าถึงหน้ารายละเอียดของใบกำกับภาษีได้"
+      }
+    },
+    "/v1/customers": {
+      "get": {
+        "summary": "List existing Customers",
+        "tags": ["Customers"],
+        "operationId": "listCustomers",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "จำนวนลูกค้าทั้งหมดที่มีบนระบบ"
+                },
+                "next": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+                  "x-nullable": true
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Customer-Response"
+                  }
+                }
+              },
+              "required": ["total", "data"]
+            },
+            "examples": {}
+          }
+        },
+        "description": "สำหรับเรียกดู`รายการลูกค้า`ที่มีในบริษัททั้งหมด",
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "type": "string",
+            "in": "query",
+            "name": "customer_code",
+            "description": "กรองรายการลูกค้าด้วยรหัสลูกค้า"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Customers"],
+        "summary": "Create a new Customer",
+        "operationId": "createCustomer",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer-Response"
+            }
+          }
+        },
+        "description": "สำหรับ`สร้างรายชื่อลูกค้าใหม่`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Customer-Request"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/customers/{customerId}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "customerId",
+          "in": "path",
+          "required": true,
+          "description": "`id`ของลูกค้า"
+        }
+      ],
+      "get": {
+        "summary": "Get an existing Customer",
+        "tags": ["Customers"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer-Response"
+            }
+          }
+        },
+        "operationId": "getCustomerById",
+        "description": "สำหรับดึงข้อมูลลูกค้าตาม`id` ที่ระบุ",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update an existing Customer",
+        "operationId": "updateCustomerById",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer-Response"
+            }
+          }
+        },
+        "description": "`แก้ไขข้อมูลลูกค้า`รายบุคคล",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Customer-Request"
+            },
+            "description": ""
+          }
+        ],
+        "tags": ["Customers"]
+      },
+      "delete": {
+        "summary": "Delete an existing Customer",
+        "operationId": "deleteCustomerById",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "`ลบข้อมูลลูกค้า`ที่ไม่ต้องการ",
+        "tags": ["Customers"]
+      }
+    },
+    "/v1/templates/invoices": {
+      "get": {
+        "summary": "List existing Invoice Templates",
+        "tags": ["Invoice Templates"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "default": 0,
+                  "minimum": 0,
+                  "description": "จำนวน`รูปแบบใบแจ้งหนี้`ทั้งหมดที่มีในระบบ"
+                },
+                "next": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "integer",
+                  "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+                  "x-nullable": true
+                },
+                "invoice_templates": {
+                  "type": "array",
+                  "description": "รายการ`รูปแบบใบแจ้งหนี้`",
+                  "items": {
+                    "$ref": "#/definitions/Invoice-Template-Response"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "listInvoiceTemplates",
+        "description": "เรียกดูรายการ`รูปแบบใบแจ้งหนี้`ที่สร้างไว้",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a new Invoice Template",
+        "operationId": "createInvoiceTemplate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Template-Response"
+            },
+            "examples": {
+              "response.json": {
+                "id": "44cf6f8f-77f9-4a3d-9d4f-ba7d2c3126a5",
+                "seller_id": "1d1295bf-f6f8-4473-9b95-33e889f301b1",
+                "number": "TEM202108001",
+                "template": {
+                  "name": "ค่าบริการสำนักงานรายเดือน",
+                  "items": [
+                    {
+                      "description": "บริการทำความสะอาดรายสัปดาห์",
+                      "quantity": 1,
+                      "price_per_item": 399,
+                      "vat": {
+                        "rate": 7,
+                        "amount": 22.83177570093458
+                      },
+                      "discount": {
+                        "rate": null,
+                        "amount": 50
+                      }
+                    },
+                    {
+                      "description": "ค่าบริการตู้จดหมาย",
+                      "quantity": 1,
+                      "price_per_item": 99,
+                      "vat": {
+                        "rate": 7,
+                        "amount": 6.4766355140186915
+                      },
+                      "discount": null
+                    }
+                  ],
+                  "remark": "กรุณาชำระภายใน 30 วันหลังจากได้รับใบแจ้งหนี้",
+                  "due_date_term": 30,
+                  "discount": {
+                    "on": true,
+                    "percentage": 0,
+                    "amount": 50
+                  },
+                  "vat": {
+                    "on": true,
+                    "is_included": true,
+                    "rate": 0.07,
+                    "amount": 29.31
+                  },
+                  "withholding_tax": {
+                    "on": true,
+                    "rate": 0.03,
+                    "amount": 12.56
+                  },
+                  "vat_exempted_amount": 0,
+                  "taxable_sales_amount": 418.69,
+                  "net_amount": 418.69,
+                  "items_amount": 498,
+                  "total_amount": 448,
+                  "gross_amount": 435.44
+                },
+                "created_at": "2021-08-06 09:24:04",
+                "updated_at": "2021-08-06 09:24:04"
+              }
+            }
+          }
+        },
+        "description": "สร้าง`รูปแบบใบแจ้งหนี้`ใหม่",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "ชื่อ`ใบแจ้งหนี้`",
+                  "example": "สมัครสมาชิกนิตยสารรายเดือน",
+                  "x-nullable": true
+                },
+                "number": {
+                  "type": "string",
+                  "description": "เลขที่อ้างอิง`รูปแบบใบแจ้งหนี้`",
+                  "example": "REC2021080001"
+                },
+                "items": {
+                  "type": "array",
+                  "description": "รายการสินค้า/บริการ",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "รายละเอียดสินค้า/บริการ",
+                        "example": "ค่าบริการทำความสะอาดรายเดือน"
+                      },
+                      "quantity": {
+                        "type": "number",
+                        "description": "จำนวน/หน่วย",
+                        "format": "double",
+                        "example": 1
+                      },
+                      "price_per_item": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "ราคาสินค้า/บริการต่อหน่วย",
+                        "example": 399
+                      },
+                      "vat_rate": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 0.07,
+                        "description": "ภาษีมูลค่าเพิ่ม (หากไม่มีให้ใส่ null)",
+                        "x-nullable": true
+                      },
+                      "discount": {
+                        "type": "object",
+                        "description": "ส่วนลด (หากไม่มีให้ใส่ null)",
+                        "x-nullable": true,
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": ["percentage", "money"],
+                            "description": "ประเภทส่วนลด"
+                          },
+                          "total": {
+                            "type": "number",
+                            "description": "มูลค่าส่วนลดอ้างอิงจากประเภท",
+                            "format": "double"
+                          }
+                        }
+                      }
+                    },
+                    "required": ["description", "quantity", "price_per_item"]
+                  }
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "หมายเหตุ",
+                  "example": "กรุณาชำระภายในวันที่กำหนดเท่านั้น"
+                },
+                "withholding_tax": {
+                  "description": "มูลค่าภาษีหัก ณ ที่จ่าย",
+                  "type": "object",
+                  "properties": {
+                    "on": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่"
+                    },
+                    "rate": {
+                      "type": "number",
+                      "format": "double",
+                      "default": 0,
+                      "example": 0.03,
+                      "description": "อัตราภาษีหัก ณ​ ที่จ่าย"
+                    }
+                  }
+                },
+                "is_vat_included": {
+                  "type": "boolean",
+                  "description": "มีการคิดภาษีมูลค่าเพิ่มแบบรวมไปในรายการสินค้าหรือไม่",
+                  "default": false
+                },
+                "due_date_term": {
+                  "type": "integer",
+                  "description": "จำนวนวันที่ต้องชำระหลังออกใบแจ้งหนี้",
+                  "example": 30
+                }
+              },
+              "required": ["name", "number", "items", "due_date_term"]
+            },
+            "x-examples": {
+              "request.json": {
+                "name": "ค่าบริการสำนักงานรายเดือน",
+                "number": "TEM202108001",
+                "items": [
+                  {
+                    "description": "บริการทำความสะอาดรายสัปดาห์",
+                    "quantity": 1,
+                    "price_per_item": 399,
+                    "vat_rate": 0.07,
+                    "discount": {
+                      "type": "amount",
+                      "total": 50
+                    }
+                  },
+                  {
+                    "description": "ค่าบริการตู้จดหมาย",
+                    "quantity": 1,
+                    "price_per_item": 99,
+                    "vat_rate": 0.07,
+                    "discount": null
+                  }
+                ],
+                "remark": "กรุณาชำระภายใน 30 วันหลังจากได้รับใบแจ้งหนี้",
+                "withholding_tax": {
+                  "on": true,
+                  "rate": 0.03
+                },
+                "is_vat_included": false,
+                "due_date_term": 30
+              }
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": ["Invoice Templates"]
+      }
+    },
+    "/v1/templates/invoices/{invoiceTemplateId}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "invoiceTemplateId",
+          "in": "path",
+          "required": true,
+          "description": "`id`ของ`รูปแบบใบแจ้งหนี้`",
+          "format": "uuid"
+        }
+      ],
+      "get": {
+        "summary": "Get an existing Invoice Template",
+        "tags": ["Invoice Templates"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Template-Response"
+            }
+          }
+        },
+        "operationId": "getInvoiceTemplate",
+        "description": "เรียกดู`รูปแบบใบแจ้งหนี้`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update an existing Invoice Template",
+        "operationId": "updateInvoiceTemplate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invoice-Template-Response"
+            }
+          }
+        },
+        "tags": ["Invoice Templates"],
+        "description": "อัพเดทโครงสร้าง`รูปแบบใบแจ้งหนี้`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an existing Invoice Template",
+        "operationId": "deleteInvoiceTemplate",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "ลบ`รูปแบบใบแจ้งหนี้`",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": ["Invoice Templates"]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "name": "X-API-Key",
+      "type": "apiKey",
+      "in": "header",
+      "description": "สามารถขอ API Key ได้ที่หน้า `Billgate API` ในเมนู `การตั้งค่าข้อมูล` ผ่านทางเว็บไซต์ https://billbox.billme.co.th\n\nหลังจากนั้นเมื่อต้องการเรียกใช้งาน Billgate API ให้ทำการแนบ HTTP Header `X-API-Key` มาใน request ที่เรียกใช้งาน API"
+    }
+  },
+  "produces": ["application/json"],
+  "consumes": ["application/json"],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "definitions": {
+    "Billgate-Token": {
+      "title": "Billgate Token",
+      "type": "object",
+      "x-tags": ["Tokens"],
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "access token สำหรับใช้งาน Billgate API"
+        }
+      },
+      "required": ["access_token"]
+    },
+    "Invoice-Transition-Logs": {
+      "title": "Invoice Transition Logs",
+      "type": "object",
+      "x-tags": ["Invoices"],
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "id ของ transition log"
+              },
+              "invoice_id": {
+                "type": "string",
+                "description": "id ของใบแจ้งหนี้"
+              },
+              "from_status": {
+                "type": ["string", "null"],
+                "description": "สถานะก่อนหน้า"
+              },
+              "to_status": {
+                "type": "string",
+                "description": "สถานะหลังการเปลี่ยนแปลง"
+              },
+              "transitioned_by_type": {
+                "type": "string",
+                "description": "ประเภทผู้เปลี่ยนสถานะ"
+              },
+              "transitioned_by_id": {
+                "type": ["string", "null"],
+                "description": "id ของผู้เปลี่ยนสถานะ"
+              },
+              "transitioned_by": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": ["string", "null"]
+                  },
+                  "name": {
+                    "type": ["string", "null"]
+                  }
+                }
+              },
+              "reason": {
+                "type": ["string", "null"],
+                "description": "เหตุผลของการเปลี่ยนสถานะ"
+              },
+              "metadata": {
+                "type": "object",
+                "description": "ข้อมูลเพิ่มเติมของการเปลี่ยนสถานะ"
+              },
+              "created_at": {
+                "type": "string",
+                "description": "วันที่สร้าง transition log"
+              }
+            },
+            "required": [
+              "id",
+              "invoice_id",
+              "to_status",
+              "transitioned_by_type",
+              "transitioned_by",
+              "metadata",
+              "created_at"
+            ]
+          }
+        }
+      },
+      "required": ["data"]
+    },
+    "Customer-Response": {
+      "title": "Customer Response",
+      "type": "object",
+      "description": "ข้อมูลลูกค้าสำหรับส่งใบแจ้งหนี้และเอกสารอื่น ๆ",
+      "x-examples": {},
+      "x-tags": ["Customers"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id ของลูกค้า",
+          "maxLength": 32,
+          "example": "2bd61a952455483583b89dd53a937ef6"
+        },
+        "type": {
+          "type": "string",
+          "description": "ประเภทของลูกค้า (บุคคลธรรมดา, นิติบุคคล)",
+          "enum": ["individual", "corporate"]
+        },
+        "name": {
+          "type": "string",
+          "description": "ชื่อสำหรับออกเอกสาร",
+          "maxLength": 140
+        },
+        "alias": {
+          "type": "string",
+          "description": "ชื่อเรียกแทน/ชื่อย่อ",
+          "maxLength": 140
+        },
+        "tax_number": {
+          "type": "string",
+          "description": "เลขรหัสประชาชน/เลขนิติบุคคล",
+          "minLength": 13,
+          "maxLength": 13,
+          "example": "0000000000000"
+        },
+        "branch_number": {
+          "type": "string",
+          "description": "รหัสสาขา 5 หลัก (หากเป็นบุคคลธรรมดาจะเป็น 00000)",
+          "example": "00000",
+          "minLength": 5,
+          "maxLength": 5
+        },
+        "phone_number": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "หมายเลขโทรศัพท์ (หากมีมากกว่า 1 หมายเลข ให้ใส่ `,` คั่น)",
+          "example": "0800000000,0900000000"
+        },
+        "emails": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+          "description": "อีเมล",
+          "format": "email"
+        },
+        "address": {
+          "$ref": "#/definitions/Address"
+        }
+      },
+      "required": ["id", "type", "name", "emails", "address"]
+    },
+    "Address": {
+      "title": "Address",
+      "type": "object",
+      "description": "ข้อมูลประเภทที่อยู่ หากไม่มีข้อมูลในแต่ละ field ให้ใส่มาเป็น empty string",
+      "x-tags": ["Customers"],
+      "properties": {
+        "house_number": {
+          "type": "string",
+          "description": "เลขที่",
+          "maxLength": 140
+        },
+        "sub_district": {
+          "type": "string",
+          "description": "ตำบล/แขวง",
+          "maxLength": 30
+        },
+        "district": {
+          "type": "string",
+          "description": "อำเภอ/เขต",
+          "maxLength": 30
+        },
+        "province": {
+          "type": "string",
+          "description": "จังหวัด",
+          "maxLength": 30
+        },
+        "post_code": {
+          "type": "string",
+          "description": "รหัสไปรษณีย์",
+          "maxLength": 5,
+          "minLength": 5
+        }
+      },
+      "required": [
+        "house_number",
+        "sub_district",
+        "district",
+        "province",
+        "post_code"
+      ]
+    },
+    "Customer-Request": {
+      "title": "Customer Request",
+      "type": "object",
+      "x-tags": ["Customers"],
+      "description": "ข้อมูลประเภท `JSON` เมื่อทำ operation `POST` หรือ `PUT`",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "ประเภทของลูกค้า (บุคคลธรรมดา, นิติบุคคล)",
+          "enum": ["individual", "corporate"]
+        },
+        "name": {
+          "type": "string",
+          "description": "ชื่อสำหรับออกเอกสาร",
+          "maxLength": 140
+        },
+        "alias": {
+          "type": "string",
+          "description": "ชื่อเรียกแทน/ชื่อย่อ",
+          "maxLength": 140,
+          "x-nullable": true
+        },
+        "tax_number": {
+          "type": "string",
+          "description": "เลขรหัสประชาชน/เลขนิติบุคคล",
+          "minLength": 13,
+          "maxLength": 13,
+          "example": "0000000000000",
+          "x-nullable": true
+        },
+        "branch_number": {
+          "type": "string",
+          "description": "รหัสสาขา 5 หลัก (หากเป็นบุคคลธรรมดาจะเป็น 00000)",
+          "example": "00000",
+          "minLength": 5,
+          "maxLength": 5,
+          "x-nullable": true
+        },
+        "phone_number": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "หมายเลขโทรศัพท์ (หากมีมากกว่า 1 หมายเลข ให้ใส่ `,` คั่น)",
+          "example": "0800000000,0900000000",
+          "x-nullable": true
+        },
+        "customer_code": {
+          "type": "string",
+          "description": "รหัสลูกค้าสำหรับอ้างอิงและค้นหาลูกค้า",
+          "maxLength": 64,
+          "example": "BG-CUS-001",
+          "x-nullable": true
+        },
+        "emails": {
+          "type": "array",
+          "description": "อีเมล",
+          "format": "email",
+          "items": {
+            "type": "string"
+          }
+        },
+        "address": {
+          "$ref": "#/definitions/Address"
+        }
+      },
+      "required": ["type", "name", "emails", "address"]
+    },
+    "Invoice": {
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้`",
+      "type": "object",
+      "x-tags": ["Invoices"],
+      "title": "Invoice",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "invoice id ของใบแจ้งหนี้"
+        },
+        "name": {
+          "type": "string",
+          "description": "อ้างอิง / โปรเจค"
+        },
+        "number": {
+          "type": "string",
+          "description": "เลขที่ใบแจ้งหนี้"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["created", "pending_payment", "pending_approval", "paid"],
+          "description": "สถานะการชำระเงิน"
+        },
+        "issue_date": {
+          "type": "string",
+          "description": "วันที่ออกเอกสาร"
+        },
+        "due_date": {
+          "type": "string",
+          "description": "วันที่ครบกำหนดชำระ"
+        },
+        "merchant": {
+          "type": "object",
+          "description": "ข้อมูลธุรกิจของคุณ",
+          "required": ["name", "phone", "email", "address"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "ชื่อธุรกิจ"
+            },
+            "phone": {
+              "type": "string",
+              "description": "เบอรโทรศัพท์"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email ของธุรกิจ"
+            },
+            "address": {
+              "type": "string",
+              "description": "ที่อยู่ธุรกิจ"
+            }
+          }
+        },
+        "customer": {
+          "type": "object",
+          "description": "ข้อมูลลูกค้า",
+          "required": ["name", "tax_number", "phone", "emails", "address"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "ชื่อลูกค้า"
+            },
+            "tax_number": {
+              "type": ["string", "null"],
+              "description": "เลขที่ผู้เสียภาษี"
+            },
+            "phone": {
+              "type": "string",
+              "description": "เบอร์โทรศัพท์"
+            },
+            "emails": {
+              "type": "array",
+              "description": "Email ของลูกค้า",
+              "items": {
+                "type": "string"
+              }
+            },
+            "address": {
+              "type": "string",
+              "description": "ที่อยู่ลูกค้า"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "รายการสินค้า",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "ชื่อสินค้า"
+              },
+              "quantity": {
+                "type": "number",
+                "description": "จำนวน"
+              },
+              "unit_price": {
+                "type": "number",
+                "description": "ราคา/หน่วย"
+              },
+              "total_item_price": {
+                "type": "number",
+                "description": "สรุปราคาสินค้า"
+              },
+              "vat_rate": {
+                "type": "number",
+                "description": "อัตราภาษีมูลค่าเพิ่ม"
+              },
+              "discount_amount": {
+                "type": "number",
+                "description": "มูลค่าส่วนลด"
+              }
+            },
+            "required": [
+              "description",
+              "quantity",
+              "unit_price",
+              "total_item_price",
+              "discount_amount"
+            ]
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "รวมราคาสินค้าทั้งหมด"
+        },
+        "total_discount_amount": {
+          "type": "number",
+          "description": "มูลค่าส่วนลดทั้งหมด"
+        },
+        "vat": {
+          "type": "object",
+          "description": "ภาษีมูลค่าเพิ่ม",
+          "required": ["is_included", "rate", "amount"],
+          "properties": {
+            "is_included": {
+              "type": "boolean",
+              "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
+            },
+            "rate": {
+              "type": "number",
+              "description": "อัตราภาษีมูลค่าเพิ่ม"
+            },
+            "amount": {
+              "type": "number",
+              "description": "มูลค่าภาษี"
+            }
+          }
+        },
+        "vat_exempted_amount": {
+          "type": "number",
+          "description": "มูลค่าสินค้าที่ไม่ต้องเสียภาษี"
+        },
+        "taxable_sales_amount": {
+          "type": "number",
+          "description": "มูลค่าสินค้าที่เสียภาษี"
+        },
+        "total": {
+          "type": "number",
+          "description": "ราคาหลังรวมภาษี"
+        },
+        "withholding_tax": {
+          "type": "object",
+          "description": "ภาษีหัก ณ ที่จ่าย",
+          "required": ["rate", "amount"],
+          "properties": {
+            "rate": {
+              "type": "number",
+              "description": "อัตราภาษีหัก ณ ที่จ่าย"
+            },
+            "amount": {
+              "type": "number",
+              "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
+            }
+          }
+        },
+        "paid_amount": {
+          "type": "number",
+          "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
+        },
+        "remark": {
+          "type": ["string", "null"],
+          "description": "หมายเหตุ"
+        },
+        "payment_methods": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "ช่องทางการชำระเงิน",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "ชื่อบัญชีที่รับชำระ"
+              },
+              "number": {
+                "type": "string",
+                "description": "เลขที่บัญชี"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "number", "type"]
+          }
+        },
+        "payment": {
+          "type": ["object", "null"],
+          "description": "การชำระเงิน",
+          "required": ["paid_date", "amount"],
+          "properties": {
+            "paid_date": {
+              "type": "string",
+              "description": "วันที่ชำระเงิน"
+            },
+            "amount": {
+              "type": "number",
+              "description": "จำนวนเงินที่ชำระ"
+            }
+          }
+        },
+        "pdf_url": {
+          "type": ["string", "null"],
+          "description": "ลิงก์ PDF ของใบแจ้งหนี้",
+          "format": "uri"
+        },
+        "shareable_url": {
+          "type": ["string"],
+          "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+          "format": "uri"
+        },
+        "attachments": {
+          "type": "array",
+          "uniqueItems": true,
+          "description": "รายการไฟล์แนบ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "ชื่อไฟล์แนบ"
+              },
+              "url": {
+                "type": "string",
+                "description": "ลิงก์สำหรับดาวน์โหลดไฟล์แนบ"
+              }
+            },
+            "required": ["name", "url"]
+          }
+        },
+        "references": {
+          "type": "object",
+          "description": "เอกสารที่เกี่ยวข้อง",
+          "required": ["receipt_id", "tax_invoice_id"],
+          "properties": {
+            "receipt_id": {
+              "type": ["string", "null"],
+              "minLength": 1,
+              "description": "receipt id ของใบเสร็จที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
+            },
+            "tax_invoice_id": {
+              "type": ["string", "null"],
+              "minLength": 1,
+              "description": "tax invoice id ของใบกำกับภาษีที่เกี่ยวข้องกับใบแจ้งหนี้ฉบับนี้"
+            }
+          }
+        },
+        "qrcode": {
+          "type": ["string", "null"],
+          "description": "พร้อมเพย์ QR Code ในรูปแบบของ Base64 Image"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "number",
+        "status",
+        "issue_date",
+        "due_date",
+        "merchant",
+        "customer",
+        "items",
+        "subtotal",
+        "total_discount_amount",
+        "vat",
+        "vat_exempted_amount",
+        "taxable_sales_amount",
+        "total",
+        "withholding_tax",
+        "paid_amount",
+        "payment_methods",
+        "payment",
+        "pdf_url",
+        "shareable_url",
+        "attachments",
+        "references",
+        "qrcode"
+      ]
+    },
+    "Receipt": {
+      "title": "Receipt",
+      "type": "object",
+      "x-tags": ["Receipts"],
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบเสร็จ`",
+      "x-examples": {
+        "example": {
+          "id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+          "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+          "number": "REC-000001",
+          "issue_date": "2021-01-25",
+          "merchant": {
+            "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+            "phone": "0900900099",
+            "email": "noreply@billme.co.th",
+            "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+          },
+          "customer": {
+            "name": "สมชาย หมายปอง",
+            "tax_number": "1012670114029",
+            "phone": "0850601111",
+            "emails": ["somchai.h@mockcustomer.com"],
+            "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+          },
+          "items": [
+            {
+              "description": "ค่าบริการระบบรับวางบิล",
+              "quantity": 1,
+              "unit_price": 1490,
+              "total_item_price": 1490,
+              "vat_rate": 7,
+              "discount_amount": 0
+            }
+          ],
+          "subtotal": 1490,
+          "total_discount_amount": 0,
+          "vat": {
+            "is_included": true,
+            "rate": 7,
+            "amount": 97.48
+          },
+          "vat_exempted_amount": 0,
+          "taxable_sales_amount": 0,
+          "total": 0,
+          "withholding_tax": {
+            "rate": 0,
+            "amount": 0
+          },
+          "paid_amount": 0,
+          "remark": null,
+          "payment": {
+            "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+            "paid_date": "2021-01-25",
+            "amount": 1490,
+            "slip": null
+          },
+          "pdf_url": "https://storage.googleapis.com/billhub/production/1012670114029/5b8408_Receipt_RCP63000005.pdf",
+          "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+          "attachments": [],
+          "references": {
+            "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+            "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "id ของใบเสร็จที่ต้องการดึงข้อมูล"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "อ้างอิง / โปรเจค"
+        },
+        "number": {
+          "type": "string",
+          "minLength": 1,
+          "description": "เลขที่ใบเสร็จ"
+        },
+        "issue_date": {
+          "type": "string",
+          "minLength": 1,
+          "description": "วันที่ออกเอกสาร"
+        },
+        "merchant": {
+          "type": "object",
+          "description": "รายละเอียดธุรกิจของคุณ",
+          "required": ["name", "phone", "email", "address"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ชื่อธุรกิจ"
+            },
+            "phone": {
+              "type": "string",
+              "minLength": 1,
+              "description": "เบอร์โทรศัพท์"
+            },
+            "email": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Email ของธุรกิจ"
+            },
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ที่อยู่ธุรกิจ"
+            }
+          }
+        },
+        "customer": {
+          "type": "object",
+          "description": "รายละเอียดลูกค้า",
+          "required": ["name", "tax_number", "phone", "emails", "address"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ชื่อลูกค้า"
+            },
+            "tax_number": {
+              "type": "string",
+              "minLength": 1,
+              "description": "เลขที่ผู้เสียภาษี"
+            },
+            "phone": {
+              "type": "string",
+              "minLength": 1,
+              "description": "เบอร์โทรศัพท์"
+            },
+            "emails": {
+              "type": "array",
+              "description": "Email ของลูกค้า",
+              "items": {
+                "type": "string"
+              }
+            },
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ที่อยู่"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "รายการสินค้า / บริการ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "description": "ชื่อสินค้า / บริการ"
+              },
+              "quantity": {
+                "type": "number",
+                "description": "จำนวน"
+              },
+              "unit_price": {
+                "type": "number",
+                "description": "ราคาสินค้า/หน่วย"
+              },
+              "total_item_price": {
+                "type": "number",
+                "description": "สรุปราคาสินค้า"
+              },
+              "vat_rate": {
+                "type": "number",
+                "description": "อัตราษีมูลค่าเพิ่ม"
+              },
+              "discount_amount": {
+                "type": "number",
+                "description": "มูลค่าส่วนลดของสินค้า"
+              }
+            },
+            "required": [
+              "description",
+              "quantity",
+              "unit_price",
+              "total_item_price",
+              "vat_rate",
+              "discount_amount"
+            ]
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "รวมราคาสินค้าทั้งหมด"
+        },
+        "total_discount_amount": {
+          "type": "number",
+          "description": "รวมมูลค่าส่วนลดทั้งหมด"
+        },
+        "vat": {
+          "type": "object",
+          "description": "ภาษีมูลค่าเพิ่ม",
+          "required": ["is_included", "rate", "amount"],
+          "properties": {
+            "is_included": {
+              "type": "boolean",
+              "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
+            },
+            "rate": {
+              "type": "number",
+              "description": "อัตราภาษีมูลค่าเพิ่ม"
+            },
+            "amount": {
+              "type": "number",
+              "description": "มูลค่าภาษี"
+            }
+          }
+        },
+        "vat_exempted_amount": {
+          "type": "number",
+          "description": "มูลค่าสินค้า/บริการที่ได้รับการยกเว้นภาษี"
+        },
+        "taxable_sales_amount": {
+          "type": "number",
+          "description": "มูลค่าสินค้า/บริการที่เสียภาษี"
+        },
+        "total": {
+          "type": "number",
+          "description": "ราคาหลังรวมภาษี"
+        },
+        "withholding_tax": {
+          "type": "object",
+          "description": "ภาษีหัก ณ ที่จ่าย",
+          "required": ["rate", "amount"],
+          "properties": {
+            "rate": {
+              "type": "number",
+              "description": "อัตราภาษีหัก ณ ที่จ่าย"
+            },
+            "amount": {
+              "type": "number",
+              "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
+            }
+          }
+        },
+        "paid_amount": {
+          "type": "number",
+          "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
+        },
+        "remark": {
+          "type": ["string", "null"],
+          "description": "หมายเหตุ"
+        },
+        "payment": {
+          "type": ["object", "null"],
+          "description": "การชำระเงิน",
+          "properties": {
+            "paid_date": {
+              "type": "string",
+              "description": "วันที่ชำระเงิน"
+            },
+            "amount": {
+              "type": "number",
+              "description": "จำนวนเงินที่ชำระ"
+            }
+          },
+          "required": ["paid_date", "amount"]
+        },
+        "pdf_url": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบเสร็จ"
+        },
+        "shareable_url": {
+          "type": ["string"],
+          "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+          "format": "uri"
+        },
+        "attachments": {
+          "type": "array",
+          "description": "ไฟล์แนบ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "ชื่อไฟล์แนบ"
+              },
+              "url": {
+                "type": "string",
+                "description": "ลิงก์สำหรับดาวน์โหลดไฟล์แนบ"
+              }
+            }
+          }
+        },
+        "references": {
+          "type": "object",
+          "description": "เอกสารที่เกี่ยวข้อง",
+          "required": ["invoice_id", "tax_invoice_id"],
+          "properties": {
+            "invoice_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "id ของใบแจ้งหนี้ที่เกี่ยวข้องกับใบเสร็จฉบับนี้"
+            },
+            "tax_invoice_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "id ใบกำกับภาษีที่เกี่ยวข้องกับใบเสร็จรายการนี้"
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "number",
+        "issue_date",
+        "merchant",
+        "customer",
+        "items",
+        "subtotal",
+        "total_discount_amount",
+        "vat",
+        "vat_exempted_amount",
+        "taxable_sales_amount",
+        "total",
+        "withholding_tax",
+        "paid_amount",
+        "pdf_url",
+        "shareable_url",
+        "attachments",
+        "references"
+      ]
+    },
+    "Tax-Invoice": {
+      "title": "Tax Invoice",
+      "type": "object",
+      "x-tags": ["Tax Invoices"],
+      "x-examples": {
+        "example": {
+          "id": "a5873c97-7c21-407d-b561-c2ece8de6389",
+          "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+          "number": "TAX-000001",
+          "issue_date": "2021-01-25",
+          "merchant": {
+            "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+            "phone": "0900900099",
+            "email": "noreply@billme.co.th",
+            "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+          },
+          "customer": {
+            "name": "สมชาย หมายปอง",
+            "tax_number": "1012670114029",
+            "phone": "0850601111",
+            "emails": ["somchai.h@mockcustomer.com"],
+            "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+          },
+          "items": [
+            {
+              "description": "ค่าบริการระบบรับวางบิล",
+              "quantity": 1,
+              "unit_price": 1490,
+              "total_item_price": 1490,
+              "vat_rate": 7,
+              "discount_amount": 0
+            }
+          ],
+          "subtotal": 1490,
+          "total_discount_amount": 0,
+          "vat": {
+            "is_included": true,
+            "rate": 7,
+            "amount": 97.48
+          },
+          "vat_exempted_amount": 0,
+          "taxable_sales_amount": 0,
+          "total": 0,
+          "withholding_tax": {
+            "rate": 0,
+            "amount": 0
+          },
+          "paid_amount": 0,
+          "remark": null,
+          "payment": {
+            "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+            "paid_date": "2021-01-25",
+            "amount": 1490,
+            "slip": null
+          },
+          "pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+          "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+          "attachments": [],
+          "references": {
+            "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+            "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46"
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "id ใบกำกับภาษี"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ชื่ออ้างอิง / โปรเจค"
+        },
+        "number": {
+          "type": "string",
+          "minLength": 1,
+          "description": "เลขที่ใบกำกับภาษี"
+        },
+        "issue_date": {
+          "type": "string",
+          "minLength": 1,
+          "description": "วันที่ออกเอกสาร"
+        },
+        "merchant": {
+          "type": "object",
+          "description": "ข้อมูลธุรกิจของคุณ",
+          "required": ["name", "phone", "email", "address"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ชื่อธุรกิจ"
+            },
+            "phone": {
+              "type": "string",
+              "minLength": 1,
+              "description": "เบอร์โทรศัพท์"
+            },
+            "email": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Email ของธุรกิจ"
+            },
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ที่อยู่"
+            }
+          }
+        },
+        "customer": {
+          "type": "object",
+          "description": "ข้อมูลลูกค้า",
+          "required": ["name", "tax_number", "phone", "emails", "address"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ชื่อลูกค้า"
+            },
+            "tax_number": {
+              "type": "string",
+              "minLength": 1,
+              "description": "เลขที่ผู้เสียภาษี"
+            },
+            "phone": {
+              "type": "string",
+              "minLength": 1,
+              "description": "เบอร์โทรศัพท์"
+            },
+            "emails": {
+              "type": "array",
+              "description": "Email ของลูกค้า",
+              "items": {
+                "type": "string"
+              }
+            },
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "description": "ที่อยู่"
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "รายการสินค้า",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "description": "ชื่อสินค้า / บริการ"
+              },
+              "quantity": {
+                "type": "number",
+                "description": "จำนวน"
+              },
+              "unit_price": {
+                "type": "number",
+                "description": "ราคา/หน่วย"
+              },
+              "total_item_price": {
+                "type": "number",
+                "description": "สรุปราคาสินค้า"
+              },
+              "vat_rate": {
+                "type": "number",
+                "description": "อัตราภาษีมูลค่าเพิ่ม"
+              },
+              "discount_amount": {
+                "type": "number",
+                "description": "มูลค่าส่วนลดสินค้า / บริการ"
+              }
+            },
+            "required": [
+              "description",
+              "quantity",
+              "unit_price",
+              "total_item_price",
+              "vat_rate",
+              "discount_amount"
+            ]
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "รวมราคาสินค้าทั้งหมด"
+        },
+        "total_discount_amount": {
+          "type": "number",
+          "description": "รวมมูลค่าส่วนลดทั้งหมด"
+        },
+        "vat": {
+          "type": "object",
+          "description": "ภาษีมูลค่าเพิ่ม",
+          "required": ["is_included", "rate", "amount"],
+          "properties": {
+            "is_included": {
+              "type": "boolean",
+              "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
+            },
+            "rate": {
+              "type": "number",
+              "description": "อัตราภาษีมูลค่าเพิ่ม"
+            },
+            "amount": {
+              "type": "number",
+              "description": "มูลค่าภาษี"
+            }
+          }
+        },
+        "vat_exempted_amount": {
+          "type": "number",
+          "description": "มูลค่าสินค้า/บริการที่ได้รับการยกเว้นภาษี"
+        },
+        "taxable_sales_amount": {
+          "type": "number",
+          "description": "มูลค่าสินค้า/บริการที่เสียภาษี"
+        },
+        "total": {
+          "type": "number",
+          "description": "ราคาหลังรวมภาษี"
+        },
+        "withholding_tax": {
+          "type": "object",
+          "description": "ภาษีหัก ณ ที่จ่าย",
+          "required": ["rate", "amount"],
+          "properties": {
+            "rate": {
+              "type": "number",
+              "description": "อัตราภาษีหัก ณ ที่จ่าย"
+            },
+            "amount": {
+              "type": "number",
+              "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
+            }
+          }
+        },
+        "paid_amount": {
+          "type": "number",
+          "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
+        },
+        "remark": {
+          "type": ["string", "null"],
+          "description": "หมายเหตุ"
+        },
+        "payment": {
+          "type": ["object", "null"],
+          "description": "การชำระเงิน",
+          "properties": {
+            "paid_date": {
+              "type": "string",
+              "description": "วันที่ชำระเงิน"
+            },
+            "amount": {
+              "type": "number",
+              "description": "จำนวนเงินที่ชำระ"
+            }
+          },
+          "required": ["paid_date", "amount"]
+        },
+        "pdf_url": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบกำกับภาษี"
+        },
+        "shareable_url": {
+          "type": ["string"],
+          "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+          "format": "uri"
+        },
+        "attachments": {
+          "type": "array",
+          "description": "รายการเอกสารแนบ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "ชื่อเอกสารแนบ"
+              },
+              "url": {
+                "type": "string",
+                "description": "ลิงก์สำหรับดาวน์โหลดเอกสารแนบ"
+              }
+            }
+          }
+        },
+        "references": {
+          "type": "object",
+          "description": "รายการเอกสารอ้างอิง",
+          "required": ["invoice_id", "receipt_id"],
+          "properties": {
+            "invoice_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "id ใบแจ้งหนี่ที่เกี่ยวข้อง"
+            },
+            "receipt_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "id ใบเสร็จที่เกี่ยวข้อง"
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "number",
+        "issue_date",
+        "merchant",
+        "customer",
+        "items",
+        "subtotal",
+        "total_discount_amount",
+        "vat",
+        "vat_exempted_amount",
+        "taxable_sales_amount",
+        "total",
+        "withholding_tax",
+        "paid_amount",
+        "pdf_url",
+        "shareable_url",
+        "attachments",
+        "references"
+      ],
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้/ใบกำกับภาษี`"
+    },
+    "Recurring-Invoice": {
+      "title": "Recurring Invoice",
+      "type": "object",
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้อัตโนัมัติ`",
+      "x-tags": ["Recurring Invoices"],
+      "x-examples": {
+        "recurring-invoice.json": {
+          "id": "8a4b0613-8a53-4774-b8f0-87bce6ccc547",
+          "status": "active",
+          "invoice_template": {
+            "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+            "name": "สมัครสมาชิกนิตยสารรายเดือน",
+            "number": "REC2021080001",
+            "amount": 399
+          },
+          "customer": {
+            "id": "1137d03a3ee24f1ca31dfae41a4cf600",
+            "name": "บริษัท บิลมีเวนเจอร์ จำกัด"
+          },
+          "number": "MAG2021080001",
+          "frequency": "monthly",
+          "payment_policy": "fully_paid",
+          "start_date": "2021-08-30",
+          "end_date": "2021-10-30",
+          "next_sending_date": "2021-09-30",
+          "sent_count": 0,
+          "cycle": 3,
+          "installments": [],
+          "canceled_at": null,
+          "created_at": "2021-08-05 16:55:00"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "`id` ของใบแจ้งหนี้อันโนัมัติ",
+          "format": "uuid",
+          "example": "8a4b0613-8a53-4774-b8f0-87bce6ccc547"
+        },
+        "status": {
+          "type": "string",
+          "description": "สถานะจะถูกตั้งค่าเป็น `canceled` เมื่อมีการลบใบแจ้งหนี้อัตโนมัติ โดยจะมี timestamp บอกเวลาที่ยกเลิกใบแจ้งหนี้อัตโนมัติที่ฟิล์ด `deleted_at`",
+          "enum": ["active", "canceled"]
+        },
+        "payment_policy": {
+          "type": "string",
+          "description": "รูปแบบการชำระเงิน ชำระเต็มจำนวน (`fully_paid`) หรือ ผ่อนชำระ (`installment`)",
+          "default": "fully_paid",
+          "example": "fully_paid",
+          "enum": ["fully_paid", "installment"]
+        },
+        "installments": {
+          "description": "ข้อมูลเรียกชำระเงินจากลูกค้าในแต่ละงวด (เริ่มตั้งแต่งวดที่ 1)",
+          "example": [],
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "installment": {
+                "type": "integer",
+                "description": "งวดที่"
+              },
+              "amount": {
+                "type": "number",
+                "format": "double",
+                "description": "จำนวนที่ต้องชำระ"
+              }
+            }
+          }
+        },
+        "invoice_template": {
+          "type": "object",
+          "format": "uuid",
+          "description": "`id` ของรูปแบบใบแจ้งหนี้",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "`id` ของรูปแบบใบแจ้งหนี้",
+              "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
+            },
+            "name": {
+              "type": "string",
+              "description": "ชื่อใบแจ้งหนี้",
+              "example": "สมัครสมาชิกนิตยสารรายเดือน"
+            },
+            "number": {
+              "type": "string",
+              "description": "เลขที่อ้างอิงของรูปแบบใบแจ้งหนี้",
+              "example": "REC2021080001",
+              "minLength": 1,
+              "maxLength": 24
+            },
+            "amount": {
+              "type": "number",
+              "format": "double",
+              "example": 399,
+              "description": "จำนวนที่เรียกเก็บ / รอบ"
+            }
+          }
+        },
+        "customer": {
+          "type": "object",
+          "description": "ข้อมูลลูกค้าแบบย่อ",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "`id` ของลูกค้าตามสมุดรายชื่อลูกค้า",
+              "example": "1137d03a3ee24f1ca31dfae41a4cf600",
+              "format": "uuid"
+            },
+            "name": {
+              "type": "string",
+              "description": "ชื่อลูกค้า",
+              "example": "บริษัท บิลมีเวนเจอร์ จำกัด"
+            }
+          }
+        },
+        "number": {
+          "type": "string",
+          "description": "เลขที่สัญญาของใบแจ้งหนี้อัตโนมัติ",
+          "example": "MAG2021080001",
+          "minLength": 1,
+          "maxLength": 24
+        },
+        "frequency": {
+          "type": "string",
+          "enum": ["monthly"],
+          "description": "ความถี่ในการส่งใบแจ้งหนี้รอบถัดไป"
+        },
+        "start_date": {
+          "type": "string",
+          "description": "วันที่เริ่มส่งใบแจ้งหนี้รอบแรก",
+          "format": "date",
+          "example": "2021-08-30",
+          "pattern": "yyyy-MM-dd"
+        },
+        "end_date": {
+          "type": "string",
+          "description": "วันที่ส่งใบแจ้งหนี้ครั้งสุดท้าย",
+          "format": "date",
+          "pattern": "yyyy-MM-dd",
+          "example": "2021-10-30",
+          "x-nullable": true
+        },
+        "next_sending_date": {
+          "type": "string",
+          "description": "วันที่สำหรับส่งใบแจ้งหนี้ครั้งถัดไป",
+          "format": "date",
+          "example": "2021-09-30",
+          "pattern": "yyyy-MM-DD",
+          "x-nullable": true
+        },
+        "sent_count": {
+          "type": "integer",
+          "description": "จำนวนรอบใบแจ้งหนี้ที่ส่งไปแล้ว",
+          "example": 1,
+          "default": 0
+        },
+        "cycle": {
+          "type": "integer",
+          "description": "จำนวนรอบส่งทั้งหมด",
+          "example": 3,
+          "x-nullable": true
+        },
+        "canceled_at": {
+          "type": "string",
+          "description": "วันเวลาที่ยกเลิกการส่งใบแจ้งหนี้อัตโนมัติ",
+          "format": "date-time",
+          "example": "null",
+          "pattern": "yyyy-MM-dd HH:mm:ss",
+          "x-nullable": true
+        },
+        "created_at": {
+          "type": "string",
+          "description": "วันเวลาที่เริ่มสร้างใบแจ้งหนี้อัตโนมัติ",
+          "format": "date-time",
+          "pattern": "yyyy-MM-dd HH:mm:ss",
+          "example": "2021-08-05 16:55:00"
+        }
+      }
+    },
+    "Invoice-Template-Response": {
+      "title": "Invoice Template Response",
+      "type": "object",
+      "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`รูปแบบใบแจ้งหนี้`",
+      "x-tags": ["Invoice Templates"],
+      "x-examples": {
+        "invoice-template.json": {
+          "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+          "seller_id": "1d1295bf-f6f8-4473-9b95-33e889f301b1",
+          "number": "REC2021080001",
+          "template": {
+            "name": "สมัครสมาชิกนิตยสารรายเดือน",
+            "items": [
+              {
+                "description": "นิตยสาร The Great Financial Advise ฉบับรายเดือน",
+                "quantity": 1,
+                "price_per_item": 399,
+                "vat": {
+                  "rate": 7,
+                  "amount": 26.1
+                },
+                "discount": null
+              }
+            ],
+            "remark": "รับชำระทั้งบัตรเครดิตและพร้อมเพย์",
+            "due_date_term": 15,
+            "discount": {
+              "on": true,
+              "percentage": 0,
+              "amount": 0
+            },
+            "vat": {
+              "on": true,
+              "is_included": true,
+              "rate": 0.07,
+              "amount": 26.1
+            },
+            "withholding_tax": {
+              "on": false,
+              "rate": 0.03,
+              "amount": 0
+            },
+            "vat_exempted_amount": 0,
+            "taxable_sales_amount": 372.9,
+            "net_amount": 372.9,
+            "items_amount": 399,
+            "total_amount": 399,
+            "gross_amount": 399
+          },
+          "created_at": "2021-08-05 16:30:01",
+          "updated_at": "2021-08-05 16:39:02"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "`id`ของรูปแบบใบแจ้งหนี้",
+          "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
+        },
+        "seller_id": {
+          "type": "string",
+          "description": "`id` ของบริษัทที่ออกใบแจ้งหนี้",
+          "format": "uuid",
+          "example": "1d1295bf-f6f8-4473-9b95-33e889f301b1"
+        },
+        "number": {
+          "type": "string",
+          "description": "ชื่อรูปแบบใบแจ้งหนี้",
+          "example": "REC2021080001"
+        },
+        "template": {
+          "type": "object",
+          "description": "โครงของ`ใบแจ้งหนี้`",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "ชื่อใบแจ้งหนี้",
+              "example": "สมัครสมาชิกนิตยสารรายเดือน"
+            },
+            "items": {
+              "type": "array",
+              "description": "รายการเรียกชำระเงิน",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "description": "รายละเอียดสินค้า/บริการ",
+                    "example": "ค่าทำความสะอาด"
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "description": "จำนวน/หน่วย",
+                    "format": "double",
+                    "minimum": 0,
+                    "example": 1
+                  },
+                  "price_per_item": {
+                    "type": "number",
+                    "description": "ราคาต่อหน่วย",
+                    "format": "double",
+                    "minimum": 0,
+                    "example": 100
+                  },
+                  "vat": {
+                    "description": "ภาษีมูลค่าเพิ่ม",
+                    "type": "object",
+                    "x-nullable": true,
+                    "properties": {
+                      "rate": {
+                        "type": "number",
+                        "format": "double",
+                        "default": 0,
+                        "description": "อัตราภาษีมูลค่าเพิ่ม",
+                        "example": 7
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "มูลค่า",
+                        "format": "double",
+                        "example": 0
+                      }
+                    }
+                  },
+                  "discount": {
+                    "type": "object",
+                    "description": "ส่วนลด",
+                    "x-nullable": true,
+                    "properties": {
+                      "rate": {
+                        "type": "number",
+                        "description": "อัตราส่วนลด (%)",
+                        "example": 10,
+                        "x-nullable": true
+                      },
+                      "amount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "มูลค่าส่วนลดเงินสด",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "remark": {
+              "type": "string",
+              "description": "หมายเหตุ",
+              "example": "รับชำระทั้งบัตรเครดิตและพร้อมเพย์"
+            },
+            "due_date_term": {
+              "type": "integer",
+              "description": "ชำระภายในจำนวนวัน",
+              "example": 15
+            },
+            "discount": {
+              "type": "object",
+              "description": "มูลค่าส่วนลดรวมทั้งใบแจ้งหนี้",
+              "properties": {
+                "on": {
+                  "type": "boolean",
+                  "description": "มีหรือไม่มีส่วนลด",
+                  "default": false
+                },
+                "percentage": {
+                  "type": "number",
+                  "description": "อัตราร้อยละของส่วนลด",
+                  "format": "double",
+                  "example": 0.07
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "double",
+                  "example": 0,
+                  "description": "มูลค่าส่วนลดรวม"
+                }
+              }
+            },
+            "vat": {
+              "type": "object",
+              "description": "ภาษีมูลค่าเพิ่มทั้งใบแจ้งหนี้",
+              "properties": {
+                "on": {
+                  "type": "boolean",
+                  "description": "มี/ไม่มีการคิดภาษีมูลค่าเพิ่ม",
+                  "default": true
+                },
+                "is_included": {
+                  "type": "boolean",
+                  "description": "ภาษีมูลค่าเพิ่มคิดรวมหรือแยกจากราคาสินค้า",
+                  "default": true
+                },
+                "rate": {
+                  "type": "number",
+                  "description": "อัตราภาษี (%)",
+                  "format": "double",
+                  "example": 0.07
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "มูลค่ารวมภาษีมูลค่าเพิ่ม",
+                  "format": "double",
+                  "example": 26.1
+                }
+              }
+            },
+            "withholding_tax": {
+              "type": "object",
+              "description": "ภาษีหัก ณ ที่จ่ายทั้งใบแจ้งหนี้",
+              "properties": {
+                "on": {
+                  "type": "boolean",
+                  "description": "มี/ไม่มีการคิดภาษีแบบหัก ณ ที่จ่าย"
+                },
+                "rate": {
+                  "type": "number",
+                  "description": "อัตราภาษี (%)",
+                  "format": "double",
+                  "example": 0.03
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "มูลค่าภาษีมูลค่าเพิ่มหัก ณ​ ที่จ่าย",
+                  "example": 0,
+                  "format": "double"
+                }
+              }
+            },
+            "vat_exempted_amount": {
+              "type": "number",
+              "format": "double",
+              "example": 0,
+              "description": "มูลค่าสินค้าที่ได้รับการยกเว้นภาษี",
+              "default": 0,
+              "minimum": 0
+            },
+            "taxable_sales_amount": {
+              "type": "number",
+              "format": "double",
+              "example": 372.9,
+              "description": "มูลค่าสินค้าที่นำมาคิดภาษี",
+              "default": 0,
+              "minimum": 0
+            },
+            "net_amount": {
+              "type": "number",
+              "description": "ราคาก่อนรวมภาษี",
+              "minimum": 0,
+              "example": 372.9,
+              "default": 0
+            },
+            "items_amount": {
+              "type": "number",
+              "description": "มูลค่ารวมสินค้า",
+              "format": "double",
+              "default": 0,
+              "example": 399
+            },
+            "total_amount": {
+              "type": "number",
+              "description": "ราคาหลังรวมภาษี",
+              "format": "double",
+              "example": 399
+            },
+            "gross_amount": {
+              "type": "number",
+              "description": "ราคาสุทธิที่ต้องชำระ",
+              "format": "double",
+              "example": 399
+            }
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "description": "วันที่สร้างรูปแบบใบแจ้งหนี้",
+          "format": "date-time",
+          "example": "2021-08-05 16:30:01",
+          "pattern": "yyyy-MM-dd HH:mm:ss"
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "วันที่ปรับปรุงข้อมูลรูปแบบใบแจ้งหนี้",
+          "format": "date-time",
+          "example": "2021-08-05 16:39:02",
+          "pattern": "yyyy-MM-dd HH:mm:ss"
+        }
+      }
+    },
+    "Invoice-Template-Request": {
+      "title": "Invoice Template Request",
+      "type": "object",
+      "x-tags": ["Invoice Templates"],
+      "description": "โครงสร้างข้อมูล JSON สำหรับ `สร้าง` และ `อัพเดท` `รูปแบบใบแจ้งหนี้`",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "ชื่ออ้างอิงของเทมเพลตใบแจ้งหนี้"
+        },
+        "number": {
+          "type": "string",
+          "description": "เลขที่อ้างอิงของเทมเพลตใบแจ้งหนี้",
+          "minLength": 1,
+          "maxLength": 24
+        },
+        "items": {
+          "type": "array",
+          "description": "รายการสินค้า/บริการ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "รายละเอียดของสินค้า/บริการ"
+              },
+              "quantity": {
+                "type": "number",
+                "description": "จำนวนของสินค้า/บริการ",
+                "minimum": 0,
+                "example": 0,
+                "format": "double"
+              },
+              "price_per_item": {
+                "type": "number",
+                "description": "ราคาต่อหน่วยของสินค้า/บริการ",
+                "format": "double",
+                "minimum": 0
+              },
+              "vat_rate": {
+                "type": "number",
+                "description": "ภาษีมูลค่าเพิ่มของสินค้า/บริการ หน่วยเป็น % เช่น 7",
+                "example": "7",
+                "format": "double",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "discount": {
+                "type": "object",
+                "description": "ส่วนลดของสินค้า/บริการ",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "ประเภทของส่วนลด (เปอร์เซ็นต์หรือเงินสด)",
+                    "enum": ["percentage", "money"]
+                  },
+                  "total": {
+                    "type": "number",
+                    "format": "double",
+                    "description": "มูลค่าส่วนลด เช่น 10% หรือ 1000 บาท"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "remark": {
+          "type": "string",
+          "description": "หมายเหตุสำหรับแนบท้ายใบแจ้งหนี้"
+        },
+        "withholding_tax": {
+          "type": "object",
+          "description": "รูปแบบการคิดภาษีหัก ณ​ ที่จ่าย",
+          "properties": {
+            "on": {
+              "type": "boolean",
+              "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่",
+              "default": true
+            },
+            "rate": {
+              "type": "number",
+              "description": "% สำหรับคิดภาษีหัก ณ​ ที่จ่าย (หน่วยเป็นทศนิยม) เช่น 3% = 0.03",
+              "default": 0
+            }
+          }
+        },
+        "is_vat_included": {
+          "type": "boolean",
+          "description": "รูปแบบการคิดภาษีในรายการสินค้า/บริการ (แยกภาษีหรือรวมภาษี)",
+          "default": false
+        },
+        "due_date_term": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365,
+          "format": "int64",
+          "description": "จำนวนวันที่ผู้รับใบแจ้งหนี้ต้องทำการชำระเงินนับจากวันที่ออกใบแจ้งหนี้ในแต่ละรอบ"
+        }
+      },
+      "required": ["number", "due_date_term"]
+    }
+  },
+  "parameters": {
+    "offset": {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "type": "integer",
+      "description": "จำนวนข้อมูลที่ต้องการข้าม",
+      "default": 0,
+      "minimum": 0,
+      "schema": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "limit": {
+      "name": "limit",
+      "in": "query",
+      "type": "integer",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 100,
+      "description": "จำนวนข้อมูลที่ต้องการผลลัพธ์",
+      "schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100,
+        "default": 50
+      }
+    },
+    "status": {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "enum": ["pending", "overdue", "paid", "unpaid", "sent", "rejected"],
+      "description": "สถานะของใบแจ้งหนี้"
+    },
+    "start": {
+      "name": "start",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่เริ่มต้นช่วงเวลาออกใบแจ้งหนี้ รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-01 00:00:00"
+    },
+    "end": {
+      "name": "end",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่สิ้นสุดช่วงเวลาออกใบแจ้งหนี้ รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-30 23:59:59"
+    },
+    "payment_start": {
+      "name": "payment_start",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่เริ่มต้นช่วงเวลาการชำระเงิน รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-01 00:00:00"
+    },
+    "payment_end": {
+      "name": "payment_end",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "วันที่สิ้นสุดช่วงเวลาการชำระเงิน รูปแบบ yyyy-MM-dd HH:mm:ss",
+      "example": "2026-04-30 23:59:59"
+    },
+    "customer_id": {
+      "name": "customer_id",
+      "in": "query",
+      "schema": {
+        "type": "string",
+        "minLength": 0,
+        "maxLength": 32,
+        "pattern": ".?[A-Za-z0-9]"
+      },
+      "description": "`id` ลูกค้าจากสมุดรายชื่อลูกค้า"
+    },
+    "template_id": {
+      "name": "template_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+        "type": "string",
+        "pattern": "[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}"
+      },
+      "description": "`id` ของ template ในรูปแบบของ UUID"
+    }
+  },
+  "responses": {}
+}
