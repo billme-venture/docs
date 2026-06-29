@@ -1,0 +1,43 @@
+{
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/CreateInvoiceTemplateRequest.json"
+      },
+      "examples": {
+        "request.json": {
+          "value": {
+            "name": "ค่าบริการสำนักงานรายเดือน",
+            "number": "TEM202108001",
+            "items": [
+              {
+                "description": "บริการทำความสะอาดรายสัปดาห์",
+                "quantity": 1,
+                "price_per_item": 399,
+                "vat_rate": 0.07,
+                "discount": {
+                  "type": "amount",
+                  "total": 50
+                }
+              },
+              {
+                "description": "ค่าบริการตู้จดหมาย",
+                "quantity": 1,
+                "price_per_item": 99,
+                "vat_rate": 0.07,
+                "discount": null
+              }
+            ],
+            "remark": "กรุณาชำระภายใน 30 วันหลังจากได้รับใบแจ้งหนี้",
+            "withholding_tax": {
+              "on": true,
+              "rate": 0.03
+            },
+            "is_vat_included": false,
+            "due_date_term": 30
+          }
+        }
+      }
+    }
+  }
+}

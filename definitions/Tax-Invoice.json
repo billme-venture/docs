@@ -1,0 +1,366 @@
+{
+  "title": "Tax Invoice",
+  "type": "object",
+  "x-tags": [
+    "Tax Invoices"
+  ],
+  "x-examples": {
+    "example": {
+      "id": "a5873c97-7c21-407d-b561-c2ece8de6389",
+      "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+      "number": "TAX-000001",
+      "issue_date": "2021-01-25",
+      "merchant": {
+        "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+        "phone": "0900900099",
+        "email": "noreply@billme.co.th",
+        "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+      },
+      "customer": {
+        "name": "สมชาย หมายปอง",
+        "tax_number": "1012670114029",
+        "phone": "0850601111",
+        "emails": [
+          "somchai.h@mockcustomer.com"
+        ],
+        "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+      },
+      "items": [
+        {
+          "description": "ค่าบริการระบบรับวางบิล",
+          "quantity": 1,
+          "unit_price": 1490,
+          "total_item_price": 1490,
+          "vat_rate": 7,
+          "discount_amount": 0
+        }
+      ],
+      "subtotal": 1490,
+      "total_discount_amount": 0,
+      "vat": {
+        "is_included": true,
+        "rate": 7,
+        "amount": 97.48
+      },
+      "vat_exempted_amount": 0,
+      "taxable_sales_amount": 0,
+      "total": 0,
+      "withholding_tax": {
+        "rate": 0,
+        "amount": 0
+      },
+      "paid_amount": 0,
+      "remark": null,
+      "payment": {
+        "payment_method_id": "dbde3da4-476b-4339-87cb-26b53e7bbea3",
+        "paid_date": "2021-01-25",
+        "amount": 1490,
+        "slip": null
+      },
+      "pdf_url": "https://storage.googleapis.com/billhub/production/tax_invoices/fa0da2a9ba3bcc08e6d2b785ba4ecaac/TAX63000001.pdf",
+      "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+      "attachments": [],
+      "references": {
+        "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+        "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46"
+      }
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "id ใบกำกับภาษี"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ชื่ออ้างอิง / โปรเจค"
+    },
+    "number": {
+      "type": "string",
+      "minLength": 1,
+      "description": "เลขที่ใบกำกับภาษี"
+    },
+    "issue_date": {
+      "type": "string",
+      "minLength": 1,
+      "description": "วันที่ออกเอกสาร"
+    },
+    "merchant": {
+      "type": "object",
+      "description": "ข้อมูลธุรกิจของคุณ",
+      "required": [
+        "name",
+        "phone",
+        "email",
+        "address"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ชื่อธุรกิจ"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1,
+          "description": "เบอร์โทรศัพท์"
+        },
+        "email": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Email ของธุรกิจ"
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ที่อยู่"
+        }
+      }
+    },
+    "customer": {
+      "type": "object",
+      "description": "ข้อมูลลูกค้า",
+      "required": [
+        "name",
+        "tax_number",
+        "phone",
+        "emails",
+        "address"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ชื่อลูกค้า"
+        },
+        "tax_number": {
+          "type": "string",
+          "minLength": 1,
+          "description": "เลขที่ผู้เสียภาษี"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1,
+          "description": "เบอร์โทรศัพท์"
+        },
+        "emails": {
+          "type": "array",
+          "description": "Email ของลูกค้า",
+          "items": {
+            "type": "string"
+          }
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ที่อยู่"
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "description": "รายการสินค้า",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "ชื่อสินค้า / บริการ"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "จำนวน"
+          },
+          "unit_price": {
+            "type": "number",
+            "description": "ราคา/หน่วย"
+          },
+          "total_item_price": {
+            "type": "number",
+            "description": "สรุปราคาสินค้า"
+          },
+          "vat_rate": {
+            "type": "number",
+            "description": "อัตราภาษีมูลค่าเพิ่ม"
+          },
+          "discount_amount": {
+            "type": "number",
+            "description": "มูลค่าส่วนลดสินค้า / บริการ"
+          }
+        },
+        "required": [
+          "description",
+          "quantity",
+          "unit_price",
+          "total_item_price",
+          "vat_rate",
+          "discount_amount"
+        ]
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "description": "รวมราคาสินค้าทั้งหมด"
+    },
+    "total_discount_amount": {
+      "type": "number",
+      "description": "รวมมูลค่าส่วนลดทั้งหมด"
+    },
+    "vat": {
+      "type": "object",
+      "description": "ภาษีมูลค่าเพิ่ม",
+      "required": [
+        "is_included",
+        "rate",
+        "amount"
+      ],
+      "properties": {
+        "is_included": {
+          "type": "boolean",
+          "description": "การรวมภาษีมูลค่าเพิ่มลงไปในราคาสินค้า"
+        },
+        "rate": {
+          "type": "number",
+          "description": "อัตราภาษีมูลค่าเพิ่ม"
+        },
+        "amount": {
+          "type": "number",
+          "description": "มูลค่าภาษี"
+        }
+      }
+    },
+    "vat_exempted_amount": {
+      "type": "number",
+      "description": "มูลค่าสินค้า/บริการที่ได้รับการยกเว้นภาษี"
+    },
+    "taxable_sales_amount": {
+      "type": "number",
+      "description": "มูลค่าสินค้า/บริการที่เสียภาษี"
+    },
+    "total": {
+      "type": "number",
+      "description": "ราคาหลังรวมภาษี"
+    },
+    "withholding_tax": {
+      "type": "object",
+      "description": "ภาษีหัก ณ ที่จ่าย",
+      "required": [
+        "rate",
+        "amount"
+      ],
+      "properties": {
+        "rate": {
+          "type": "number",
+          "description": "อัตราภาษีหัก ณ ที่จ่าย"
+        },
+        "amount": {
+          "type": "number",
+          "description": "มูลค่าภาษีหัก ณ ที่จ่าย"
+        }
+      }
+    },
+    "paid_amount": {
+      "type": "number",
+      "description": "จำนวนเงินที่ต้องชำระ (ราคาหลังรวมภาษี - ภาษีหัก ณ ที่จ่าย)"
+    },
+    "remark": {
+      "type": "string",
+      "description": "หมายเหตุ",
+      "nullable": true
+    },
+    "payment": {
+      "type": "object",
+      "description": "การชำระเงิน",
+      "properties": {
+        "paid_date": {
+          "type": "string",
+          "description": "วันที่ชำระเงิน"
+        },
+        "amount": {
+          "type": "number",
+          "description": "จำนวนเงินที่ชำระ"
+        }
+      },
+      "required": [
+        "paid_date",
+        "amount"
+      ],
+      "nullable": true
+    },
+    "pdf_url": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ลิงก์สำหรับดาวน์โหลด PDF ใบกำกับภาษี",
+      "nullable": true
+    },
+    "shareable_url": {
+      "type": "string",
+      "description": "ลิงก์สำหรับให้ลูกค้าหรือบุคคลภายนอกเข้าดูข้อมูลเอกสาร",
+      "format": "uri"
+    },
+    "attachments": {
+      "type": "array",
+      "description": "รายการเอกสารแนบ",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "ชื่อเอกสารแนบ"
+          },
+          "url": {
+            "type": "string",
+            "description": "ลิงก์สำหรับดาวน์โหลดเอกสารแนบ"
+          }
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "description": "รายการเอกสารอ้างอิง",
+      "required": [
+        "invoice_id",
+        "receipt_id"
+      ],
+      "properties": {
+        "invoice_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "id ใบแจ้งหนี่ที่เกี่ยวข้อง"
+        },
+        "receipt_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "id ใบเสร็จที่เกี่ยวข้อง"
+        }
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "number",
+    "issue_date",
+    "merchant",
+    "customer",
+    "items",
+    "subtotal",
+    "total_discount_amount",
+    "vat",
+    "vat_exempted_amount",
+    "taxable_sales_amount",
+    "total",
+    "withholding_tax",
+    "paid_amount",
+    "pdf_url",
+    "shareable_url",
+    "attachments",
+    "references"
+  ],
+  "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้/ใบกำกับภาษี`"
+}

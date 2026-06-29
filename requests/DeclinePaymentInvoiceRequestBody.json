@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/DeclinePaymentInvoiceRequest.json"
+      },
+      "examples": {
+        "example": {
+          "value": {
+            "reason": "ยอดเงินไม่ถูกต้อง",
+            "metadata": {}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "properties": {
+    "invoice_template_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "`id`ของ`รูปแบบใบแจ้งหนี้`",
+      "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
+    },
+    "customer_id": {
+      "type": "string",
+      "description": "`id`ของลูกค้าจากสมุดรายชื่อลูกค้า",
+      "example": "1137d03a3ee24f1ca31dfae41a4cf600"
+    },
+    "number": {
+      "type": "string",
+      "description": "เลขที่อ้างอิงของใบแจ้งหนี้อัตโนมัติ",
+      "minLength": 1,
+      "maxLength": 24,
+      "example": "MAG2021080001"
+    },
+    "frequency": {
+      "type": "string",
+      "description": "ความถี่ในการส่งใบแจ้งหนี้",
+      "enum": [
+        "monthly"
+      ],
+      "example": "monthly"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก",
+      "pattern": "yyyy-MM-dd",
+      "example": "2021-08-30"
+    },
+    "cycle": {
+      "type": "integer",
+      "description": "จำนวนรอบที่ต้องการส่งใบแจ้งหนี้",
+      "example": 3,
+      "minimum": 0,
+      "maximum": 1200,
+      "nullable": true
+    },
+    "payment_policy": {
+      "type": "string",
+      "description": "รูปแบบการชำระเงิน ได้แก่\n- ชำระเต็มจำนวน (`fully_paid`)\n- ผ่อนชำระ (`installment`)",
+      "default": "fully_paid",
+      "example": "fully_paid",
+      "enum": [
+        "fully_paid",
+        "installment"
+      ],
+      "nullable": true
+    },
+    "installments": {
+      "type": "array",
+      "description": "งวดและยอดที่ลูกค้าต้องชำระ\n\n- กรณีที่ `payment_policy` เป็น `fully_paid`\nไม่ต้องส่งค่า `installments` มา\n\n- กรณีที่ `payment_policy` เป็น `installment`\n  - งวดที่ใส่ต้องมีจำนวนเท่ากับ `cycle` ที่ใส่มา\n  - งวดที่ (installment) และ ยอดที่ต้องชำระในแต่ละงวด (amount) โดยผลรวมของยอดชำระต้องเท่ากับมูลค่า `gross_amount` ของ `invoice_template_id` ที่เลือก",
+      "uniqueItems": true,
+      "minItems": 0,
+      "nullable": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "installment": {
+            "description": "งวดที่",
+            "type": "integer"
+          },
+          "amount": {
+            "type": "number",
+            "description": "มูลค่าที่ต้องชำระ",
+            "format": "double"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "invoice_template_id",
+    "customer_id",
+    "number",
+    "frequency",
+    "start_date",
+    "cycle"
+  ]
+}

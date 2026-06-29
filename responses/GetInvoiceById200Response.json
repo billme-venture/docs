@@ -1,0 +1,85 @@
+{
+  "description": "OK",
+  "headers": {
+    "Content-Type": {
+      "schema": {
+        "type": "string",
+        "default": "application/json"
+      }
+    }
+  },
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/Invoice.json"
+      },
+      "example": {
+        "id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+        "name": "ค่าบริการรายเดือน มกราคม พ.ศ. 2564",
+        "number": "INV-000001",
+        "status": "pending_payment",
+        "issue_date": "2021-01-25",
+        "due_date": "2021-02-15",
+        "merchant": {
+          "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+          "phone": "0900900099",
+          "email": "noreply@billme.co.th",
+          "address": "เลขที่ 129 ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310"
+        },
+        "customer": {
+          "name": "สมชาย หมายปอง",
+          "tax_number": "1012670114029",
+          "phone": "0850601111",
+          "emails": [
+            "somchai.h@mockcustomer.com"
+          ],
+          "address": "เลขที่ 598/610 ถนนพระราม 9 แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310"
+        },
+        "items": [
+          {
+            "description": "ค่าบริการระบบรับวางบิล",
+            "quantity": 1,
+            "unit_price": 1490,
+            "total_item_price": 1490,
+            "vat_rate": 7,
+            "discount_amount": 0
+          }
+        ],
+        "subtotal": 1490,
+        "total_discount_amount": 0,
+        "vat": {
+          "is_included": true,
+          "rate": 7,
+          "amount": 97.48
+        },
+        "vat_exempted_amount": 0,
+        "taxable_sales_amount": 1392.52,
+        "total": 1490,
+        "withholding_tax": {
+          "rate": 0,
+          "amount": 0
+        },
+        "paid_amount": 1490,
+        "remark": null,
+        "payment_methods": [
+          {
+            "name": "บริษัท บิลมีเวนเจอร์ จำกัด",
+            "number": "1002012896",
+            "type": "BANK"
+          }
+        ],
+        "payment": {
+          "paid_date": "2021-02-01 16:04:11",
+          "amount": 1490
+        },
+        "pdf_url": "https://storage.googleapis.com/billhub/production/invoices/98FE9D3919179914713340F7A705A4F2/INV63000027.pdf",
+        "shareable_url": "https://billpouch.billme.co.th/136b24c1b79db1a01337c0bc7880c905368d679fc4b73ad5acdb91914411cbc9",
+        "attachments": [],
+        "references": {
+          "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+          "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
+        }
+      }
+    }
+  }
+}

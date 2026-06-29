@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "number"
+    },
+    "next": {
+      "type": "number",
+      "nullable": true
+    },
+    "previous": {
+      "type": "number",
+      "nullable": true
+    },
+    "recurring_invoices": {
+      "type": "array",
+      "items": {
+        "$ref": "./Recurring-Invoice.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "title": "Invoice Template Request",
+  "type": "object",
+  "x-tags": [
+    "Invoice Templates"
+  ],
+  "description": "โครงสร้างข้อมูล JSON สำหรับ `สร้าง` และ `อัพเดท` `รูปแบบใบแจ้งหนี้`",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "ชื่ออ้างอิงของเทมเพลตใบแจ้งหนี้"
+    },
+    "number": {
+      "type": "string",
+      "description": "เลขที่อ้างอิงของเทมเพลตใบแจ้งหนี้",
+      "minLength": 1,
+      "maxLength": 24
+    },
+    "items": {
+      "type": "array",
+      "description": "รายการสินค้า/บริการ",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "รายละเอียดของสินค้า/บริการ"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "จำนวนของสินค้า/บริการ",
+            "minimum": 0,
+            "example": 0,
+            "format": "double"
+          },
+          "price_per_item": {
+            "type": "number",
+            "description": "ราคาต่อหน่วยของสินค้า/บริการ",
+            "format": "double",
+            "minimum": 0
+          },
+          "vat_rate": {
+            "type": "number",
+            "description": "ภาษีมูลค่าเพิ่มของสินค้า/บริการ หน่วยเป็น % เช่น 7",
+            "example": "7",
+            "format": "double",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "discount": {
+            "type": "object",
+            "description": "ส่วนลดของสินค้า/บริการ",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "ประเภทของส่วนลด (เปอร์เซ็นต์หรือเงินสด)",
+                "enum": [
+                  "percentage",
+                  "money"
+                ]
+              },
+              "total": {
+                "type": "number",
+                "format": "double",
+                "description": "มูลค่าส่วนลด เช่น 10% หรือ 1000 บาท"
+              }
+            }
+          }
+        }
+      }
+    },
+    "remark": {
+      "type": "string",
+      "description": "หมายเหตุสำหรับแนบท้ายใบแจ้งหนี้"
+    },
+    "withholding_tax": {
+      "type": "object",
+      "description": "รูปแบบการคิดภาษีหัก ณ​ ที่จ่าย",
+      "properties": {
+        "on": {
+          "type": "boolean",
+          "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่",
+          "default": true
+        },
+        "rate": {
+          "type": "number",
+          "description": "% สำหรับคิดภาษีหัก ณ​ ที่จ่าย (หน่วยเป็นทศนิยม) เช่น 3% = 0.03",
+          "default": 0
+        }
+      }
+    },
+    "is_vat_included": {
+      "type": "boolean",
+      "description": "รูปแบบการคิดภาษีในรายการสินค้า/บริการ (แยกภาษีหรือรวมภาษี)",
+      "default": false
+    },
+    "due_date_term": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 365,
+      "format": "int64",
+      "description": "จำนวนวันที่ผู้รับใบแจ้งหนี้ต้องทำการชำระเงินนับจากวันที่ออกใบแจ้งหนี้ในแต่ละรอบ"
+    }
+  },
+  "required": [
+    "number",
+    "due_date_term"
+  ]
+}

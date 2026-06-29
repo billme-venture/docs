@@ -1,0 +1,193 @@
+{
+  "title": "Recurring Invoice",
+  "type": "object",
+  "description": "โครงสร้างข้อมูล `JSON` สำหรับข้อมูลประเภท`ใบแจ้งหนี้อัตโนัมัติ`",
+  "x-tags": [
+    "Recurring Invoices"
+  ],
+  "x-examples": {
+    "recurring-invoice.json": {
+      "id": "8a4b0613-8a53-4774-b8f0-87bce6ccc547",
+      "status": "active",
+      "invoice_template": {
+        "id": "c6f3f207-169d-481c-882c-f50c5b85626d",
+        "name": "สมัครสมาชิกนิตยสารรายเดือน",
+        "number": "REC2021080001",
+        "amount": 399
+      },
+      "customer": {
+        "id": "1137d03a3ee24f1ca31dfae41a4cf600",
+        "name": "บริษัท บิลมีเวนเจอร์ จำกัด"
+      },
+      "number": "MAG2021080001",
+      "frequency": "monthly",
+      "payment_policy": "fully_paid",
+      "start_date": "2021-08-30",
+      "end_date": "2021-10-30",
+      "next_sending_date": "2021-09-30",
+      "sent_count": 0,
+      "cycle": 3,
+      "installments": [],
+      "canceled_at": null,
+      "created_at": "2021-08-05 16:55:00"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "`id` ของใบแจ้งหนี้อันโนัมัติ",
+      "format": "uuid",
+      "example": "8a4b0613-8a53-4774-b8f0-87bce6ccc547"
+    },
+    "status": {
+      "type": "string",
+      "description": "สถานะจะถูกตั้งค่าเป็น `canceled` เมื่อมีการลบใบแจ้งหนี้อัตโนมัติ โดยจะมี timestamp บอกเวลาที่ยกเลิกใบแจ้งหนี้อัตโนมัติที่ฟิล์ด `deleted_at`",
+      "enum": [
+        "active",
+        "canceled"
+      ]
+    },
+    "payment_policy": {
+      "type": "string",
+      "description": "รูปแบบการชำระเงิน ชำระเต็มจำนวน (`fully_paid`) หรือ ผ่อนชำระ (`installment`)",
+      "default": "fully_paid",
+      "example": "fully_paid",
+      "enum": [
+        "fully_paid",
+        "installment"
+      ]
+    },
+    "installments": {
+      "description": "ข้อมูลเรียกชำระเงินจากลูกค้าในแต่ละงวด (เริ่มตั้งแต่งวดที่ 1)",
+      "example": [],
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "installment": {
+            "type": "integer",
+            "description": "งวดที่"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "description": "จำนวนที่ต้องชำระ"
+          }
+        }
+      }
+    },
+    "invoice_template": {
+      "type": "object",
+      "format": "uuid",
+      "description": "`id` ของรูปแบบใบแจ้งหนี้",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "`id` ของรูปแบบใบแจ้งหนี้",
+          "example": "c6f3f207-169d-481c-882c-f50c5b85626d"
+        },
+        "name": {
+          "type": "string",
+          "description": "ชื่อใบแจ้งหนี้",
+          "example": "สมัครสมาชิกนิตยสารรายเดือน"
+        },
+        "number": {
+          "type": "string",
+          "description": "เลขที่อ้างอิงของรูปแบบใบแจ้งหนี้",
+          "example": "REC2021080001",
+          "minLength": 1,
+          "maxLength": 24
+        },
+        "amount": {
+          "type": "number",
+          "format": "double",
+          "example": 399,
+          "description": "จำนวนที่เรียกเก็บ / รอบ"
+        }
+      }
+    },
+    "customer": {
+      "type": "object",
+      "description": "ข้อมูลลูกค้าแบบย่อ",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "`id` ของลูกค้าตามสมุดรายชื่อลูกค้า",
+          "example": "1137d03a3ee24f1ca31dfae41a4cf600",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "description": "ชื่อลูกค้า",
+          "example": "บริษัท บิลมีเวนเจอร์ จำกัด"
+        }
+      }
+    },
+    "number": {
+      "type": "string",
+      "description": "เลขที่สัญญาของใบแจ้งหนี้อัตโนมัติ",
+      "example": "MAG2021080001",
+      "minLength": 1,
+      "maxLength": 24
+    },
+    "frequency": {
+      "type": "string",
+      "enum": [
+        "monthly"
+      ],
+      "description": "ความถี่ในการส่งใบแจ้งหนี้รอบถัดไป"
+    },
+    "start_date": {
+      "type": "string",
+      "description": "วันที่เริ่มส่งใบแจ้งหนี้รอบแรก",
+      "format": "date",
+      "example": "2021-08-30",
+      "pattern": "yyyy-MM-dd"
+    },
+    "end_date": {
+      "type": "string",
+      "description": "วันที่ส่งใบแจ้งหนี้ครั้งสุดท้าย",
+      "format": "date",
+      "pattern": "yyyy-MM-dd",
+      "example": "2021-10-30",
+      "nullable": true
+    },
+    "next_sending_date": {
+      "type": "string",
+      "description": "วันที่สำหรับส่งใบแจ้งหนี้ครั้งถัดไป",
+      "format": "date",
+      "example": "2021-09-30",
+      "pattern": "yyyy-MM-DD",
+      "nullable": true
+    },
+    "sent_count": {
+      "type": "integer",
+      "description": "จำนวนรอบใบแจ้งหนี้ที่ส่งไปแล้ว",
+      "example": 1,
+      "default": 0
+    },
+    "cycle": {
+      "type": "integer",
+      "description": "จำนวนรอบส่งทั้งหมด",
+      "example": 3,
+      "nullable": true
+    },
+    "canceled_at": {
+      "type": "string",
+      "description": "วันเวลาที่ยกเลิกการส่งใบแจ้งหนี้อัตโนมัติ",
+      "format": "date-time",
+      "example": "null",
+      "pattern": "yyyy-MM-dd HH:mm:ss",
+      "nullable": true
+    },
+    "created_at": {
+      "type": "string",
+      "description": "วันเวลาที่เริ่มสร้างใบแจ้งหนี้อัตโนมัติ",
+      "format": "date-time",
+      "pattern": "yyyy-MM-dd HH:mm:ss",
+      "example": "2021-08-05 16:55:00"
+    }
+  }
+}

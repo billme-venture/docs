@@ -1,0 +1,52 @@
+{
+  "description": "ข้อมูล `JSON` ที่ได้รับกลับไปจะยังไม่สมบูรณ์ เนื่องจาก `pdf_url` จะทำการสร้างและอนุญาตให้ดาวน์โหลดได้ในเวลาต่อมา",
+  "required": false,
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/CreateInvoiceRequest.json"
+      },
+      "examples": {
+        "example": {
+          "value": {
+            "customer": {
+              "customer_code": "BG-CUS-001",
+              "name": "สมชาย หมายปอง",
+              "tax_number": "1012670114029",
+              "phone_number": "0850601111",
+              "emails": [
+                "somchai.h@mockcustomer.com"
+              ],
+              "address": {
+                "house_number": "598/610",
+                "sub_district": "บางกะปิ",
+                "district": "ห้วยขวาง",
+                "province": "กรุงเทพมหานคร",
+                "post_code": "10310"
+              }
+            },
+            "number": "INV-000001",
+            "name": "ใบเรียกเก็บค่าบริการเดือน มกราคม 2564",
+            "issue_date": "2021-01-19",
+            "due_date": "2021-01-19",
+            "items": [
+              {
+                "description": "ค่าบริการ",
+                "quantity": 1,
+                "unit_price": 1000,
+                "vat_rate": 7,
+                "discount_amount": 0
+              }
+            ],
+            "vat_included": true,
+            "remark": null,
+            "withholding_tax_rate": null,
+            "attachments": [
+              "https://example.com/files/invoice-attachment.pdf"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

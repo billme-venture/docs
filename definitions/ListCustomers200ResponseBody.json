@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "integer",
+      "description": "จำนวนลูกค้าทั้งหมดที่มีบนระบบ"
+    },
+    "next": {
+      "type": "integer",
+      "description": "จำนวนข้อมูลสำหรับหน้าถัดไป ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าสุดท้าย ให้นำจำนวนไปรวมกับค่า `offset` เพื่อเรียกข้อมูลหน้าถัดไป",
+      "nullable": true
+    },
+    "previous": {
+      "type": "integer",
+      "description": "จำนวนข้อมูลสำหรับหน้าที่แล้ว ถ้าหากไม่ใช่ค่า null แสดงว่าไม่ใช่หน้าแรก ให้นำจำนวนไปหักออกจากค่า `offset` เพื่อเรียกข้อมูลหน้าที่แล้ว",
+      "nullable": true
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "./Customer-Response.json"
+      }
+    }
+  },
+  "required": [
+    "total",
+    "data"
+  ]
+}

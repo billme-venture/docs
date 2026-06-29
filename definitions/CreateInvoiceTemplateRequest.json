@@ -1,0 +1,113 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "ชื่อ`ใบแจ้งหนี้`",
+      "example": "สมัครสมาชิกนิตยสารรายเดือน",
+      "nullable": true
+    },
+    "number": {
+      "type": "string",
+      "description": "เลขที่อ้างอิง`รูปแบบใบแจ้งหนี้`",
+      "example": "REC2021080001"
+    },
+    "items": {
+      "type": "array",
+      "description": "รายการสินค้า/บริการ",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "รายละเอียดสินค้า/บริการ",
+            "example": "ค่าบริการทำความสะอาดรายเดือน"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "จำนวน/หน่วย",
+            "format": "double",
+            "example": 1
+          },
+          "price_per_item": {
+            "type": "number",
+            "format": "double",
+            "description": "ราคาสินค้า/บริการต่อหน่วย",
+            "example": 399
+          },
+          "vat_rate": {
+            "type": "number",
+            "format": "double",
+            "example": 0.07,
+            "description": "ภาษีมูลค่าเพิ่ม (หากไม่มีให้ใส่ null)",
+            "nullable": true
+          },
+          "discount": {
+            "type": "object",
+            "description": "ส่วนลด (หากไม่มีให้ใส่ null)",
+            "nullable": true,
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "percentage",
+                  "money"
+                ],
+                "description": "ประเภทส่วนลด"
+              },
+              "total": {
+                "type": "number",
+                "description": "มูลค่าส่วนลดอ้างอิงจากประเภท",
+                "format": "double"
+              }
+            }
+          }
+        },
+        "required": [
+          "description",
+          "quantity",
+          "price_per_item"
+        ]
+      }
+    },
+    "remark": {
+      "type": "string",
+      "description": "หมายเหตุ",
+      "example": "กรุณาชำระภายในวันที่กำหนดเท่านั้น"
+    },
+    "withholding_tax": {
+      "description": "มูลค่าภาษีหัก ณ ที่จ่าย",
+      "type": "object",
+      "properties": {
+        "on": {
+          "type": "boolean",
+          "default": true,
+          "description": "มีการคิดภาษีหัก ณ​ ที่จ่ายหรือไม่"
+        },
+        "rate": {
+          "type": "number",
+          "format": "double",
+          "default": 0,
+          "example": 0.03,
+          "description": "อัตราภาษีหัก ณ​ ที่จ่าย"
+        }
+      }
+    },
+    "is_vat_included": {
+      "type": "boolean",
+      "description": "มีการคิดภาษีมูลค่าเพิ่มแบบรวมไปในรายการสินค้าหรือไม่",
+      "default": false
+    },
+    "due_date_term": {
+      "type": "integer",
+      "description": "จำนวนวันที่ต้องชำระหลังออกใบแจ้งหนี้",
+      "example": 30
+    }
+  },
+  "required": [
+    "name",
+    "number",
+    "items",
+    "due_date_term"
+  ]
+}

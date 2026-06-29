@@ -1,0 +1,43 @@
+{
+  "title": "Address",
+  "type": "object",
+  "description": "ข้อมูลประเภทที่อยู่ หากไม่มีข้อมูลในแต่ละ field ให้ใส่มาเป็น empty string",
+  "x-tags": [
+    "Customers"
+  ],
+  "properties": {
+    "house_number": {
+      "type": "string",
+      "description": "เลขที่",
+      "maxLength": 140
+    },
+    "sub_district": {
+      "type": "string",
+      "description": "ตำบล/แขวง",
+      "maxLength": 30
+    },
+    "district": {
+      "type": "string",
+      "description": "อำเภอ/เขต",
+      "maxLength": 30
+    },
+    "province": {
+      "type": "string",
+      "description": "จังหวัด",
+      "maxLength": 30
+    },
+    "post_code": {
+      "type": "string",
+      "description": "รหัสไปรษณีย์",
+      "maxLength": 5,
+      "minLength": 5
+    }
+  },
+  "required": [
+    "house_number",
+    "sub_district",
+    "district",
+    "province",
+    "post_code"
+  ]
+}

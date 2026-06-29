@@ -1,0 +1,16 @@
+{
+  "title": "Billgate Token",
+  "type": "object",
+  "x-tags": [
+    "Tokens"
+  ],
+  "properties": {
+    "access_token": {
+      "type": "string",
+      "description": "access token สำหรับใช้งาน Billgate API"
+    }
+  },
+  "required": [
+    "access_token"
+  ]
+}

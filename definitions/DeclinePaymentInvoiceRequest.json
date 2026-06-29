@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "example": "ยอดเงินไม่ถูกต้อง",
+      "description": "เหตุผลที่ปฏิเสธการแจ้งชำระเงิน"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "ข้อมูลเพิ่มเติมสำหรับการปฏิเสธการชำระเงิน"
+    }
+  },
+  "required": [
+    "reason"
+  ]
+}

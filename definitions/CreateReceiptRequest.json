@@ -1,0 +1,192 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "invoice_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "id ของใบแจ้งหนี้ที่ต้องการสร้างใบเสร็จ",
+      "nullable": true
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "customer",
+        "issue_date",
+        "items",
+        "vat_included",
+        "remark"
+      ],
+      "description": "ข้อมูลในใบเสร็จ",
+      "properties": {
+        "customer": {
+          "type": "object",
+          "required": [
+            "name",
+            "tax_number",
+            "phone_number",
+            "emails",
+            "address"
+          ],
+          "description": "ข้อมูลลูกค้า",
+          "properties": {
+            "customer_code": {
+              "type": "string",
+              "minLength": 1,
+              "example": "BG-CUS-001",
+              "description": "รหัสลูกค้าสำหรับค้นหาลูกค้าเดิมบนระบบ หากพบและไม่ได้ส่ง customer_id ระบบจะผูกใบกำกับภาษีกับลูกค้ารายนั้น"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "example": "สมชาย หมายปอง",
+              "description": "ชื่อลูกค้า"
+            },
+            "tax_number": {
+              "type": "string",
+              "minLength": 1,
+              "example": "1012670114029",
+              "description": "เลขที่ผู้เสียภาษี"
+            },
+            "phone_number": {
+              "type": "string",
+              "minLength": 1,
+              "example": "0850601111",
+              "description": "เบอร์โทรศัพท์"
+            },
+            "emails": {
+              "type": "array",
+              "description": "Email ลูกค้า",
+              "items": {
+                "type": "string",
+                "example": "somchai.h@mockcustomer.com"
+              }
+            },
+            "address": {
+              "type": "object",
+              "required": [
+                "house_number",
+                "sub_district",
+                "district",
+                "province",
+                "post_code"
+              ],
+              "description": "ที่อยู่ลูกค้า",
+              "properties": {
+                "house_number": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "598/610",
+                  "description": "เลขที่"
+                },
+                "sub_district": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "บางกะปิ",
+                  "description": "แขวง / ตำบล"
+                },
+                "district": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "ห้วยขวาง",
+                  "description": "เขต / อำเภอ"
+                },
+                "province": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "กรุงเทพมหานคร",
+                  "description": "จังหวัด"
+                },
+                "post_code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "example": "10310",
+                  "description": "รหัสไปรษณีย์"
+                }
+              }
+            }
+          }
+        },
+        "issue_date": {
+          "type": "string",
+          "minLength": 1,
+          "example": "2021-01-19",
+          "description": "วันที่ออกเอกสาร"
+        },
+        "items": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "description": "รายการสินค้า / บริการ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "example": "ค่าบริการ",
+                "description": "ชื่อสินค้า / บริการ"
+              },
+              "quantity": {
+                "type": "number",
+                "example": 1,
+                "description": "จำนวน"
+              },
+              "unit_price": {
+                "type": "number",
+                "example": 1,
+                "description": "ราคา/หน่วย"
+              },
+              "vat_rate": {
+                "type": "number",
+                "example": 1000,
+                "description": "อัตราภาษีมูลค่าเพิ่ม",
+                "nullable": true
+              },
+              "discount_amount": {
+                "type": "number",
+                "example": 0,
+                "description": "มูลค่าส่วนลดของสินค้า",
+                "nullable": true
+              }
+            },
+            "required": [
+              "description",
+              "quantity",
+              "unit_price"
+            ]
+          }
+        },
+        "vat_included": {
+          "type": "boolean",
+          "description": "การคิดภาษีมูลค่าเพิ่มรวมลงไปในราคาสินค้า"
+        },
+        "remark": {
+          "type": "string",
+          "description": "หมายเหตุ",
+          "nullable": true
+        },
+        "withholding_tax_rate": {
+          "type": "number",
+          "description": "อัตราภาษีหัก ณ ที่จ่าย",
+          "nullable": true
+        },
+        "name": {
+          "type": "string",
+          "description": "อ้างอิง / โปรเจค"
+        }
+      }
+    },
+    "number": {
+      "type": "string",
+      "example": "RCP-000001",
+      "minLength": 1,
+      "description": "เลขที่ใบเสร็จ"
+    }
+  },
+  "required": [
+    "invoice_id",
+    "data",
+    "number"
+  ]
+}

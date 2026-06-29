@@ -1,0 +1,69 @@
+{
+  "required": false,
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/CreateTaxInvoiceRequest.json"
+      },
+      "examples": {
+        "example": {
+          "value": {
+            "number": "TAX-000001",
+            "invoice_id": null,
+            "receipt_id": null,
+            "data": {
+              "customer": {
+                "customer_code": "BG-CUS-001",
+                "name": "สมชาย หมายปอง",
+                "tax_number": "1012670114029",
+                "phone_number": "0850601111",
+                "emails": [
+                  "somchai.h@mockcustomer.com"
+                ],
+                "address": {
+                  "house_number": "598/610",
+                  "sub_district": "บางกะปิ",
+                  "district": "ห้วยขวาง",
+                  "province": "กรุงเทพมหานคร",
+                  "post_code": "10310"
+                }
+              },
+              "issue_date": "2021-01-19",
+              "items": [
+                {
+                  "description": "ค่าบริการ",
+                  "quantity": 1,
+                  "unit_price": 1,
+                  "vat_rate": 7,
+                  "discount_amount": 0
+                }
+              ],
+              "vat_included": true,
+              "remark": null,
+              "withholding_tax_rate": null
+            },
+            "attachments": [
+              "https://example.com/files/tax-invoice-attachment.pdf"
+            ]
+          }
+        },
+        "example-2": {
+          "value": {
+            "number": "TAX-000001",
+            "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+            "receipt_id": null,
+            "data": null
+          }
+        },
+        "example-3": {
+          "value": {
+            "number": "TAX-000001",
+            "invoice_id": null,
+            "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
+            "data": null
+          }
+        }
+      }
+    }
+  }
+}

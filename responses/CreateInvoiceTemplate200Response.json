@@ -1,0 +1,73 @@
+{
+  "description": "OK",
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/Invoice-Template-Response.json"
+      },
+      "examples": {
+        "response.json": {
+          "value": {
+            "id": "44cf6f8f-77f9-4a3d-9d4f-ba7d2c3126a5",
+            "seller_id": "1d1295bf-f6f8-4473-9b95-33e889f301b1",
+            "number": "TEM202108001",
+            "template": {
+              "name": "ค่าบริการสำนักงานรายเดือน",
+              "items": [
+                {
+                  "description": "บริการทำความสะอาดรายสัปดาห์",
+                  "quantity": 1,
+                  "price_per_item": 399,
+                  "vat": {
+                    "rate": 7,
+                    "amount": 22.83177570093458
+                  },
+                  "discount": {
+                    "rate": null,
+                    "amount": 50
+                  }
+                },
+                {
+                  "description": "ค่าบริการตู้จดหมาย",
+                  "quantity": 1,
+                  "price_per_item": 99,
+                  "vat": {
+                    "rate": 7,
+                    "amount": 6.4766355140186915
+                  },
+                  "discount": null
+                }
+              ],
+              "remark": "กรุณาชำระภายใน 30 วันหลังจากได้รับใบแจ้งหนี้",
+              "due_date_term": 30,
+              "discount": {
+                "on": true,
+                "percentage": 0,
+                "amount": 50
+              },
+              "vat": {
+                "on": true,
+                "is_included": true,
+                "rate": 0.07,
+                "amount": 29.31
+              },
+              "withholding_tax": {
+                "on": true,
+                "rate": 0.03,
+                "amount": 12.56
+              },
+              "vat_exempted_amount": 0,
+              "taxable_sales_amount": 418.69,
+              "net_amount": 418.69,
+              "items_amount": 498,
+              "total_amount": 448,
+              "gross_amount": 435.44
+            },
+            "created_at": "2021-08-06 09:24:04",
+            "updated_at": "2021-08-06 09:24:04"
+          }
+        }
+      }
+    }
+  }
+}

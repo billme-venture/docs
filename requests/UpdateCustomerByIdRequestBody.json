@@ -1,0 +1,10 @@
+{
+  "description": "",
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/Customer-Request.json"
+      }
+    }
+  }
+}

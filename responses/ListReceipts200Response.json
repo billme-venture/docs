@@ -1,0 +1,10 @@
+{
+  "description": "OK",
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/ListReceipts200ResponseBody.json"
+      }
+    }
+  }
+}

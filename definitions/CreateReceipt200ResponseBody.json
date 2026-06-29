@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "description": "id ของใบเสร็จ"
+    }
+  }
+}

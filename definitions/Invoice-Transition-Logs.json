@@ -1,0 +1,81 @@
+{
+  "title": "Invoice Transition Logs",
+  "type": "object",
+  "x-tags": [
+    "Invoices"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id ของ transition log"
+          },
+          "invoice_id": {
+            "type": "string",
+            "description": "id ของใบแจ้งหนี้"
+          },
+          "from_status": {
+            "type": "string",
+            "description": "สถานะก่อนหน้า",
+            "nullable": true
+          },
+          "to_status": {
+            "type": "string",
+            "description": "สถานะหลังการเปลี่ยนแปลง"
+          },
+          "transitioned_by_type": {
+            "type": "string",
+            "description": "ประเภทผู้เปลี่ยนสถานะ"
+          },
+          "transitioned_by_id": {
+            "type": "string",
+            "description": "id ของผู้เปลี่ยนสถานะ",
+            "nullable": true
+          },
+          "transitioned_by": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "nullable": true
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          },
+          "reason": {
+            "type": "string",
+            "description": "เหตุผลของการเปลี่ยนสถานะ",
+            "nullable": true
+          },
+          "metadata": {
+            "type": "object",
+            "description": "ข้อมูลเพิ่มเติมของการเปลี่ยนสถานะ"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "วันที่สร้าง transition log"
+          }
+        },
+        "required": [
+          "id",
+          "invoice_id",
+          "to_status",
+          "transitioned_by_type",
+          "transitioned_by",
+          "metadata",
+          "created_at"
+        ]
+      }
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

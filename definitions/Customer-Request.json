@@ -1,0 +1,76 @@
+{
+  "title": "Customer Request",
+  "type": "object",
+  "x-tags": [
+    "Customers"
+  ],
+  "description": "ข้อมูลประเภท `JSON` เมื่อทำ operation `POST` หรือ `PUT`",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "ประเภทของลูกค้า (บุคคลธรรมดา, นิติบุคคล)",
+      "enum": [
+        "individual",
+        "corporate"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "ชื่อสำหรับออกเอกสาร",
+      "maxLength": 140
+    },
+    "alias": {
+      "type": "string",
+      "description": "ชื่อเรียกแทน/ชื่อย่อ",
+      "maxLength": 140,
+      "nullable": true
+    },
+    "tax_number": {
+      "type": "string",
+      "description": "เลขรหัสประชาชน/เลขนิติบุคคล",
+      "minLength": 13,
+      "maxLength": 13,
+      "example": "0000000000000",
+      "nullable": true
+    },
+    "branch_number": {
+      "type": "string",
+      "description": "รหัสสาขา 5 หลัก (หากเป็นบุคคลธรรมดาจะเป็น 00000)",
+      "example": "00000",
+      "minLength": 5,
+      "maxLength": 5,
+      "nullable": true
+    },
+    "phone_number": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "หมายเลขโทรศัพท์ (หากมีมากกว่า 1 หมายเลข ให้ใส่ `,` คั่น)",
+      "example": "0800000000,0900000000",
+      "nullable": true
+    },
+    "customer_code": {
+      "type": "string",
+      "description": "รหัสลูกค้าสำหรับอ้างอิงและค้นหาลูกค้า",
+      "maxLength": 64,
+      "example": "BG-CUS-001",
+      "nullable": true
+    },
+    "emails": {
+      "type": "array",
+      "description": "อีเมล",
+      "format": "email",
+      "items": {
+        "type": "string"
+      }
+    },
+    "address": {
+      "$ref": "./Address.json"
+    }
+  },
+  "required": [
+    "type",
+    "name",
+    "emails",
+    "address"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "description": "",
+  "required": false,
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/CreateReceiptRequest.json"
+      },
+      "examples": {
+        "example": {
+          "value": {
+            "invoice_id": null,
+            "number": "RCP-000001",
+            "data": {
+              "customer": {
+                "name": "สมชาย หมายปอง",
+                "tax_number": "1012670114029",
+                "phone_number": "0850601111",
+                "emails": [
+                  "somchai.h@mockcustomer.com"
+                ],
+                "address": {
+                  "house_number": "598/610",
+                  "sub_district": "บางกะปิ",
+                  "district": "ห้วยขวาง",
+                  "province": "กรุงเทพมหานคร",
+                  "post_code": "10310"
+                }
+              },
+              "issue_date": "2021-01-19",
+              "name": "ใบเรียกเก็บค่าบริการเดือน มกราคม 2564",
+              "items": [
+                {
+                  "description": "ค่าบริการ",
+                  "quantity": 1,
+                  "unit_price": 1000,
+                  "vat_rate": 7,
+                  "discount_amount": 0
+                }
+              ],
+              "vat_included": true,
+              "remark": null,
+              "withholding_tax_rate": null
+            }
+          }
+        },
+        "example-2": {
+          "value": {
+            "invoice_id": "cf47a508-43e6-449c-aab8-68cabdcc3b41",
+            "number": "RCP-000001",
+            "data": null
+          }
+        }
+      }
+    }
+  }
+}

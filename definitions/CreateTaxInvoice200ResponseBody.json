@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "properties": {
+    "tax_invoice_id": {
+      "type": "string"
+    }
+  }
+}

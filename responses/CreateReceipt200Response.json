@@ -1,0 +1,17 @@
+{
+  "description": "OK",
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/CreateReceipt200ResponseBody.json"
+      },
+      "examples": {
+        "example-1": {
+          "value": {
+            "receipt_id": "string"
+          }
+        }
+      }
+    }
+  }
+}

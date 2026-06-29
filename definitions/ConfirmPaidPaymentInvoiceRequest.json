@@ -1,0 +1,21 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "date_time": {
+      "type": "string",
+      "minLength": 1,
+      "example": "2021-01-19 13:00:00",
+      "description": "วันที่ชำระเงิน"
+    },
+    "amount": {
+      "type": "number",
+      "example": 1000,
+      "description": "จำนวนเงินที่ชำระ"
+    }
+  },
+  "required": [
+    "date_time",
+    "amount"
+  ]
+}

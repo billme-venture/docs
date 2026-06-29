@@ -1,0 +1,18 @@
+{
+  "description": "OK",
+  "headers": {
+    "Content-Type": {
+      "schema": {
+        "type": "string",
+        "default": "application/json"
+      }
+    }
+  },
+  "content": {
+    "application/json": {
+      "schema": {
+        "$ref": "../definitions/Recurring-Invoice.json"
+      }
+    }
+  }
+}
