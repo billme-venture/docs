@@ -2725,6 +2725,13 @@
           "example": "0800000000,0900000000",
           "x-nullable": true
         },
+        "customer_code": {
+          "type": "string",
+          "description": "รหัสลูกค้าสำหรับอ้างอิงและค้นหาลูกค้า",
+          "maxLength": 64,
+          "example": "BG-CUS-001",
+          "x-nullable": true
+        },
         "emails": {
           "type": "array",
           "description": "อีเมล",
