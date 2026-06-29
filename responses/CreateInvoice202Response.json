@@ -67,7 +67,8 @@
         "references": {
           "receipt_id": null,
           "tax_invoice_id": null
-        }
+        },
+        "qrcode": null
       }
     }
   }

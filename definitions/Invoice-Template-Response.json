@@ -279,14 +279,14 @@
       "description": "วันที่สร้างรูปแบบใบแจ้งหนี้",
       "format": "date-time",
       "example": "2021-08-05 16:30:01",
-      "pattern": "yyyy-MM-dd HH:mm:ss"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
     },
     "updated_at": {
       "type": "string",
       "description": "วันที่ปรับปรุงข้อมูลรูปแบบใบแจ้งหนี้",
       "format": "date-time",
       "example": "2021-08-05 16:39:02",
-      "pattern": "yyyy-MM-dd HH:mm:ss"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
     }
   }
 }

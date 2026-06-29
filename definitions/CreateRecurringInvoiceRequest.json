@@ -31,7 +31,7 @@
       "type": "string",
       "format": "date",
       "description": "วันที่เริ่มส่งใบแจ้งหนี้ครั้งแรก",
-      "pattern": "yyyy-MM-dd",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
       "example": "2021-08-30"
     },
     "cycle": {

@@ -42,7 +42,7 @@
           "vat_rate": {
             "type": "number",
             "description": "ภาษีมูลค่าเพิ่มของสินค้า/บริการ หน่วยเป็น % เช่น 7",
-            "example": "7",
+            "example": 7,
             "format": "double",
             "minimum": 0,
             "maximum": 100

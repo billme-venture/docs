@@ -175,7 +175,8 @@
           "type": "string",
           "description": "อ้างอิง / โปรเจค"
         }
-      }
+      },
+      "nullable": true
     },
     "number": {
       "type": "string",

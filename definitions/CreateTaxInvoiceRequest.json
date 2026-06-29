@@ -109,6 +109,12 @@
                   "description": "รหัสไปรษณีย์"
                 }
               }
+            },
+            "customer_code": {
+              "type": "string",
+              "minLength": 1,
+              "example": "BG-CUS-001",
+              "description": "รหัสลูกค้าสำหรับค้นหาลูกค้าเดิมบนระบบ หากพบและไม่ได้ส่ง customer_id ระบบจะผูกใบกำกับภาษีกับลูกค้ารายนั้น"
             }
           }
         },
@@ -176,7 +182,8 @@
           "description": "อัตราภาษีหัก ณ ที่จ่าย",
           "nullable": true
         }
-      }
+      },
+      "nullable": true
     },
     "attachments": {
       "type": "array",

@@ -42,7 +42,7 @@
                 "next_sending_date": "2021-09-30",
                 "sent_count": 1,
                 "cycle": 3,
-                "canceled_at": "null",
+                "canceled_at": null,
                 "created_at": "2021-08-05 16:55:00"
               }
             ]

@@ -115,8 +115,7 @@
         "id": {
           "type": "string",
           "description": "`id` ของลูกค้าตามสมุดรายชื่อลูกค้า",
-          "example": "1137d03a3ee24f1ca31dfae41a4cf600",
-          "format": "uuid"
+          "example": "1137d03a3ee24f1ca31dfae41a4cf600"
         },
         "name": {
           "type": "string",
@@ -144,13 +143,13 @@
       "description": "วันที่เริ่มส่งใบแจ้งหนี้รอบแรก",
       "format": "date",
       "example": "2021-08-30",
-      "pattern": "yyyy-MM-dd"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
     },
     "end_date": {
       "type": "string",
       "description": "วันที่ส่งใบแจ้งหนี้ครั้งสุดท้าย",
       "format": "date",
-      "pattern": "yyyy-MM-dd",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
       "example": "2021-10-30",
       "nullable": true
     },
@@ -159,7 +158,7 @@
       "description": "วันที่สำหรับส่งใบแจ้งหนี้ครั้งถัดไป",
       "format": "date",
       "example": "2021-09-30",
-      "pattern": "yyyy-MM-DD",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
       "nullable": true
     },
     "sent_count": {
@@ -178,15 +177,15 @@
       "type": "string",
       "description": "วันเวลาที่ยกเลิกการส่งใบแจ้งหนี้อัตโนมัติ",
       "format": "date-time",
-      "example": "null",
-      "pattern": "yyyy-MM-dd HH:mm:ss",
+      "example": null,
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
       "nullable": true
     },
     "created_at": {
       "type": "string",
       "description": "วันเวลาที่เริ่มสร้างใบแจ้งหนี้อัตโนมัติ",
       "format": "date-time",
-      "pattern": "yyyy-MM-dd HH:mm:ss",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
       "example": "2021-08-05 16:55:00"
     }
   }

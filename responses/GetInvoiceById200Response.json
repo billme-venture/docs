@@ -78,7 +78,8 @@
         "references": {
           "receipt_id": "b4d611db-3980-44ef-a64c-22410c3fde46",
           "tax_invoice_id": "a5873c97-7c21-407d-b561-c2ece8de6389"
-        }
+        },
+        "qrcode": null
       }
     }
   }

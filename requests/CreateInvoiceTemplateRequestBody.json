@@ -16,7 +16,7 @@
                 "price_per_item": 399,
                 "vat_rate": 0.07,
                 "discount": {
-                  "type": "amount",
+                  "type": "money",
                   "total": 50
                 }
               },
